@@ -968,8 +968,10 @@ tuple<bool, rational> RationalNumberType::isValidLiteral(Literal const& _literal
 	{
 		return make_tuple(false, rational(0));
 	}
-	switch (_literal.subDenomination())
-	{
+
+	if (auto subDenomination = get_if<Literal::SubDenomination>(&_literal.suffix()))
+		switch (*subDenomination)
+		{
 		case Literal::SubDenomination::None:
 		case Literal::SubDenomination::Wei:
 		case Literal::SubDenomination::Second:
@@ -995,7 +997,7 @@ tuple<bool, rational> RationalNumberType::isValidLiteral(Literal const& _literal
 		case Literal::SubDenomination::Year:
 			value *= bigint("31536000");
 			break;
-	}
+		}
 
 
 	return make_tuple(true, value);
@@ -1261,6 +1263,35 @@ FixedPointType const* RationalNumberType::fixedPointType() const
 		totalBits, fractionalDigits,
 		negative ? FixedPointType::Modifier::Signed : FixedPointType::Modifier::Unsigned
 	);
+}
+
+pair<RationalNumberType const*, RationalNumberType const*> RationalNumberType::mantissaExponent() const
+{
+	rational const maxUint = rational((bigint(1) << 256) - 1);
+	rational const minInt = -rational(bigint(1) << 255);
+
+	bool negative = (m_value < 0);
+	rational const maxMantissa = (negative ? -minInt : maxUint);
+
+	int exponent = 0;
+	rational unsignedMantissa = abs(m_value);
+	while (unsignedMantissa.denominator() != 1)
+	{
+		unsignedMantissa *= 10;
+		--exponent;
+
+		if (
+			unsignedMantissa > maxUint ||
+			unsignedMantissa < minInt ||
+			exponent < -255 // TODO: sane value?
+		)
+			return {nullptr, nullptr};
+	}
+
+	return {
+		TypeProvider::rationalNumber(unsignedMantissa),
+		TypeProvider::rationalNumber(-exponent),
+	};
 }
 
 StringLiteralType::StringLiteralType(Literal const& _literal):
