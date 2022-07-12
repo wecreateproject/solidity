@@ -2492,18 +2492,24 @@ bool IRGeneratorForStatements::visit(Literal const& _literal)
 
 		// TODO this is actually not always the right one.
 		auto type = TypeProvider::forLiteral(_literal);
+		auto const* literalRationalType = dynamic_cast<RationalNumberType const*>(literalType);
+		vector<Type const*> parameterTypes = functionType.parameterTypes();
 
 		vector<string> args;
-		if (dynamic_cast<RationalNumberType const*>(type) && dynamic_cast<RationalNumberType const*>(type)->isFractional())
+		if (parameterTypes.size() == 2)
 		{
-			auto&& [mantissa, exponent] = dynamic_cast<RationalNumberType const*>(type)->mantissaExponent();
+			solAssert(literalRationalType);
+
+			auto&& [mantissa, exponent] = literalRationalType->mantissaExponent();
+			solAssert(mantissa && exponent);
+
 			IRVariable mantissaVar(m_context.newYulVariable(), *mantissa);
 			define(mantissaVar) << toCompactHexWithPrefix(mantissa->literalValue(&_literal)) << "\n";
-			args = convert(mantissaVar, *functionType.parameterTypes().at(0)).stackSlots();
+			args = convert(mantissaVar, *parameterTypes[0]).stackSlots();
 
 			IRVariable exponentVar(m_context.newYulVariable(), *exponent);
 			define(exponentVar) << toCompactHexWithPrefix(exponent->literalValue(&_literal)) << "\n";
-			args += convert(exponentVar, *functionType.parameterTypes().at(1)).stackSlots();
+			args += convert(exponentVar, *parameterTypes[1]).stackSlots();
 		}
 		else
 		{
@@ -2512,7 +2518,7 @@ bool IRGeneratorForStatements::visit(Literal const& _literal)
 			{
 				IRVariable value(m_context.newYulVariable(), *type);
 				define(value) << toCompactHexWithPrefix(type->literalValue(&_literal)) << "\n";
-				args = convert(value, *functionType.parameterTypes().at(0)).stackSlots();
+				args = convert(value, *parameterTypes[0]).stackSlots();
 			}
 			// TODO what about string?
 		}
