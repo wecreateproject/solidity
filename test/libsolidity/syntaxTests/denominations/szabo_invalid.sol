@@ -4,4 +4,4 @@ contract C {
     }
 }
 // ----
-// DeclarationError 7920: (58-63): Identifier not found or not unique.
+// DeclarationError 7576: (56-63): Undeclared identifier.
