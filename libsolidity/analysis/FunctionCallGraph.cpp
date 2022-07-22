@@ -246,14 +246,6 @@ bool FunctionCallGraphBuilder::visit(NewExpression const& _newExpression)
 	return true;
 }
 
-bool FunctionCallGraphBuilder::visit(Literal const& _literal)
-{
-	if (_literal.suffixFunction())
-		functionReferenced(*_literal.suffixFunction());
-
-	return true;
-}
-
 void FunctionCallGraphBuilder::enqueueCallable(CallableDeclaration const& _callable)
 {
 	if (!m_graph.edges.count(&_callable))
