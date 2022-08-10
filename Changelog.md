@@ -2,6 +2,7 @@
 
 Language Features:
 * Allow named parameters in mapping types.
+* Allow defining custom operators for user-defined value types via ``using {f as +} for Typename;`` syntax.
 
 
 Compiler Features:
@@ -30,6 +31,10 @@ Bugfixes:
  * SMTChecker: Fix internal error on chain assignments using static fully specified state variables.
  * SMTChecker: Fix internal error when using user defined types as mapping indices or struct members.
  * SMTChecker: Fix internal error when deleting struct member of function type.
+
+
+AST Changes:
+ * AST: Add ``function`` field to ``UnaryOperation`` and ``BinaryOperation`` AST nodes and ``functionList.operator`` field to ``UsingForDirective`` AST nodes.
 
 
 ### 0.8.17 (2022-09-08)
