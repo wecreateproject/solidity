@@ -1,6 +1,7 @@
 ### 0.8.19 (unreleased)
 
 Language Features:
+* Allow defining custom operators for user-defined value types via ``using {f as +} for Typename;`` syntax.
 
 
 Compiler Features:
@@ -13,6 +14,10 @@ Bugfixes:
  * SMTChecker: Fix internal error when using the custom NatSpec annotation to abstract free functions.
  * TypeChecker: Also allow external library functions in ``using for``.
  * SMTChecker: Fix internal error caused by unhandled ``z3`` expressions that come from the solver when bitwise operators are used.
+
+
+AST Changes:
+ * AST: Add ``function`` field to ``UnaryOperation`` and ``BinaryOperation`` AST nodes and ``functionList.operator`` field to ``UsingForDirective`` AST nodes.
 
 
 ### 0.8.18 (2023-02-01)
