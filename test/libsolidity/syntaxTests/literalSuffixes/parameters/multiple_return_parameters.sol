@@ -17,3 +17,6 @@ contract C {
         return "abcd" bytesStructContractSuffix;
     }
 }
+// ----
+// TypeError 7848: (325-341): Literal suffix functions must return exactly one value.
+// TypeError 7848: (432-464): Literal suffix functions must return exactly one value.
