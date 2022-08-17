@@ -3984,8 +3984,14 @@ void TypeChecker::endVisit(Literal const& _literal)
 			if (suffixFunctionType->returnParameterTypes().size() == 1)
 				_literal.annotation().type = suffixFunctionType->returnParameterTypes().front();
 			else
+			{
 				_literal.annotation().type = TypeProvider::tuple(suffixFunctionType->returnParameterTypes());
-
+				m_errorReporter.typeError(
+					7848_error,
+					_literal.location(),
+					"Literal suffix functions must return exactly one value."
+				);
+			}
 			isCompileTimeConstant = suffixFunctionType->isPure();
 		}
 	}
