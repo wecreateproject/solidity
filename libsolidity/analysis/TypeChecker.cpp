@@ -3885,8 +3885,6 @@ bool TypeChecker::visit(Literal const& _literal)
 	if (!literalType)
 		m_errorReporter.fatalTypeError(2826_error, _literal.location(), "Invalid literal value.");
 
-	// TODO at this point the literal type needs to be stored for code generation.
-
 	std::visit(GenericVisitor{
 		[&](ASTPointer<Identifier> const& _identifier) {
 			_identifier->annotation().suffixedLiteral = &_literal;
