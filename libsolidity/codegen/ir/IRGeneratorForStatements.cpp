@@ -2483,14 +2483,37 @@ bool IRGeneratorForStatements::visit(Literal const& _literal)
 {
 	setLocation(_literal);
 
+	// no suffix/denomination -> literal is the whole expression and types match.
+	// suffix -> type comes from return value of suffix function.
+	Type const& expressionType = type(_literal);
+	Type const& literalType = std::visit(GenericVisitor{
+		[](ASTPointer<Identifier> const& _identifier) -> Type const& {
+			solAssert(_identifier->annotation().arguments.has_value());
+			solAssert(_identifier->annotation().arguments->numArguments() == 1);
+			solAssert(_identifier->annotation().arguments->types[0]);
+			return *_identifier->annotation().arguments->types[0];
+		},
+		[](ASTPointer<MemberAccess> const& _memberAccess) -> Type const& {
+			solAssert(_memberAccess->annotation().arguments.has_value());
+			solAssert(_memberAccess->annotation().arguments->numArguments() == 1);
+			solAssert(_memberAccess->annotation().arguments->types[0]);
+			return *_memberAccess->annotation().arguments->types[0];
+		},
+		[&](Literal::SubDenomination) -> Type const& {
+			return expressionType;
+		},
+	}, _literal.suffix());
+
 	if (_literal.suffixFunction())
 	{
-		FunctionType const& functionType = *_literal.suffixFunction()->functionType(true);
+		FunctionType const& suffixFunctionType = *_literal.suffixFunction()->functionType(true /* _internal */);
+		solAssert(!suffixFunctionType.bound());
+		solAssert(!suffixFunctionType.takesArbitraryParameters());
+		solAssert(_literal.suffixFunction()->isImplemented());
 
-		// TODO this is actually not always the right one.
-		auto type = TypeProvider::forLiteral(_literal);
-		auto const* literalRationalType = dynamic_cast<RationalNumberType const*>(literalType);
-		vector<Type const*> parameterTypes = functionType.parameterTypes();
+		// NOTE: This is the type of the literal itself, ignoring the suffix.
+		auto const* literalRationalType = dynamic_cast<RationalNumberType const*>(&literalType);
+		vector<Type const*> parameterTypes = suffixFunctionType.parameterTypes();
 
 		vector<string> args;
 		if (parameterTypes.size() == 2)
@@ -2510,11 +2533,13 @@ bool IRGeneratorForStatements::visit(Literal const& _literal)
 		}
 		else
 		{
+			solAssert(parameterTypes.size() == 1);
+
 			// TODO reuse the code below
-			if (type->category() != Type::Category::StringLiteral)
+			if (literalType.category() != Type::Category::StringLiteral)
 			{
-				IRVariable value(m_context.newYulVariable(), *type);
-				define(value) << toCompactHexWithPrefix(type->literalValue(&_literal)) << "\n";
+				IRVariable value(m_context.newYulVariable(), literalType);
+				define(value) << toCompactHexWithPrefix(literalType.literalValue(&_literal)) << "\n";
 				args = convert(value, *parameterTypes[0]).stackSlots();
 			}
 			// TODO what about string?
@@ -2526,14 +2551,13 @@ bool IRGeneratorForStatements::visit(Literal const& _literal)
 	else
 	{
 		solAssert(holds_alternative<Literal::SubDenomination>(_literal.suffix()));
-		Type const& literalType = type(_literal);
 
-		switch (literalType.category())
+		switch (expressionType.category())
 		{
 		case Type::Category::RationalNumber:
 		case Type::Category::Bool:
 		case Type::Category::Address:
-			define(_literal) << toCompactHexWithPrefix(literalType.literalValue(&_literal)) << "\n";
+			define(_literal) << toCompactHexWithPrefix(expressionType.literalValue(&_literal)) << "\n";
 			break;
 		case Type::Category::StringLiteral:
 			// A string literal cannot be simply assigned to a Yul variable so we don't create one here.
