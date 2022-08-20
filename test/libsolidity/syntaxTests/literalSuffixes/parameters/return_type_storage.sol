@@ -22,9 +22,12 @@ function mappingSuffix(uint x) pure returns (mapping(uint => uint) storage m) {
 
 contract C {
     function f() public pure {
-        // TODO: Using functions with storage return type as suffixes should be disallowed
         1 structSuffix;
         1 arraySuffix;
         1 mappingSuffix;
     }
 }
+// ----
+// TypeError 7251: (461-475): Literal suffix functions can only return value types and reference types stored in memory.
+// TypeError 7251: (485-498): Literal suffix functions can only return value types and reference types stored in memory.
+// TypeError 7251: (508-523): Literal suffix functions can only return value types and reference types stored in memory.

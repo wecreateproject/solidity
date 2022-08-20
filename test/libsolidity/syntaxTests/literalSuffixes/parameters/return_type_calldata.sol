@@ -16,8 +16,10 @@ function arraySuffix(uint x) pure returns (uint[5] calldata a) {
 
 contract C {
     function f() public pure {
-        // TODO: Using functions with calldata return type as suffixes should be disallowed
         1 structSuffix;
         1 arraySuffix;
     }
 }
+// ----
+// TypeError 7251: (281-295): Literal suffix functions can only return value types and reference types stored in memory.
+// TypeError 7251: (305-318): Literal suffix functions can only return value types and reference types stored in memory.
