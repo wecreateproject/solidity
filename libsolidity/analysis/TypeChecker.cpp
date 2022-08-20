@@ -47,6 +47,7 @@
 #include <range/v3/view/drop_exactly.hpp>
 #include <range/v3/view/enumerate.hpp>
 #include <range/v3/view/zip.hpp>
+#include <range/v3/algorithm/any_of.hpp>
 
 #include <memory>
 #include <vector>
@@ -3992,6 +3993,23 @@ void TypeChecker::endVisit(Literal const& _literal)
 					"Literal suffix functions must return exactly one value."
 				);
 			}
+
+			if (ranges::any_of(
+				suffixFunctionType->returnParameterTypes(),
+				[](Type const* _returnType) {
+					auto referenceType = dynamic_cast<ReferenceType const*>(_returnType);
+					auto mappingType = dynamic_cast<MappingType const*>(_returnType);
+					return
+						mappingType ||
+						(referenceType && !referenceType->dataStoredIn(DataLocation::Memory));
+				}
+			))
+				m_errorReporter.typeError(
+					7251_error,
+					_literal.location(),
+					"Literal suffix functions can only return value types and reference types stored in memory."
+				);
+
 			isCompileTimeConstant = suffixFunctionType->isPure();
 		}
 	}
