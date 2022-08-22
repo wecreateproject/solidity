@@ -3975,6 +3975,17 @@ void TypeChecker::endVisit(Literal const& _literal)
 				)
 					// TODO: Is this triggered when the argument is out of range? Test.
 					parameterTypeMessage = "The type of the literal cannot be converted to the parameters of the suffix function.";
+
+				if (
+					auto const* exponentType = dynamic_cast<IntegerType const*>(suffixFunctionType->parameterTypes().at(1));
+					exponentType && exponentType->isSigned()
+				)
+					m_errorReporter.typeError(
+						3123_error,
+						_literal.location(),
+						"The exponent parameter of a literal suffix function must be unsigned. "
+						"Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value."
+					);
 			}
 			else if (!literalType->isImplicitlyConvertibleTo(*suffixFunctionType->parameterTypes().front()))
 				parameterTypeMessage = "The type of the literal cannot be converted to the parameter of the suffix function.";
