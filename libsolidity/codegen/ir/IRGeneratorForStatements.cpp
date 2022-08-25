@@ -1023,11 +1023,7 @@ void IRGeneratorForStatements::endVisit(FunctionCall const& _functionCall)
 		break;
 	case FunctionType::Kind::Internal:
 		solAssert(functionType);
-		appendInternalFunctionCall(
-			_functionCall,
-			*functionType,
-			arguments | ranges::views::indirect | ranges::views::addressof | ranges::to<vector>
-		);
+		appendInternalFunctionCall(_functionCall, *functionType, arguments);
 		break;
 	case FunctionType::Kind::External:
 	case FunctionType::Kind::DelegateCall:
@@ -2483,75 +2479,17 @@ bool IRGeneratorForStatements::visit(Literal const& _literal)
 {
 	setLocation(_literal);
 
-	// no suffix/denomination -> literal is the whole expression and types match.
-	// suffix -> type comes from return value of suffix function.
-	Type const& expressionType = type(_literal);
-	Type const& literalType = std::visit(GenericVisitor{
-		[](ASTPointer<Identifier> const& _identifier) -> Type const& {
-			solAssert(_identifier->annotation().arguments.has_value());
-			solAssert(_identifier->annotation().arguments->numArguments() == 1);
-			solAssert(_identifier->annotation().arguments->types[0]);
-			return *_identifier->annotation().arguments->types[0];
-		},
-		[](ASTPointer<MemberAccess> const& _memberAccess) -> Type const& {
-			solAssert(_memberAccess->annotation().arguments.has_value());
-			solAssert(_memberAccess->annotation().arguments->numArguments() == 1);
-			solAssert(_memberAccess->annotation().arguments->types[0]);
-			return *_memberAccess->annotation().arguments->types[0];
-		},
-		[&](Literal::SubDenomination) -> Type const& {
-			return expressionType;
-		},
-	}, _literal.suffix());
-
 	if (_literal.suffixFunction())
-	{
-		FunctionType const& suffixFunctionType = *_literal.suffixFunction()->functionType(true /* _internal */);
-		solAssert(!suffixFunctionType.bound());
-		solAssert(!suffixFunctionType.takesArbitraryParameters());
-		solAssert(_literal.suffixFunction()->isImplemented());
-
-		// NOTE: This is the type of the literal itself, ignoring the suffix.
-		auto const* literalRationalType = dynamic_cast<RationalNumberType const*>(&literalType);
-		vector<Type const*> parameterTypes = suffixFunctionType.parameterTypes();
-
-		vector<string> args;
-		if (parameterTypes.size() == 2)
-		{
-			solAssert(literalRationalType);
-
-			auto&& [mantissa, exponent] = literalRationalType->mantissaExponent();
-			solAssert(mantissa && exponent);
-
-			IRVariable mantissaVar(m_context.newYulVariable(), *mantissa);
-			define(mantissaVar) << toCompactHexWithPrefix(mantissa->literalValue(&_literal)) << "\n";
-			args = convert(mantissaVar, *parameterTypes[0]).stackSlots();
-
-			IRVariable exponentVar(m_context.newYulVariable(), *exponent);
-			define(exponentVar) << toCompactHexWithPrefix(exponent->literalValue(&_literal)) << "\n";
-			args += convert(exponentVar, *parameterTypes[1]).stackSlots();
-		}
-		else
-		{
-			solAssert(parameterTypes.size() == 1);
-
-			// TODO reuse the code below
-			if (literalType.category() != Type::Category::StringLiteral)
-			{
-				IRVariable value(m_context.newYulVariable(), literalType);
-				define(value) << toCompactHexWithPrefix(literalType.literalValue(&_literal)) << "\n";
-				args = convert(value, *parameterTypes[0]).stackSlots();
-			}
-			// TODO what about string?
-		}
-		define(_literal) <<
-			m_context.enqueueFunctionForCodeGeneration(*_literal.suffixFunction()) <<
-			"(" + joinHumanReadable(args) + ")\n";
-	}
+		appendInternalFunctionCall(
+			_literal,
+			*_literal.suffixFunction()->functionType(true /* _internal */),
+			_literal
+		);
 	else
 	{
 		solAssert(holds_alternative<Literal::SubDenomination>(_literal.suffix()));
 
+		Type const& expressionType = type(_literal);
 		switch (expressionType.category())
 		{
 		case Type::Category::RationalNumber:
@@ -2601,23 +2539,75 @@ void IRGeneratorForStatements::handleVariableReference(
 }
 
 void IRGeneratorForStatements::appendInternalFunctionCall(
-	FunctionCall const& _functionCall,
+	Expression const& _callExpression,
 	FunctionType const& _functionType,
-	vector<Expression const*> const& _arguments
+	variant<
+		reference_wrapper<vector<ASTPointer<Expression const>> const>,
+		reference_wrapper<Literal const>
+	> _arguments
 )
 {
 	solAssert(!_functionType.takesArbitraryParameters());
 
-	FunctionDefinition const *functionDefinition = ASTNode::resolveFunctionCall(_functionCall, &m_context.mostDerivedContract());
-	Expression const* identifierOrMemberAccess = &_functionCall.expression();
-
 	vector<string> convertedArguments;
-	if (_functionType.hasBoundFirstArgument())
-		convertedArguments += IRVariable(*identifierOrMemberAccess).part("self").stackSlots();
+	FunctionDefinition const* functionDefinition = nullptr;
+	Expression const* identifierOrMemberAccess = nullptr;
+	std::visit(GenericVisitor{
+		[&](vector<ASTPointer<Expression const>> const& _argumentExpressions)
+		{
+			auto const* functionCall = dynamic_cast<FunctionCall const*>(&_callExpression);
+			solAssert(functionCall);
 
-	TypePointers parameterTypes = _functionType.parameterTypes();
-	for (size_t i = 0; i < _arguments.size(); ++i)
-		convertedArguments += convert(*_arguments[i], *parameterTypes[i]).stackSlots();
+			functionDefinition = ASTNode::resolveFunctionCall(*functionCall, &m_context.mostDerivedContract());
+			identifierOrMemberAccess = &functionCall->expression();
+
+			if (_functionType.hasBoundFirstArgument())
+				convertedArguments += IRVariable(*identifierOrMemberAccess).part("self").stackSlots();
+
+			TypePointers parameterTypes = _functionType.parameterTypes();
+			for (size_t i = 0; i < _argumentExpressions.size(); ++i)
+				convertedArguments += convert(*_argumentExpressions[i], *parameterTypes[i]).stackSlots();
+		},
+		[&](Literal const& _literal) {
+			auto const* literal = dynamic_cast<Literal const*>(&_callExpression);
+			solAssert(literal);
+			solAssert(literal->suffixFunction());
+			solAssert(!literal->suffixFunction()->virtualSemantics());
+			solAssert(!_functionType.hasBoundFirstArgument());
+
+			functionDefinition = literal->suffixFunction();
+
+			Type const& literalType = literal->typeOfValue();
+			auto const* literalRationalType = dynamic_cast<RationalNumberType const*>(&literalType);
+			vector<Type const*> parameterTypes = _functionType.parameterTypes();
+			if (parameterTypes.size() == 2)
+			{
+				solAssert(literalRationalType);
+
+				auto&& [mantissa, exponent] = literalRationalType->mantissaExponent();
+				solAssert(mantissa && exponent);
+
+				IRVariable mantissaVar(m_context.newYulVariable(), *mantissa);
+				define(mantissaVar) << toCompactHexWithPrefix(mantissa->literalValue(&_literal)) << "\n";
+				convertedArguments += convert(mantissaVar, *parameterTypes[0]).stackSlots();
+
+				IRVariable exponentVar(m_context.newYulVariable(), *exponent);
+				define(exponentVar) << toCompactHexWithPrefix(exponent->literalValue(&_literal)) << "\n";
+				convertedArguments += convert(exponentVar, *parameterTypes[1]).stackSlots();
+			}
+			else
+			{
+				solAssert(parameterTypes.size() == 1);
+
+				IRVariable value(m_context.newYulVariable(), literalType);
+				if (literalType.category() != Type::Category::StringLiteral)
+					// NOTE: For string literals we do not need to define the variable. The variable
+					// value will be embedded inside the conversion function.
+					define(value) << toCompactHexWithPrefix(literalType.literalValue(&_literal)) << "\n";
+				convertedArguments += convert(value, *parameterTypes[0]).stackSlots();
+			}
+		}
+	}, _arguments);
 
 	if (functionDefinition)
 	{
@@ -2627,7 +2617,7 @@ void IRGeneratorForStatements::appendInternalFunctionCall(
 		else
 			solAssert(_functionType == *functionDefinition->functionType(true /* _internal */));
 
-		define(_functionCall) <<
+		define(_callExpression) <<
 			m_context.enqueueFunctionForCodeGeneration(*functionDefinition) <<
 			"(" <<
 			joinHumanReadable(convertedArguments) <<
@@ -2640,7 +2630,7 @@ void IRGeneratorForStatements::appendInternalFunctionCall(
 		YulArity arity = YulArity::fromType(_functionType);
 		m_context.internalFunctionCalledThroughDispatch(arity);
 
-		define(_functionCall) <<
+		define(_callExpression) <<
 			IRNames::internalDispatch(arity) <<
 			"(" <<
 			IRVariable(*identifierOrMemberAccess).part("functionIdentifier").name() <<
