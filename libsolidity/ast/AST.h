@@ -2395,6 +2395,7 @@ public:
 	Token token() const { return m_token; }
 	/// @returns the non-parsed value of the literal
 	ASTString const& value() const { return *m_value; }
+	Type const& typeOfValue() const;
 
 	ASTString valueWithoutUnderscores() const;
 

@@ -987,6 +987,30 @@ IdentifierAnnotation& Identifier::annotation() const
 	return initAnnotation<IdentifierAnnotation>();
 }
 
+Type const& Literal::typeOfValue() const
+{
+	// no suffix/denomination -> literal is the whole expression and types match.
+	// suffix -> type comes from return value of suffix function.
+	return std::visit(util::GenericVisitor{
+		[](ASTPointer<Identifier> const& _identifier)-> Type const& {
+			solAssert(_identifier->annotation().arguments.has_value());
+			solAssert(_identifier->annotation().arguments->numArguments() == 1);
+			solAssert(_identifier->annotation().arguments->types[0]);
+			return *_identifier->annotation().arguments->types[0];
+		},
+		[](ASTPointer<MemberAccess> const& _memberAccess)-> Type const& {
+			solAssert(_memberAccess->annotation().arguments.has_value());
+			solAssert(_memberAccess->annotation().arguments->numArguments() == 1);
+			solAssert(_memberAccess->annotation().arguments->types[0]);
+			return *_memberAccess->annotation().arguments->types[0];
+		},
+		[&](Literal::SubDenomination) -> Type const& {
+			solAssert(annotation().type);
+			return *annotation().type;
+		},
+	}, m_suffix);
+}
+
 ASTString Literal::valueWithoutUnderscores() const
 {
 	return boost::erase_all_copy(value(), "_");
