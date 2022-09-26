@@ -9,6 +9,9 @@ Compiler Features:
 
 Bugfixes:
 
+Build System:
+ * Update internal dependency of jsoncpp to 1.9.5.
+
 
 ### 0.8.17 (2022-09-08)
 
