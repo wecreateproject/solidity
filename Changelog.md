@@ -4,6 +4,8 @@ Language Features:
 
 
 Compiler Features:
+
+ * Commandline Interface: Add new input mode `--import-asm-json` that allows the import of EVM Assembly in JSON format.
  * Commandline Interface: Return exit code ``2`` on uncaught exceptions.
  * Commandline Interface: Add `--no-cbor-metadata` that skips CBOR metadata from getting appended at the end of the bytecode.
  * EVM: Basic support for the EVM version "Paris".
