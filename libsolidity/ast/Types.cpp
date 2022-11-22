@@ -1275,6 +1275,10 @@ pair<RationalNumberType const*, RationalNumberType const*> RationalNumberType::m
 
 	int exponent = 0;
 	rational unsignedMantissa = abs(m_value);
+
+	if (unsignedMantissa > maxMantissa)
+		return {nullptr, nullptr};
+
 	while (unsignedMantissa.denominator() != 1)
 	{
 		unsignedMantissa *= 10;
