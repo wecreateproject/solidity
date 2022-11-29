@@ -91,10 +91,10 @@ using namespace solidity::langutil;
 namespace
 {
 
-set<frontend::InputMode> const CompilerInputModes {
+set<frontend::InputMode> const CompilerInputModes{
 	frontend::InputMode::Compiler,
 	frontend::InputMode::CompilerWithASTImport,
-	frontend::InputMode::CompilerWithEvmAssemblyJsonImport
+	frontend::InputMode::EVMAssemblerJSON
 };
 
 } // anonymous namespace
@@ -568,23 +568,17 @@ map<string, Json::Value> CommandLineInterface::parseAstFromInput()
 	return sourceJsons;
 }
 
-map<string, Json::Value> CommandLineInterface::parseEvmAssemblyJsonFromInput()
+pair<string, Json::Value> CommandLineInterface::parseEvmAssemblyJsonFromInput()
 {
-	solAssert(m_options.input.mode == InputMode::CompilerWithEvmAssemblyJsonImport);
+	solAssert(m_options.input.mode == InputMode::EVMAssemblerJSON);
 	solAssert(m_fileReader.sourceUnits().size() == 1);
 
-	map<string, Json::Value> sourceJsons;
-
-	for (auto const& iter: m_fileReader.sourceUnits())
-	{
-		Json::Value evmAsmJson;
-		astAssert(jsonParseStrict(iter.second, evmAsmJson), "Input file could not be parsed to JSON");
-		astAssert(evmAsmJson.isMember(".code"), "Invalid Format for assembly-JSON: Must have '.code'-object");
-		astAssert(evmAsmJson.isMember(".data"), "Invalid Format for assembly-JSON: Must have '.data'-object");
-		sourceJsons[iter.first] = evmAsmJson;
-	}
-
-	return sourceJsons;
+	auto const iter = m_fileReader.sourceUnits().begin();
+	Json::Value evmAsmJson;
+	astAssert(jsonParseStrict(iter->second, evmAsmJson), "Input file could not be parsed to JSON");
+	astAssert(evmAsmJson.isMember(".code"), "Invalid Format for assembly-JSON: Must have '.code'-object");
+	astAssert(evmAsmJson.isMember(".data"), "Invalid Format for assembly-JSON: Must have '.data'-object");
+	return {iter->first, evmAsmJson};
 }
 
 void CommandLineInterface::createFile(string const& _fileName, string const& _data)
@@ -690,7 +684,7 @@ void CommandLineInterface::processInput()
 		break;
 	case InputMode::Compiler:
 	case InputMode::CompilerWithASTImport:
-	case InputMode::CompilerWithEvmAssemblyJsonImport:
+	case InputMode::EVMAssemblerJSON:
 		compile();
 		outputCompilationResults();
 	}
@@ -760,7 +754,7 @@ void CommandLineInterface::compile()
 
 		m_compiler->setOptimiserSettings(m_options.optimiserSettings());
 
-		if (m_options.input.mode == InputMode::CompilerWithEvmAssemblyJsonImport)
+		if (m_options.input.mode == InputMode::EVMAssemblerJSON)
 		{
 			try
 			{
