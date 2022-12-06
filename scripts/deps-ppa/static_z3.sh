@@ -82,7 +82,7 @@ Priority: extra
 Maintainer: Daniel Kirchner <daniel@ekpyron.org>
 Build-Depends: debhelper (>= 13.0.0),
                cmake,
-               g++ (>= 5.0),
+               g++ (>= 9.0),
                git,
                libgmp-dev,
                dh-python,
