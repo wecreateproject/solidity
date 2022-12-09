@@ -299,8 +299,8 @@ void DeclarationTypeChecker::endVisit(ArrayTypeName const& _typeName)
 			lengthValue = value->value;
 
 		string suffixErrorMessage;
-		if (auto lengthLiteral = dynamic_cast<Literal const*>(length))
-			if (!holds_alternative<Literal::SubDenomination>(lengthLiteral->suffix()))
+		if (auto const* lengthLiteral = dynamic_cast<Literal const*>(length))
+			if (lengthLiteral->isSuffixed() && !lengthLiteral->hasSubDenomination())
 				suffixErrorMessage = " A suffixed literal is not a constant expression unless the suffix is a denomination.";
 
 		if (!lengthValue || !suffixErrorMessage.empty())
