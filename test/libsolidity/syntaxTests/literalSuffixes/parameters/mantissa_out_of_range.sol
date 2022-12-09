@@ -37,7 +37,7 @@ contract C {
 // TypeError 8838: (549-558): The type of the literal cannot be converted to the parameters of the suffix function.
 // TypeError 8838: (568-577): The type of the literal cannot be converted to the parameters of the suffix function.
 // TypeError 8838: (587-669): The type of the literal cannot be converted to the parameters of the suffix function.
-// TypeError 8838: (689-772): The type of the literal cannot be converted to the parameters of the suffix function.
+// TypeError 5503: (689-772): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
 // TypeError 8838: (793-800): The type of the literal cannot be converted to the parameters of the suffix function.
 // TypeError 8838: (810-817): The type of the literal cannot be converted to the parameters of the suffix function.
 // TypeError 8838: (827-837): The type of the literal cannot be converted to the parameters of the suffix function.
@@ -48,5 +48,5 @@ contract C {
 // TypeError 8838: (1115-1125): The type of the literal cannot be converted to the parameters of the suffix function.
 // TypeError 8838: (1135-1148): The type of the literal cannot be converted to the parameters of the suffix function.
 // TypeError 8838: (1158-1171): The type of the literal cannot be converted to the parameters of the suffix function.
-// TypeError 8838: (1181-1267): The type of the literal cannot be converted to the parameters of the suffix function.
-// TypeError 8838: (1297-1384): The type of the literal cannot be converted to the parameters of the suffix function.
+// TypeError 5503: (1181-1267): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
+// TypeError 5503: (1297-1384): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.

@@ -32,18 +32,18 @@ contract C {
     }
 }
 // ----
-// TypeError 8838: (473-482): The type of the literal cannot be converted to the parameters of the suffix function.
-// TypeError 8838: (492-501): The type of the literal cannot be converted to the parameters of the suffix function.
-// TypeError 8838: (511-521): The type of the literal cannot be converted to the parameters of the suffix function.
-// TypeError 8838: (531-541): The type of the literal cannot be converted to the parameters of the suffix function.
-// TypeError 8838: (551-562): The type of the literal cannot be converted to the parameters of the suffix function.
-// TypeError 8838: (572-583): The type of the literal cannot be converted to the parameters of the suffix function.
-// TypeError 8838: (594-675): The type of the literal cannot be converted to the parameters of the suffix function.
-// TypeError 8838: (697-778): The type of the literal cannot be converted to the parameters of the suffix function.
-// TypeError 8838: (800-882): The type of the literal cannot be converted to the parameters of the suffix function.
-// TypeError 8838: (903-985): The type of the literal cannot be converted to the parameters of the suffix function.
-// TypeError 8838: (1006-1089): The type of the literal cannot be converted to the parameters of the suffix function.
-// TypeError 8838: (1109-1192): The type of the literal cannot be converted to the parameters of the suffix function.
+// TypeError 5503: (473-482): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
+// TypeError 5503: (492-501): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
+// TypeError 5503: (511-521): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
+// TypeError 5503: (531-541): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
+// TypeError 5503: (551-562): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
+// TypeError 5503: (572-583): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
+// TypeError 5503: (594-675): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
+// TypeError 5503: (697-778): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
+// TypeError 5503: (800-882): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
+// TypeError 5503: (903-985): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
+// TypeError 5503: (1006-1089): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
+// TypeError 5503: (1109-1192): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
 // TypeError 8838: (1252-1261): The type of the literal cannot be converted to the parameters of the suffix function.
 // TypeError 8838: (1271-1280): The type of the literal cannot be converted to the parameters of the suffix function.
 // TypeError 8838: (1311-34085): The type of the literal cannot be converted to the parameters of the suffix function.
