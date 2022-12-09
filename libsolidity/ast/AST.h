@@ -2388,11 +2388,22 @@ public:
 
 	ASTString valueWithoutUnderscores() const;
 
-	//SubDenomination subDenomination() const { return m_suffix; }
+	/// @returns The subdenomination represented by the suffix.
+	/// Must not be called if the suffix is not a subdenomination.
+	SubDenomination subDenomination() const;
+	/// @returns The suffix of the literal. Does not check whether the suffix is present or is a
+	/// subdenomination.
+	/// @note Missing suffix is represented by SubDenomination::None.
 	Suffix const& suffix() const { return m_suffix; }
 	/// @returns Function definition associated with the suffix if the suffix is not a subdenomination.
-	///          nullptr otherwise.
+	/// nullptr otherwise.
 	FunctionDefinition const* suffixFunction() const;
+	FunctionType const* suffixFunctionType() const;
+
+	/// @returns true if the literal is suffixed with either a subdenomination or a suffix function.
+	bool isSuffixed() const;
+	/// @returns true if the literal is suffixed a subdenomination.
+	bool hasSubDenomination() const;
 
 	/// @returns true if this is a number with a hex prefix.
 	bool isHexNumber() const;

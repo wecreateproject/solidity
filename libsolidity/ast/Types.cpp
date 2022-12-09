@@ -969,8 +969,8 @@ tuple<bool, rational> RationalNumberType::isValidLiteral(Literal const& _literal
 		return make_tuple(false, rational(0));
 	}
 
-	if (auto subDenomination = get_if<Literal::SubDenomination>(&_literal.suffix()))
-		switch (*subDenomination)
+	if (_literal.hasSubDenomination())
+		switch (_literal.subDenomination())
 		{
 		case Literal::SubDenomination::None:
 		case Literal::SubDenomination::Wei:
@@ -998,7 +998,7 @@ tuple<bool, rational> RationalNumberType::isValidLiteral(Literal const& _literal
 			value *= bigint("31536000");
 			break;
 		}
-
+	// TODO: Do we need to consider literal suffixes here?
 
 	return make_tuple(true, value);
 }
