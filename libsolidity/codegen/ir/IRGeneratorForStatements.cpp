@@ -2487,7 +2487,7 @@ bool IRGeneratorForStatements::visit(Literal const& _literal)
 		);
 	else
 	{
-		solAssert(holds_alternative<Literal::SubDenomination>(_literal.suffix()));
+		solAssert(_literal.hasSubDenomination() || !_literal.isSuffixed());
 
 		Type const& expressionType = type(_literal);
 		switch (expressionType.category())

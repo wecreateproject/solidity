@@ -1016,6 +1016,12 @@ ASTString Literal::valueWithoutUnderscores() const
 	return boost::erase_all_copy(value(), "_");
 }
 
+Literal::SubDenomination Literal::subDenomination() const
+{
+	solAssert(holds_alternative<SubDenomination>(m_suffix));
+	return get<SubDenomination>(m_suffix);
+}
+
 FunctionDefinition const* Literal::suffixFunction() const
 {
 	if (holds_alternative<SubDenomination>(m_suffix))
@@ -1033,6 +1039,33 @@ FunctionDefinition const* Literal::suffixFunction() const
 	return functionDefinition;
 }
 
+FunctionType const* Literal::suffixFunctionType() const
+{
+	return dynamic_cast<FunctionType const*>(visit(util::GenericVisitor{
+		[&](ASTPointer<Identifier> const& _identifier) { return _identifier->annotation().type; },
+		[&](ASTPointer<MemberAccess> const& _memberAccess) { return _memberAccess->annotation().type; },
+		[&](Literal::SubDenomination) -> Type const* { return nullptr; },
+	}, suffix()));
+}
+
+bool Literal::isSuffixed() const
+{
+	return visit(util::GenericVisitor{
+		[&](ASTPointer<Identifier> const&) { return true; },
+		[&](ASTPointer<MemberAccess> const&) { return true; },
+		[&](Literal::SubDenomination) { return hasSubDenomination(); },
+	}, suffix());
+}
+
+bool Literal::hasSubDenomination() const
+{
+	return visit(util::GenericVisitor{
+		[&](ASTPointer<Identifier> const&) { return false; },
+		[&](ASTPointer<MemberAccess> const&) { return false; },
+		[&](Literal::SubDenomination _subDenomination) { return _subDenomination != SubDenomination::None; },
+	}, suffix());
+}
+
 bool Literal::isHexNumber() const
 {
 	if (token() != Token::Number)
@@ -1043,9 +1076,8 @@ bool Literal::isHexNumber() const
 bool Literal::looksLikeAddress() const
 {
 	// User suffixes are fine.
-	if (auto subDenomination = get_if<Literal::SubDenomination>(&suffix()))
-		if (*subDenomination != SubDenomination::None)
-			return false;
+	if (hasSubDenomination())
+		return false;
 
 	if (!isHexNumber())
 		return false;
