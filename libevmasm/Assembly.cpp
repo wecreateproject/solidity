@@ -679,13 +679,22 @@ LinkerObject const& Assembly::assemble() const
 		// Append an INVALID here to help tests find miscompilation.
 		ret.bytecode.push_back(static_cast<uint8_t>(Instruction::INVALID));
 
-	for (auto const& [subIdPath, bytecodeOffset]: subRef)
 	{
-		bytesRef r(ret.bytecode.data() + bytecodeOffset, bytesPerDataRef);
-		toBigEndian(ret.bytecode.size(), r);
-		ret.append(subAssemblyById(subIdPath)->assemble());
+		std::map<Assembly const*, size_t> subAssemblyOffsets;
+		for (auto const& [subIdPath, bytecodeOffset]: subRef)
+		{
+			Assembly const* subAssembly = subAssemblyById(subIdPath);
+			bytesRef r(ret.bytecode.data() + bytecodeOffset, bytesPerDataRef);
+			if (size_t* subAssemblyOffset = util::valueOrNullptr(subAssemblyOffsets, subAssembly))
+				toBigEndian(*subAssemblyOffset, r);
+			else
+			{
+				toBigEndian(ret.bytecode.size(), r);
+				subAssemblyOffsets[subAssembly] = ret.bytecode.size();
+				ret.append(subAssembly->assemble());
+			}
+		}
 	}
-
 	for (auto const& i: tagRef)
 	{
 		size_t subId;
