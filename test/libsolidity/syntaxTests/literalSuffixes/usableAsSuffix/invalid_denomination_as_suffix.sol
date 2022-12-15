@@ -1,29 +1,29 @@
 ==== Source: A ====
-function gwei(uint x) pure returns (uint) { return x; }
+function gwei(uint x) pure suffix returns (uint) { return x; }
 
 ==== Source: B ====
-function wei(uint x) pure returns (uint) { return x; }
+function wei(uint x) pure suffix returns (uint) { return x; }
 
 ==== Source: C ====
-function ether(uint x) pure returns (uint) { return x; }
+function ether(uint x) pure suffix returns (uint) { return x; }
 
 ==== Source: D ====
-function seconds(uint x) pure returns (uint) { return x; }
+function seconds(uint x) pure suffix returns (uint) { return x; }
 
 ==== Source: E ====
-function minutes(uint x) pure returns (uint) { return x; }
+function minutes(uint x) pure suffix returns (uint) { return x; }
 
 ==== Source: F ====
-function hours(uint x) pure returns (uint) { return x; }
+function hours(uint x) pure suffix returns (uint) { return x; }
 
 ==== Source: G ====
-function days(uint x) pure returns (uint) { return x; }
+function days(uint x) pure suffix returns (uint) { return x; }
 
 ==== Source: H ====
-function weeks(uint x) pure returns (uint) { return x; }
+function weeks(uint x) pure suffix returns (uint) { return x; }
 
 ==== Source: I ====
-function years(uint x) pure returns (uint) { return x; }
+function years(uint x) pure suffix returns (uint) { return x; }
 
 ==== Source: test.sol ====
 import "A";

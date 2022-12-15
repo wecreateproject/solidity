@@ -1,11 +1,11 @@
-function uSuffix(uint8, uint) pure returns (int8) {}
-function uSuffix(uint16, uint) pure returns (int16) {}
+function uSuffix(uint8, uint) pure suffix returns (int8) {}
+function uSuffix(uint16, uint) pure suffix returns (int16) {}
 
-function iSuffix(int8, uint) pure returns (int24) {}
-function iSuffix(int16, uint) pure returns (int32) {}
+function iSuffix(int8, uint) pure suffix returns (int24) {}
+function iSuffix(int16, uint) pure suffix returns (int32) {}
 
-function iuSuffix(uint8, uint) pure returns (int40) {}
-function iuSuffix(int8, uint) pure returns (int48) {}
+function iuSuffix(uint8, uint) pure suffix returns (int40) {}
+function iuSuffix(int8, uint) pure suffix returns (int48) {}
 
 contract C {
     int16 a = 1.024 uSuffix;

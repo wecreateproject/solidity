@@ -1,4 +1,4 @@
-function nullSuffix(uint) pure {}
+function nullSuffix(uint) pure suffix {}
 
 contract C {
     function g() public {}
@@ -15,13 +15,13 @@ contract C {
     }
 }
 // ----
-// TypeError 7848: (185-197): Literal suffix functions must return exactly one value.
-// TypeError 2056: (185-197): This type cannot be encoded.
-// TypeError 7848: (225-237): Literal suffix functions must return exactly one value.
-// TypeError 2056: (225-237): This type cannot be encoded.
-// TypeError 7848: (283-295): Literal suffix functions must return exactly one value.
-// TypeError 2056: (283-295): This type cannot be encoded.
-// TypeError 7848: (337-349): Literal suffix functions must return exactly one value.
-// TypeError 2056: (337-349): This type cannot be encoded.
-// TypeError 7848: (383-395): Literal suffix functions must return exactly one value.
-// TypeError 9062: (383-395): Expected an inline tuple, not an expression of a tuple type.
+// TypeError 7848: (192-204): Literal suffix functions must return exactly one value.
+// TypeError 2056: (192-204): This type cannot be encoded.
+// TypeError 7848: (232-244): Literal suffix functions must return exactly one value.
+// TypeError 2056: (232-244): This type cannot be encoded.
+// TypeError 7848: (290-302): Literal suffix functions must return exactly one value.
+// TypeError 2056: (290-302): This type cannot be encoded.
+// TypeError 7848: (344-356): Literal suffix functions must return exactly one value.
+// TypeError 2056: (344-356): This type cannot be encoded.
+// TypeError 7848: (390-402): Literal suffix functions must return exactly one value.
+// TypeError 9062: (390-402): Expected an inline tuple, not an expression of a tuple type.

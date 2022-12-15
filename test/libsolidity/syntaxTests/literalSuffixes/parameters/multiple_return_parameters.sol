@@ -1,10 +1,10 @@
 struct S { uint x; }
 
-function uintUintSuffix(uint) pure returns (uint, uint) {
+function uintUintSuffix(uint) pure suffix returns (uint, uint) {
     return (1, 2);
 }
 
-function bytesStructContractSuffix(string memory s) pure returns (bytes memory, S memory, C) {
+function bytesStructContractSuffix(string memory s) pure suffix returns (bytes memory, S memory, C) {
     return (bytes(s), S(42), C(address(0)));
 }
 
@@ -18,5 +18,5 @@ contract C {
     }
 }
 // ----
-// TypeError 7848: (325-341): Literal suffix functions must return exactly one value.
-// TypeError 7848: (432-464): Literal suffix functions must return exactly one value.
+// TypeError 7848: (339-355): Literal suffix functions must return exactly one value.
+// TypeError 7848: (446-478): Literal suffix functions must return exactly one value.

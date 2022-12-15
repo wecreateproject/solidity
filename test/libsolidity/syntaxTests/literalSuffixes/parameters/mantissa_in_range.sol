@@ -1,9 +1,9 @@
-function s8(int8 m, uint e) pure returns (uint) {}
-function u8(uint8 m, uint e) pure returns (uint) {}
-function s16(int16 m, uint e) pure returns (uint) {}
-function u16(uint16 m, uint e) pure returns (uint) {}
-function s256(int m, uint e) pure returns (uint) {}
-function u256(uint m, uint e) pure returns (uint) {}
+function s8(int8 m, uint e) pure suffix returns (uint) {}
+function u8(uint8 m, uint e) pure suffix returns (uint) {}
+function s16(int16 m, uint e) pure suffix returns (uint) {}
+function u16(uint16 m, uint e) pure suffix returns (uint) {}
+function s256(int m, uint e) pure suffix returns (uint) {}
+function u256(uint m, uint e) pure suffix returns (uint) {}
 
 contract C {
     function min() public pure {

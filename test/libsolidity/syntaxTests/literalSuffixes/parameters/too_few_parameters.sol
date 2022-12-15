@@ -1,4 +1,4 @@
-function zero() pure returns (uint) { return 1; }
+function zero() pure suffix returns (uint) { return 1; }
 
 contract C {
     function f() public pure {
@@ -8,6 +8,6 @@ contract C {
     }
 }
 // ----
-// TypeError 9128: (103-109): Functions that take no arguments cannot be used as literal suffixes.
-// TypeError 9128: (119-127): Functions that take no arguments cannot be used as literal suffixes.
-// TypeError 9128: (137-145): Functions that take no arguments cannot be used as literal suffixes.
+// TypeError 9128: (110-116): Functions that take no arguments cannot be used as literal suffixes.
+// TypeError 9128: (126-134): Functions that take no arguments cannot be used as literal suffixes.
+// TypeError 9128: (144-152): Functions that take no arguments cannot be used as literal suffixes.

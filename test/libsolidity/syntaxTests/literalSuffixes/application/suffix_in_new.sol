@@ -1,4 +1,4 @@
-function twice(uint x) pure returns (uint) { return x * 2; }
+function twice(uint x) pure suffix returns (uint) { return x * 2; }
 
 contract C {
     function f() public pure returns (uint[] memory) {

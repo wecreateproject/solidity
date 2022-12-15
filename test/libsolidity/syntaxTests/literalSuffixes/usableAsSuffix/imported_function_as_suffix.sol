@@ -1,5 +1,5 @@
 ==== Source: A.sol ====
-function s(uint) pure returns (uint) { return 1; }
+function s(uint) pure suffix returns (uint) { return 1; }
 ==== Source: B.sol ====
 import {s} from "A.sol";
 import {s as z} from "A.sol";

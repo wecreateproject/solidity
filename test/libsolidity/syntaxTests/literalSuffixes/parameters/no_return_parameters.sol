@@ -1,4 +1,4 @@
-function nullSuffix(uint) pure {}
+function nullSuffix(uint) pure suffix {}
 
 contract C {
     function f() public pure {
@@ -6,4 +6,4 @@ contract C {
     }
 }
 // ----
-// TypeError 7848: (94-106): Literal suffix functions must return exactly one value.
+// TypeError 7848: (101-113): Literal suffix functions must return exactly one value.

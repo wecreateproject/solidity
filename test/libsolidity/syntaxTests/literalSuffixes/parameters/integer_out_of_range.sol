@@ -1,9 +1,9 @@
-function s8(int8 x) pure returns (uint) {}
-function u8(uint8 x) pure returns (uint) {}
-function s16(int16 x) pure returns (uint) {}
-function u16(uint16 x) pure returns (uint) {}
-function s256(int x) pure returns (uint) {}
-function u256(uint x) pure returns (uint) {}
+function s8(int8 x) pure suffix returns (uint) {}
+function u8(uint8 x) pure suffix returns (uint) {}
+function s16(int16 x) pure suffix returns (uint) {}
+function u16(uint16 x) pure suffix returns (uint) {}
+function s256(int x) pure suffix returns (uint) {}
+function u256(uint x) pure suffix returns (uint) {}
 
 contract C {
     function max() public pure {
@@ -16,10 +16,10 @@ contract C {
     }
 }
 // ----
-// TypeError 8838: (322-328): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (338-344): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (354-363): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (373-382): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (392-474): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 5503: (494-577): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
-// TypeError 8838: (494-577): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (364-370): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (380-386): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (396-405): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (415-424): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (434-516): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 5503: (536-619): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
+// TypeError 8838: (536-619): The type of the literal cannot be converted to the parameter of the suffix function.

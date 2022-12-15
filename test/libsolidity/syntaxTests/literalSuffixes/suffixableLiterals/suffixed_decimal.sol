@@ -3,7 +3,7 @@ struct Decimal {
     uint exponent;
 }
 
-function e(uint mantissa, uint exponent) pure returns (Decimal memory) {
+function e(uint mantissa, uint exponent) pure suffix returns (Decimal memory) {
     return Decimal(mantissa, exponent);
 }
 

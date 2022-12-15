@@ -1,7 +1,7 @@
-function asUint(uint x) pure returns (uint) {}
-function asSint(int x) pure returns (uint) {}
-function asUdec(uint m, uint e) pure returns (uint) {}
-function asSdec(int m, uint e) pure returns (uint) {}
+function asUint(uint x) pure suffix returns (uint) {}
+function asSint(int x) pure suffix returns (uint) {}
+function asUdec(uint m, uint e) pure suffix returns (uint) {}
+function asSdec(int m, uint e) pure suffix returns (uint) {}
 
 contract C {
     function f() public pure {
@@ -23,9 +23,9 @@ contract C {
     }
 }
 // ----
-// TypeError 4907: (328-337): Built-in unary operator - cannot be applied to type uint256. Unary negation is only allowed for signed integers.
-// TypeError 4907: (347-356): Built-in unary operator - cannot be applied to type uint256. Unary negation is only allowed for signed integers.
-// TypeError 4907: (366-375): Built-in unary operator - cannot be applied to type uint256. Unary negation is only allowed for signed integers.
-// TypeError 4907: (385-394): Built-in unary operator - cannot be applied to type uint256. Unary negation is only allowed for signed integers.
-// TypeError 4907: (446-457): Built-in unary operator - cannot be applied to type uint256. Unary negation is only allowed for signed integers.
-// TypeError 4907: (467-478): Built-in unary operator - cannot be applied to type uint256. Unary negation is only allowed for signed integers.
+// TypeError 4907: (356-365): Built-in unary operator - cannot be applied to type uint256. Unary negation is only allowed for signed integers.
+// TypeError 4907: (375-384): Built-in unary operator - cannot be applied to type uint256. Unary negation is only allowed for signed integers.
+// TypeError 4907: (394-403): Built-in unary operator - cannot be applied to type uint256. Unary negation is only allowed for signed integers.
+// TypeError 4907: (413-422): Built-in unary operator - cannot be applied to type uint256. Unary negation is only allowed for signed integers.
+// TypeError 4907: (474-485): Built-in unary operator - cannot be applied to type uint256. Unary negation is only allowed for signed integers.
+// TypeError 4907: (495-506): Built-in unary operator - cannot be applied to type uint256. Unary negation is only allowed for signed integers.

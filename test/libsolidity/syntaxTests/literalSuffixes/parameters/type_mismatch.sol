@@ -1,10 +1,10 @@
-function uintSuffix(uint) pure returns (uint) { return 1; }
-function int8Suffix(int8) pure returns (uint) { return 1; }
-function boolSuffix(bool) pure returns (uint) { return 1; }
-function addressSuffix(address) pure returns (uint) { return 1; }
-function decimalSuffix(uint, uint) pure returns (uint) { return 1; }
-function stringSuffix(string memory) pure returns (uint) { return 1; }
-function bytesSuffix(bytes memory) pure returns (uint) { return 1; }
+function uintSuffix(uint) pure suffix returns (uint) { return 1; }
+function int8Suffix(int8) pure suffix returns (uint) { return 1; }
+function boolSuffix(bool) pure suffix returns (uint) { return 1; }
+function addressSuffix(address) pure suffix returns (uint) { return 1; }
+function decimalSuffix(uint, uint) pure suffix returns (uint) { return 1; }
+function stringSuffix(string memory) pure suffix returns (uint) { return 1; }
+function bytesSuffix(bytes memory) pure suffix returns (uint) { return 1; }
 
 contract C {
     function f() public pure {
@@ -66,41 +66,41 @@ contract C {
     }
 }
 // ----
-// TypeError 8838: (586-598): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (608-623): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (672-686): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (696-709): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (759-774): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (784-799): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (809-827): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (876-893): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (903-919): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (930-945): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (955-970): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (1019-1037): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 9128: (1047-1065): Functions that take 2 arguments can only be used as literal suffixes for rational numbers.
-// TypeError 8838: (1075-1092): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (1102-1118): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (1129-1182): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (1192-1245): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (1255-1308): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 9128: (1395-1451): Functions that take 2 arguments can only be used as literal suffixes for rational numbers.
-// TypeError 8838: (1461-1516): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (1526-1580): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (1591-1605): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (1615-1629): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (1639-1653): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (1663-1680): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (1728-1744): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (1754-1769): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (1780-1794): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (1804-1818): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (1828-1842): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (1852-1869): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 9128: (1879-1896): Functions that take 2 arguments can only be used as literal suffixes for rational numbers.
-// TypeError 8838: (1983-2003): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (2013-2033): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (2043-2063): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 8838: (2073-2096): The type of the literal cannot be converted to the parameter of the suffix function.
-// TypeError 9128: (2106-2129): Functions that take 2 arguments can only be used as literal suffixes for rational numbers.
-// TypeError 8838: (2139-2161): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (635-647): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (657-672): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (721-735): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (745-758): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (808-823): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (833-848): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (858-876): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (925-942): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (952-968): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (979-994): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (1004-1019): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (1068-1086): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 9128: (1096-1114): Functions that take 2 arguments can only be used as literal suffixes for rational numbers.
+// TypeError 8838: (1124-1141): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (1151-1167): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (1178-1231): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (1241-1294): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (1304-1357): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 9128: (1444-1500): Functions that take 2 arguments can only be used as literal suffixes for rational numbers.
+// TypeError 8838: (1510-1565): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (1575-1629): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (1640-1654): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (1664-1678): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (1688-1702): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (1712-1729): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (1777-1793): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (1803-1818): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (1829-1843): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (1853-1867): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (1877-1891): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (1901-1918): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 9128: (1928-1945): Functions that take 2 arguments can only be used as literal suffixes for rational numbers.
+// TypeError 8838: (2032-2052): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (2062-2082): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (2092-2112): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 8838: (2122-2145): The type of the literal cannot be converted to the parameter of the suffix function.
+// TypeError 9128: (2155-2178): Functions that take 2 arguments can only be used as literal suffixes for rational numbers.
+// TypeError 8838: (2188-2210): The type of the literal cannot be converted to the parameter of the suffix function.

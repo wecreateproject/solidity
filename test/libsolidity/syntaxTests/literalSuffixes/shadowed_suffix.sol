@@ -1,6 +1,6 @@
-function s(uint value) pure returns (uint) { return value; }
-function z(uint value) pure returns (uint) { return value; }
-function q(uint value) pure returns (uint) { return value; }
+function s(uint value) pure suffix returns (uint) { return value; }
+function z(uint value) pure suffix returns (uint) { return value; }
+function q(uint value) pure suffix returns (uint) { return value; }
 
 contract C {
     address z;
@@ -16,9 +16,9 @@ contract C {
     }
 }
 // ----
-// Warning 2519: (277-283): This declaration shadows an existing declaration.
-// Warning 2519: (201-210): This declaration shadows an existing declaration.
-// Warning 2519: (217-241): This declaration shadows an existing declaration.
-// TypeError 4438: (294-297): The literal suffix needs to be a pre-defined suffix or a file-level pure function.
-// TypeError 4438: (307-310): The literal suffix needs to be a pre-defined suffix or a file-level pure function.
-// TypeError 4438: (320-323): The literal suffix needs to be a pre-defined suffix or a file-level pure function.
+// Warning 2519: (298-304): This declaration shadows an existing declaration.
+// Warning 2519: (222-231): This declaration shadows an existing declaration.
+// Warning 2519: (238-262): This declaration shadows an existing declaration.
+// TypeError 4438: (315-318): The literal suffix needs to be a pre-defined suffix or a file-level pure function.
+// TypeError 4438: (328-331): The literal suffix needs to be a pre-defined suffix or a file-level pure function.
+// TypeError 4438: (341-344): The literal suffix needs to be a pre-defined suffix or a file-level pure function.

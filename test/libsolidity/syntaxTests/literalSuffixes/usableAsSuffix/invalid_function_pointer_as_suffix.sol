@@ -1,4 +1,4 @@
-function suffix(uint x) pure returns (uint) { return x; }
+function suffix(uint x) pure suffix returns (uint) { return x; }
 
 contract C {
     function (uint) pure returns (uint) storagePtr = suffix;
@@ -10,5 +10,5 @@ contract C {
     }
 }
 // ----
-// TypeError 4438: (236-249): The literal suffix needs to be a pre-defined suffix or a file-level pure function.
-// TypeError 4438: (259-274): The literal suffix needs to be a pre-defined suffix or a file-level pure function.
+// TypeError 4438: (243-256): The literal suffix needs to be a pre-defined suffix or a file-level pure function.
+// TypeError 4438: (266-281): The literal suffix needs to be a pre-defined suffix or a file-level pure function.

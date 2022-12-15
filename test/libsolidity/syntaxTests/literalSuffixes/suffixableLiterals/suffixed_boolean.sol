@@ -1,4 +1,4 @@
-function suffix(bool x) pure returns (bool) {}
+function suffix(bool x) pure suffix returns (bool) {}
 
 contract C {
     function f() public pure {

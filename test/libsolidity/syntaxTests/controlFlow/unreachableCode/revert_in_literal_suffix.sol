@@ -1,4 +1,4 @@
-function suffix(uint) pure returns (uint) {
+function suffix(uint) pure suffix returns (uint) {
     revert();
 }
 

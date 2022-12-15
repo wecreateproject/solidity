@@ -1,4 +1,4 @@
-function suffix(address a) pure returns (address) { return a; }
+function suffix(address a) pure suffix returns (address) { return a; }
 
 contract C {
     function f() public pure {

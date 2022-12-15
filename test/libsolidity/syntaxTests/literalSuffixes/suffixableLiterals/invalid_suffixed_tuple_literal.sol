@@ -1,4 +1,4 @@
-function suffix(uint, uint) pure returns (uint) {}
+function suffix(uint, uint) pure suffix returns (uint) {}
 
 contract C {
     function f() public {
@@ -6,4 +6,4 @@ contract C {
     }
 }
 // ----
-// ParserError 2314: (106-112): Expected ';' but got identifier
+// ParserError 2314: (113-119): Expected ';' but got identifier

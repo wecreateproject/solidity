@@ -9,7 +9,7 @@
       {
         "id": 9,
         "nodeType": "Block",
-        "src": "56:2:1",
+        "src": "63:2:1",
         "statements": []
       },
       "id": 10,
@@ -83,7 +83,7 @@
             "name": "",
             "nameLocation": "-1:-1:-1",
             "nodeType": "VariableDeclaration",
-            "src": "41:13:1",
+            "src": "48:13:1",
             "stateVariable": false,
             "storageLocation": "memory",
             "typeDescriptions": {},
@@ -92,16 +92,17 @@
               "id": 6,
               "name": "string",
               "nodeType": "ElementaryTypeName",
-              "src": "41:6:1",
+              "src": "48:6:1",
               "typeDescriptions": {}
             },
             "visibility": "internal"
           }
         ],
-        "src": "40:15:1"
+        "src": "47:15:1"
       },
-      "src": "0:58:1",
+      "src": "0:65:1",
       "stateMutability": "pure",
+      "suffix": true,
       "virtual": false,
       "visibility": "internal"
     },
@@ -112,7 +113,7 @@
       "contractKind": "contract",
       "id": 15,
       "name": "C",
-      "nameLocation": "68:1:1",
+      "nameLocation": "75:1:1",
       "nodeType": "ContractDefinition",
       "nodes":
       [
@@ -121,9 +122,9 @@
           "id": 14,
           "mutability": "mutable",
           "name": "s",
-          "nameLocation": "83:1:1",
+          "nameLocation": "90:1:1",
           "nodeType": "VariableDeclaration",
-          "src": "76:26:1",
+          "src": "83:26:1",
           "stateVariable": false,
           "storageLocation": "default",
           "typeDescriptions": {},
@@ -132,7 +133,7 @@
             "id": 11,
             "name": "string",
             "nodeType": "ElementaryTypeName",
-            "src": "76:6:1",
+            "src": "83:6:1",
             "typeDescriptions": {}
           },
           "value":
@@ -141,16 +142,16 @@
             "id": 13,
             "kind": "number",
             "nodeType": "Literal",
-            "src": "87:15:1",
+            "src": "94:15:1",
             "typeDescriptions": {},
             "value": "123.345_789"
           },
           "visibility": "internal"
         }
       ],
-      "src": "59:46:1",
+      "src": "66:46:1",
       "usedErrors": []
     }
   ],
-  "src": "0:106:1"
+  "src": "0:113:1"
 }

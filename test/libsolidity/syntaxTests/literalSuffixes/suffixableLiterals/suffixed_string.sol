@@ -1,4 +1,4 @@
-function suffix(string memory value) pure returns (string memory) { return value; }
+function suffix(string memory value) pure suffix returns (string memory) { return value; }
 
 contract C {
     function f() public pure {

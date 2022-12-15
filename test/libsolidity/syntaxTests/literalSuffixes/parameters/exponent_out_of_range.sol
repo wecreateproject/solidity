@@ -1,6 +1,6 @@
-function u8(uint m, uint8 e) pure returns (uint) {}
-function u16(uint m, uint16 e) pure returns (uint) {}
-function u256(uint m, uint e) pure returns (uint) {}
+function u8(uint m, uint8 e) pure suffix returns (uint) {}
+function u16(uint m, uint16 e) pure suffix returns (uint) {}
+function u256(uint m, uint e) pure suffix returns (uint) {}
 
 contract C {
     function min() public pure {
@@ -19,10 +19,10 @@ contract C {
     }
 }
 // ----
-// TypeError 5503: (317-326): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
-// TypeError 5503: (336-346): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
-// TypeError 5503: (356-367): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
-// TypeError 5503: (378-459): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
-// TypeError 5503: (481-563): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
-// TypeError 5503: (584-667): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
-// TypeError 8838: (727-736): The type of the literal cannot be converted to the parameters of the suffix function.
+// TypeError 5503: (338-347): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
+// TypeError 5503: (357-367): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
+// TypeError 5503: (377-388): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
+// TypeError 5503: (399-480): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
+// TypeError 5503: (502-584): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
+// TypeError 5503: (605-688): This fractional number cannot be decomposed into a mantissa and decimal exponent that fit the range of parameters of any possible suffix function.
+// TypeError 8838: (748-757): The type of the literal cannot be converted to the parameters of the suffix function.

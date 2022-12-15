@@ -1,4 +1,4 @@
-function uintSuffix(uint x) pure returns (uint) { return x; }
+function uintSuffix(uint x) pure suffix returns (uint) { return x; }
 
 contract C {
     function g(uint) public {}
@@ -12,4 +12,4 @@ contract C {
     }
 }
 // ----
-// Warning 2018: (112-371): Function state mutability can be restricted to view
+// Warning 2018: (119-378): Function state mutability can be restricted to view

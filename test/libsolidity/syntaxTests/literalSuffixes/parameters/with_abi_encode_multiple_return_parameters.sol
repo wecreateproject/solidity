@@ -1,4 +1,4 @@
-function uintUintSuffix(uint x) pure returns (uint, uint) { return (x, x); }
+function uintUintSuffix(uint x) pure suffix returns (uint, uint) { return (x, x); }
 
 contract C {
     function g(uint, uint) public {}
@@ -12,13 +12,13 @@ contract C {
     }
 }
 // ----
-// TypeError 7848: (174-190): Literal suffix functions must return exactly one value.
-// TypeError 2056: (174-190): This type cannot be encoded.
-// TypeError 7848: (218-234): Literal suffix functions must return exactly one value.
-// TypeError 2056: (218-234): This type cannot be encoded.
-// TypeError 7848: (280-296): Literal suffix functions must return exactly one value.
-// TypeError 2056: (280-296): This type cannot be encoded.
-// TypeError 7848: (338-354): Literal suffix functions must return exactly one value.
-// TypeError 2056: (338-354): This type cannot be encoded.
-// TypeError 7848: (388-404): Literal suffix functions must return exactly one value.
-// TypeError 9062: (388-404): Expected an inline tuple, not an expression of a tuple type.
+// TypeError 7848: (181-197): Literal suffix functions must return exactly one value.
+// TypeError 2056: (181-197): This type cannot be encoded.
+// TypeError 7848: (225-241): Literal suffix functions must return exactly one value.
+// TypeError 2056: (225-241): This type cannot be encoded.
+// TypeError 7848: (287-303): Literal suffix functions must return exactly one value.
+// TypeError 2056: (287-303): This type cannot be encoded.
+// TypeError 7848: (345-361): Literal suffix functions must return exactly one value.
+// TypeError 2056: (345-361): This type cannot be encoded.
+// TypeError 7848: (395-411): Literal suffix functions must return exactly one value.
+// TypeError 9062: (395-411): Expected an inline tuple, not an expression of a tuple type.

@@ -1,4 +1,4 @@
-function e(uint x) pure returns (uint) { return x; }
+function e(uint x) pure suffix returns (uint) { return x; }
 
 contract C {
     function f() public pure {

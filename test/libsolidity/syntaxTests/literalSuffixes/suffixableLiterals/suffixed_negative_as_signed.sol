@@ -1,7 +1,7 @@
-function asUint(uint x) pure returns (int) {}
-function asSint(int x) pure returns (int) {}
-function asUdec(uint m, uint e) pure returns (int) {}
-function asSdec(int m, uint e) pure returns (int) {}
+function asUint(uint x) pure suffix returns (int) {}
+function asSint(int x) pure suffix returns (int) {}
+function asUdec(uint m, uint e) pure suffix returns (int) {}
+function asSdec(int m, uint e) pure suffix returns (int) {}
 
 contract C {
     function f() public pure {

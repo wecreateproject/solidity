@@ -971,8 +971,8 @@ BOOST_AUTO_TEST_CASE(literal_suffixes)
 {
 	unique_ptr<CompilerStack> compilerStack = parseAndAnalyzeContracts(R"(
 		function free() pure {}
-		function intSuffix(uint) pure returns (uint) { free(); return 1; }
-		function strSuffix(string memory) pure returns (uint) {}
+		function intSuffix(uint) pure suffix returns (uint) { free(); return 1; }
+		function strSuffix(string memory) pure suffix returns (uint) {}
 
 		contract C {
 			modifier m(uint) virtual { _; }
