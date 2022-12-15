@@ -1,6 +1,6 @@
-function half(int value) pure returns (int) { return value / 2; }
-function half128(uint128 value) pure returns (uint128) { return value / 2; }
-function half64s(int64 value) pure returns (int64) { return value / 2; }
+function half(int value) pure suffix returns (int) { return value / 2; }
+function half128(uint128 value) pure suffix returns (uint128) { return value / 2; }
+function half64s(int64 value) pure suffix returns (int64) { return value / 2; }
 
 contract C {
     function zero() public pure returns (int) {

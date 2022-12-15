@@ -1,4 +1,4 @@
-function not(address a) pure returns (bytes20) {
+function not(address a) pure suffix returns (bytes20) {
     return ~bytes20(a);
 }
 

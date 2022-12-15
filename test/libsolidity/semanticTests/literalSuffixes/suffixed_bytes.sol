@@ -1,4 +1,4 @@
-function length(bytes memory value) pure returns (uint) {
+function length(bytes memory value) pure suffix returns (uint) {
     return value.length;
 }
 

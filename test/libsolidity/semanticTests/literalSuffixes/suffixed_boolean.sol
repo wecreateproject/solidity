@@ -1,4 +1,4 @@
-function not(bool a) pure returns (bool) {
+function not(bool a) pure suffix returns (bool) {
     return !a;
 }
 

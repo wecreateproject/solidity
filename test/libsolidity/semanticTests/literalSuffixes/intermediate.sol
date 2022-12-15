@@ -1,6 +1,6 @@
 type Length is uint;
 
-function km(uint meters) pure returns (Length) {
+function km(uint meters) pure suffix returns (Length) {
     return Length.wrap(meters * 1000);
 }
 
@@ -9,7 +9,7 @@ struct Float {
     uint exponent;
 }
 
-function f(uint mantissa, uint exponent) pure returns (Float memory) {
+function f(uint mantissa, uint exponent) pure suffix returns (Float memory) {
     return Float(mantissa, exponent);
 }
 

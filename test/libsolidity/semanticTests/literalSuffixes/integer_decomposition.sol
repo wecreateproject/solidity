@@ -5,7 +5,7 @@ struct Decimal {
     uint exponent;
 }
 
-function asDecimal(uint mantissa, uint exponent) pure returns (Decimal memory) {
+function asDecimal(uint mantissa, uint exponent) pure suffix returns (Decimal memory) {
     return Decimal(mantissa, exponent);
 }
 
