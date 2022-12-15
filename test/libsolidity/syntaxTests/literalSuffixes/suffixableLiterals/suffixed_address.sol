@@ -1,5 +1,4 @@
 function suffix(address a) pure returns (address) { return a; }
-function payableSuffix(address payable a) pure returns (address payable) { return a; }
 
 contract C {
     function f() public pure {
