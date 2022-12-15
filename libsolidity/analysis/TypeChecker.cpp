@@ -3666,6 +3666,10 @@ bool TypeChecker::visit(Identifier const& _identifier)
 {
 	IdentifierAnnotation& annotation = _identifier.annotation();
 
+	// NOTE: referencedDeclaration is already be set at this point if the reference resolver found
+	// exactly one candidate. We do not put this candidate through the filters below so make sure
+	// other parts of type checker actually validate these things too.
+	// E.g. it might be a non-suffix function used as a suffix.
 	if (!annotation.referencedDeclaration)
 	{
 		annotation.overloadedDeclarations = cleanOverloadedDeclarations(_identifier, annotation.candidateDeclarations);
@@ -3699,8 +3703,12 @@ bool TypeChecker::visit(Identifier const& _identifier)
 				FunctionTypePointer functionType = declaration->functionType(true /* _internal */);
 				solAssert(!!functionType, "Requested type not present.");
 
+				auto const* functionDefinition = dynamic_cast<FunctionDefinition const*>(declaration);
+
 				bool argumentsMatch = false;
-				if (functionType->canTakeArguments(*annotation.arguments))
+				if (_identifier.annotation().suffixedLiteral && !(functionDefinition && functionDefinition->usableAsSuffix()))
+					argumentsMatch = false;
+				else if (functionType->canTakeArguments(*annotation.arguments))
 					argumentsMatch = true;
 				else if (_identifier.annotation().suffixedLiteral && functionType->parameterTypes().size() == 2)
 				{
@@ -3933,7 +3941,7 @@ void TypeChecker::endVisit(Literal const& _literal)
 			!suffixFunctionType->hasDeclaration() ||                                        // Rejects function pointers
 			!dynamic_cast<FunctionDefinition const*>(&suffixFunctionType->declaration()) || // Rejects events and errors
 			suffixFunctionType->hasBoundFirstArgument() ||
-			!_literal.suffixFunction()->isFree() ||
+			!_literal.suffixFunction()->usableAsSuffix() ||
 			_literal.suffixFunction()->stateMutability() != StateMutability::Pure
 		)
 			m_errorReporter.typeError(
