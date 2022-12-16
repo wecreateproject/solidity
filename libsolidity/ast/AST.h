@@ -951,8 +951,6 @@ public:
 		solAssert(isOrdinary() == !name().empty(), "");
 		if (_usableAsSuffix)
 			solAssert(_free);
-		if (_free)
-			solAssert(!_isVirtual);
 	}
 
 	void accept(ASTVisitor& _visitor) override;
