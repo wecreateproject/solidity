@@ -427,6 +427,58 @@ bool TypeChecker::visit(FunctionDefinition const& _function)
 		else if (_function.libraryFunction())
 			m_errorReporter.typeError(7801_error, _function.location(), "Library functions cannot be \"virtual\".");
 	}
+	if (_function.usableAsSuffix())
+	{
+		if (_function.stateMutability() != StateMutability::Pure)
+			m_errorReporter.typeError(
+				1716_error,
+				_function.location(),
+				"Only pure functions can be used as literal suffixes"
+			);
+
+		optional<string> parameterCountMessage;
+		if (_function.parameterList().parameters().size() == 0)
+			parameterCountMessage = "Functions that take no arguments cannot be used as literal suffixes.";
+		else if (_function.parameterList().parameters().size() >= 3)
+			parameterCountMessage = "Functions that take 3 or more arguments cannot be used as literal suffixes.";
+
+		if (parameterCountMessage.has_value())
+			m_errorReporter.typeError(9128_error, _function.parameterList().location(), parameterCountMessage.value());
+		else if (_function.parameterList().parameters().size() == 2)
+			if (
+				auto const* exponentType = dynamic_cast<IntegerType const*>(_function.parameterList().parameters().at(1)->type());
+				exponentType && exponentType->isSigned()
+			)
+				m_errorReporter.typeError(
+					3123_error,
+					_function.parameterList().parameters()[1]->typeName().location(),
+					"The exponent parameter of a literal suffix function must be unsigned. "
+					"Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value."
+				);
+
+		solAssert(_function.returnParameterList());
+		if (_function.returnParameterList()->parameters().size() != 1)
+		{
+			m_errorReporter.typeError(
+				7848_error,
+				_function.returnParameterList()->location(),
+				"Literal suffix functions must return exactly one value."
+			);
+		}
+
+		for (ASTPointer<VariableDeclaration const> returnParameter: _function.returnParameterList()->parameters())
+		{
+			solAssert(returnParameter);
+			auto referenceType = dynamic_cast<ReferenceType const*>(returnParameter->type());
+			auto mappingType = dynamic_cast<MappingType const*>(returnParameter->type());
+			if (mappingType || (referenceType && !referenceType->dataStoredIn(DataLocation::Memory)))
+				m_errorReporter.typeError(
+					7251_error,
+					returnParameter->location(),
+					"Literal suffix functions can only return value types and reference types stored in memory."
+				);
+		}
+	}
 	if (_function.overrides() && _function.isFree())
 		m_errorReporter.syntaxError(1750_error, _function.location(), "Free functions cannot override.");
 
@@ -3941,8 +3993,7 @@ void TypeChecker::endVisit(Literal const& _literal)
 			!suffixFunctionType->hasDeclaration() ||                                        // Rejects function pointers
 			!dynamic_cast<FunctionDefinition const*>(&suffixFunctionType->declaration()) || // Rejects events and errors
 			suffixFunctionType->hasBoundFirstArgument() ||
-			!_literal.suffixFunction()->usableAsSuffix() ||
-			_literal.suffixFunction()->stateMutability() != StateMutability::Pure
+			!_literal.suffixFunction()->usableAsSuffix()
 		)
 			m_errorReporter.typeError(
 				4438_error,
@@ -3959,45 +4010,36 @@ void TypeChecker::endVisit(Literal const& _literal)
 			Type const* literalType = _literal.annotation().type;
 			auto const* literalRationalType = dynamic_cast<RationalNumberType const*>(literalType);
 
-			optional<string> parameterCountMessage;
-			if (suffixFunctionType->parameterTypes().size() == 0)
-				parameterCountMessage = "Functions that take no arguments cannot be used as literal suffixes.";
-			else if (suffixFunctionType->parameterTypes().size() >= 3)
-				parameterCountMessage = "Functions that take 3 or more arguments cannot be used as literal suffixes.";
-			else if (suffixFunctionType->parameterTypes().size() == 2 && !literalRationalType)
-				parameterCountMessage = "Functions that take 2 arguments can only be used as literal suffixes for rational numbers.";
-
 			optional<string> parameterTypeMessage;
-			if (parameterCountMessage.has_value())
-				m_errorReporter.typeError(9128_error, _literal.location(), parameterCountMessage.value());
-			else if (suffixFunctionType->parameterTypes().size() == 2)
+			if (suffixFunctionType->parameterTypes().size() == 2)
 			{
-				solAssert(literalRationalType);
-
-				auto&& [mantissa, exponent] = literalRationalType->mantissaExponent();
-				// This was already validated in visit(Literal) but the error is not fatal.
-				if (!mantissa || !exponent)
-					solAssert(!m_errorReporter.errors().empty());
-				else if (
-					!mantissa->isImplicitlyConvertibleTo(*suffixFunctionType->parameterTypes().at(0)) ||
-					!exponent->isImplicitlyConvertibleTo(*suffixFunctionType->parameterTypes().at(1))
-				)
-					// TODO: Is this triggered when the argument is out of range? Test.
-					parameterTypeMessage = "The type of the literal cannot be converted to the parameters of the suffix function.";
-
-				if (
-					auto const* exponentType = dynamic_cast<IntegerType const*>(suffixFunctionType->parameterTypes().at(1));
-					exponentType && exponentType->isSigned()
-				)
+				if (!literalRationalType)
 					m_errorReporter.typeError(
-						3123_error,
+						2505_error,
 						_literal.location(),
-						"The exponent parameter of a literal suffix function must be unsigned. "
-						"Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value."
+						"Functions that take 2 arguments can only be used as literal suffixes for rational numbers."
 					);
+				else
+				{
+					auto&& [mantissa, exponent] = literalRationalType->mantissaExponent();
+					// This was already validated in visit(Literal) but the error is not fatal.
+					if (!mantissa || !exponent)
+						solAssert(!m_errorReporter.errors().empty());
+					else if (
+						!mantissa->isImplicitlyConvertibleTo(*suffixFunctionType->parameterTypes().at(0)) ||
+						!exponent->isImplicitlyConvertibleTo(*suffixFunctionType->parameterTypes().at(1))
+					)
+						// TODO: Is this triggered when the argument is out of range? Test.
+						parameterTypeMessage = "The type of the literal cannot be converted to the parameters of the suffix function.";
+				}
 			}
-			else if (!literalType->isImplicitlyConvertibleTo(*suffixFunctionType->parameterTypes().front()))
-				parameterTypeMessage = "The type of the literal cannot be converted to the parameter of the suffix function.";
+			else if (suffixFunctionType->parameterTypes().size() == 1)
+			{
+				if (!literalType->isImplicitlyConvertibleTo(*suffixFunctionType->parameterTypes().at(0)))
+					parameterTypeMessage = "The type of the literal cannot be converted to the parameter of the suffix function.";
+			}
+			else
+				solAssert(m_errorReporter.hasErrors());
 
 			if (parameterTypeMessage.has_value())
 				m_errorReporter.typeError(8838_error, _literal.location(), parameterTypeMessage.value());
@@ -4006,29 +4048,9 @@ void TypeChecker::endVisit(Literal const& _literal)
 				_literal.annotation().type = suffixFunctionType->returnParameterTypes().front();
 			else
 			{
+				solAssert(m_errorReporter.hasErrors());
 				_literal.annotation().type = TypeProvider::tuple(suffixFunctionType->returnParameterTypes());
-				m_errorReporter.typeError(
-					7848_error,
-					_literal.location(),
-					"Literal suffix functions must return exactly one value."
-				);
 			}
-
-			if (ranges::any_of(
-				suffixFunctionType->returnParameterTypes(),
-				[](Type const* _returnType) {
-					auto referenceType = dynamic_cast<ReferenceType const*>(_returnType);
-					auto mappingType = dynamic_cast<MappingType const*>(_returnType);
-					return
-						mappingType ||
-						(referenceType && !referenceType->dataStoredIn(DataLocation::Memory));
-				}
-			))
-				m_errorReporter.typeError(
-					7251_error,
-					_literal.location(),
-					"Literal suffix functions can only return value types and reference types stored in memory."
-				);
 
 			isCompileTimeConstant = suffixFunctionType->isPure();
 		}

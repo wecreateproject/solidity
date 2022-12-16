@@ -4,4 +4,4 @@ contract C {
     uint a = 1000 suffix;
 }
 // ----
-// TypeError 4438: (76-87): The literal suffix must be either a subdenomination or a file-level suffix function.
+// TypeError 1716: (0-48): Only pure functions can be used as literal suffixes

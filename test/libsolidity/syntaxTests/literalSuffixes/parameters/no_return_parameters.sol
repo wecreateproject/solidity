@@ -6,4 +6,4 @@ contract C {
     }
 }
 // ----
-// TypeError 7848: (101-113): Literal suffix functions must return exactly one value.
+// TypeError 7848: (38-38): Literal suffix functions must return exactly one value.

@@ -26,13 +26,13 @@ contract C {
     }
 }
 // ----
-// TypeError 3123: (830-839): The exponent parameter of a literal suffix function must be unsigned. Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value.
-// TypeError 3123: (849-859): The exponent parameter of a literal suffix function must be unsigned. Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value.
-// TypeError 3123: (869-880): The exponent parameter of a literal suffix function must be unsigned. Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value.
-// TypeError 3123: (890-901): The exponent parameter of a literal suffix function must be unsigned. Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value.
-// TypeError 3123: (912-923): The exponent parameter of a literal suffix function must be unsigned. Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value.
-// TypeError 3123: (933-945): The exponent parameter of a literal suffix function must be unsigned. Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value.
-// TypeError 3123: (955-967): The exponent parameter of a literal suffix function must be unsigned. Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value.
-// TypeError 3123: (978-989): The exponent parameter of a literal suffix function must be unsigned. Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value.
-// TypeError 3123: (999-1011): The exponent parameter of a literal suffix function must be unsigned. Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value.
-// TypeError 3123: (1021-1033): The exponent parameter of a literal suffix function must be unsigned. Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value.
+// TypeError 3123: (27-31): The exponent parameter of a literal suffix function must be unsigned. Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value.
+// TypeError 3123: (101-106): The exponent parameter of a literal suffix function must be unsigned. Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value.
+// TypeError 3123: (177-183): The exponent parameter of a literal suffix function must be unsigned. Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value.
+// TypeError 3123: (254-260): The exponent parameter of a literal suffix function must be unsigned. Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value.
+// TypeError 3123: (332-336): The exponent parameter of a literal suffix function must be unsigned. Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value.
+// TypeError 3123: (410-416): The exponent parameter of a literal suffix function must be unsigned. Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value.
+// TypeError 3123: (490-496): The exponent parameter of a literal suffix function must be unsigned. Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value.
+// TypeError 3123: (569-573): The exponent parameter of a literal suffix function must be unsigned. Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value.
+// TypeError 3123: (648-654): The exponent parameter of a literal suffix function must be unsigned. Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value.
+// TypeError 3123: (729-735): The exponent parameter of a literal suffix function must be unsigned. Exponent is always either zero or a negative power of 10 but the parameter represents its absolute value.

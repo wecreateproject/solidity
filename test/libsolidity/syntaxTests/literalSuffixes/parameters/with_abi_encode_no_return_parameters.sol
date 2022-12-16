@@ -15,13 +15,9 @@ contract C {
     }
 }
 // ----
-// TypeError 7848: (192-204): Literal suffix functions must return exactly one value.
+// TypeError 7848: (38-38): Literal suffix functions must return exactly one value.
 // TypeError 2056: (192-204): This type cannot be encoded.
-// TypeError 7848: (232-244): Literal suffix functions must return exactly one value.
 // TypeError 2056: (232-244): This type cannot be encoded.
-// TypeError 7848: (290-302): Literal suffix functions must return exactly one value.
 // TypeError 2056: (290-302): This type cannot be encoded.
-// TypeError 7848: (344-356): Literal suffix functions must return exactly one value.
 // TypeError 2056: (344-356): This type cannot be encoded.
-// TypeError 7848: (390-402): Literal suffix functions must return exactly one value.
 // TypeError 9062: (390-402): Expected an inline tuple, not an expression of a tuple type.

@@ -21,5 +21,5 @@ contract C {
     }
 }
 // ----
-// TypeError 7251: (295-309): Literal suffix functions can only return value types and reference types stored in memory.
-// TypeError 7251: (319-332): Literal suffix functions can only return value types and reference types stored in memory.
+// TypeError 7251: (77-89): Literal suffix functions can only return value types and reference types stored in memory.
+// TypeError 7251: (182-200): Literal suffix functions can only return value types and reference types stored in memory.

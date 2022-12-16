@@ -8,6 +8,4 @@ contract C {
     }
 }
 // ----
-// TypeError 9128: (110-116): Functions that take no arguments cannot be used as literal suffixes.
-// TypeError 9128: (126-134): Functions that take no arguments cannot be used as literal suffixes.
-// TypeError 9128: (144-152): Functions that take no arguments cannot be used as literal suffixes.
+// TypeError 9128: (13-15): Functions that take no arguments cannot be used as literal suffixes.

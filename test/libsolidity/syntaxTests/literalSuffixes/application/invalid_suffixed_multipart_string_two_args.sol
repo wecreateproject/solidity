@@ -4,4 +4,4 @@ contract C {
     string s = "abcd" "" suffix;
 }
 // ----
-// TypeError 9128: (127-143): Functions that take 2 arguments can only be used as literal suffixes for rational numbers.
+// TypeError 2505: (127-143): Functions that take 2 arguments can only be used as literal suffixes for rational numbers.
