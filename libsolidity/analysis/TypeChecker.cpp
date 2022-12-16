@@ -3947,7 +3947,7 @@ void TypeChecker::endVisit(Literal const& _literal)
 			m_errorReporter.typeError(
 				4438_error,
 				_literal.location(),
-				"The literal suffix needs to be a pre-defined suffix or a file-level pure function."
+				"The literal suffix must be either a subdenomination or a file-level suffix function."
 			);
 		else
 		{

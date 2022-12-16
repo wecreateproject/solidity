@@ -6,4 +6,4 @@ contract C {
     uint x = 1000 L.suffix;
 }
 // ----
-// TypeError 4438: (112-125): The literal suffix needs to be a pre-defined suffix or a file-level pure function.
+// TypeError 4438: (112-125): The literal suffix must be either a subdenomination or a file-level suffix function.

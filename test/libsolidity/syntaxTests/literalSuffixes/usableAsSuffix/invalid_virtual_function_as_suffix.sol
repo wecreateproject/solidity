@@ -8,4 +8,4 @@ contract C is B {
     function suffix(uint x) internal pure override returns (uint) { return x; }
 }
 // ----
-// TypeError 4438: (122-133): The literal suffix needs to be a pre-defined suffix or a file-level pure function.
+// TypeError 4438: (122-133): The literal suffix must be either a subdenomination or a file-level suffix function.

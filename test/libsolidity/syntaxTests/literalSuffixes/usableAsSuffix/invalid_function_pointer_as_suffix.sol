@@ -10,5 +10,5 @@ contract C {
     }
 }
 // ----
-// TypeError 4438: (243-256): The literal suffix needs to be a pre-defined suffix or a file-level pure function.
-// TypeError 4438: (266-281): The literal suffix needs to be a pre-defined suffix or a file-level pure function.
+// TypeError 4438: (243-256): The literal suffix must be either a subdenomination or a file-level suffix function.
+// TypeError 4438: (266-281): The literal suffix must be either a subdenomination or a file-level suffix function.
