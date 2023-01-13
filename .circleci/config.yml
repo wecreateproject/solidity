@@ -588,6 +588,7 @@ defaults:
       project: prb-math
       binary_type: native
       nodejs_version: '18.11'
+      script_lang: python3
   - job_native_test_ext_elementfi: &job_native_test_ext_elementfi
       <<: *workflow_ubuntu2204_static
       name: t_native_test_ext_elementfi
@@ -1205,6 +1206,9 @@ jobs:
       python2:
         type: boolean
         default: false
+      script_lang:
+        type: string
+        default: shellscript
     docker:
       - image: cimg/node:<<parameters.nodejs_version>>
     resource_class: <<parameters.resource_class>>
@@ -1244,12 +1248,24 @@ jobs:
                   test/externalTests/<<parameters.project>>.sh solcjs /tmp/workspace/soljson.js
       - when:
           condition:
-            equal: [<< parameters.binary_type >>, "native"]
+            and:
+                - equal: [<< parameters.binary_type >>, "native"]
+                - equal: [<< parameters.script_lang >>, "shellscript"]
           steps:
             - run:
                 name: External <<parameters.project>> tests (native)
                 command: |
                   test/externalTests/<<parameters.project>>.sh native /tmp/workspace/solc/solc
+      - when:
+          condition:
+            and:
+                - equal: [<< parameters.binary_type >>, "native"]
+                - equal: [<< parameters.script_lang >>, "python3"]
+          steps:
+            - run:
+                name: External <<parameters.project>> tests (native)
+                command: |
+                  test/externalTests/<<parameters.project>>.py --solc-binary-type native --solc-binary-path /tmp/workspace/solc/solc
       - store_artifacts:
           path: reports/externalTests/
       # persist_to_workspace fails if the directory does not exist and the test script will create
