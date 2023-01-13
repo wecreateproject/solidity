@@ -102,7 +102,6 @@ Compiler path: {binary_path}
 
         profiles = []
         for preset in presets:
-            # TODO: parse presets and extract settings
             name = self.profile_name(preset)
             settings = settings_from_preset(preset, evm_version)
             profiles.append(self.profile_tmpl.substitute(

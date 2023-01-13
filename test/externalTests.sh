@@ -34,6 +34,8 @@ source test/externalTests/common.sh
 REPO_ROOT=$(realpath "$(dirname "$0")/..")
 
 verify_input "$@"
+BINARY_TYPE="$1"
+BINARY_PATH="$(realpath "$2")"
 
 printTask "Running external tests..."
 
@@ -48,7 +50,7 @@ printTask "Running external tests..."
 "${REPO_ROOT}/test/externalTests/pool-together.sh" "$@"
 "${REPO_ROOT}/test/externalTests/perpetual-pools.sh" "$@"
 "${REPO_ROOT}/test/externalTests/uniswap.sh" "$@"
-"${REPO_ROOT}/test/externalTests/prb-math.sh" "$@"
+python "${REPO_ROOT}/test/externalTests/prb-math.py" --solc-binary-type "$BINARY_TYPE" --solc-binary-path "$BINARY_PATH"
 "${REPO_ROOT}/test/externalTests/elementfi.sh" "$@"
 "${REPO_ROOT}/test/externalTests/brink.sh" "$@"
 "${REPO_ROOT}/test/externalTests/chainlink.sh" "$@"
