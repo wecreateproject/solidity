@@ -107,6 +107,7 @@ def settings_from_preset(preset, evm_version) -> Dict:
     }
     return json.loads(switch.get(preset))
 
+
 def run_cmd(command: str, env: dict = None, logfile: str = None) -> int:
     """
     Args:
@@ -128,14 +129,16 @@ def run_cmd(command: str, env: dict = None, logfile: str = None) -> int:
         mode='w',
         encoding='utf8'
     ) as log:
-        with subprocess.Popen(
+        ret = subprocess.run(
             command,
             shell=True,
+            check=True,
             executable='/bin/bash',
             env=env,
-            stdout=log if not logfile else None
-        ) as process:
-            return process.wait()
+            stdout=log if not logfile else None,
+            stderr=None
+        )
+        return ret.returncode
 
 
 @dataclass
@@ -358,4 +361,4 @@ class ExternalTest:
                 runner.run_test(preset)
                 # TODO: store_benchmark_report
                 # runner.clean()
-        print("Done.")
+            print("Done.")

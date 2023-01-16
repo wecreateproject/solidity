@@ -87,7 +87,7 @@ yul = ${yul}
                     for chunk in req.iter_content(chunk_size=512):
                         f.write(chunk)
                 run_cmd(f"chmod +x {foundryup_bin.resolve()}")
-                run_cmd(f"{foundryup_bin.resolve()} --branch master")
+                run_cmd(f"{foundryup_bin.resolve()}")
         if self.setup_fn:
             self.setup_fn(self.test_dir)
 
