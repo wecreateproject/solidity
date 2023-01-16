@@ -1293,6 +1293,7 @@ jobs:
                 name: External <<parameters.project>> tests (native)
                 command: |
                     test/externalTests/<<parameters.project>>.py --solc-binary-type native --solc-binary-path /tmp/workspace/solc/solc
+                no_output_timeout: 30m
       - store_artifacts:
           path: reports/externalTests/
       # persist_to_workspace fails if the directory does not exist and the test script will create
