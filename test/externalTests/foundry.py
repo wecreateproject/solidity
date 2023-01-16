@@ -25,8 +25,9 @@ from pathlib import Path
 from shutil import which
 from string import Template
 from typing import Tuple
+import requests
 
-from external_test import AVAILABLE_PRESETS, CURRENT_EVM_VERSION
+from external_test import AVAILABLE_PRESETS
 from external_test import settings_from_preset, run_cmd
 from external_test import TestConfig, TestRunner, ExternalTest
 
@@ -48,6 +49,9 @@ via_ir = ${via_ir}
 yul = ${yul}
 """)
 
+    foundryup_url = "https://raw.githubusercontent.com/foundry-rs/foundry/master/foundryup/foundryup"
+    foundry_repo = "https://github.com/foundry-rs/foundry.git"
+
     def __init__(self, config: TestConfig, setup_fn=None, compile_fn=None, test_fn=None):
         self.config = config
         self.setup_fn = setup_fn
@@ -55,18 +59,35 @@ yul = ${yul}
         self.test_fn = test_fn
         self.env = os.environ.copy()
         # Note: the test_dir will be set on setup_environment
-        self.test_dir = None
+        self.test_dir: Path = None
 
-    def setup_environment(self, test_dir: str):
+    def setup_environment(self, test_dir: Path, from_src: bool = False):
         """Configure the project build environment"""
 
         self.test_dir = test_dir
+        os.chdir(test_dir)
+
         print("Configuring Foundry building environment...")
         if which("forge") is None:
-            # TODO: install foundry
-            # TODO: add flag to allow passing forge binary or build from src
-            print("Forge not found. Installing foundry...")
-            raise NotImplementedError()
+            if not which("cargo"):
+                raise RuntimeError("Cargo not found.")
+            if from_src:
+                foundry_dir = test_dir / "foundry"
+                ExternalTest.download_project(
+                    foundry_dir, self.foundry_repo, "branch", "master")
+                os.chdir(foundry_dir)
+                run_cmd(f"cargo install --path {foundry_dir.resolve()}/cli --profile local --bins --locked --force")
+                foundry_bin_path = foundry_dir / "bin"
+                if not any(path == foundry_bin_path for path in self.env["PATH"].split(os.pathsep)):
+                    self.env["PATH"] += os.pathsep + foundry_bin_path
+            else :
+                req = requests.get(self.foundryup_url, stream=True, verify=True, timeout=10)
+                foundryup_bin = test_dir / "foundryup"
+                with open(foundryup_bin, 'wb') as f:
+                    for chunk in req.iter_content(chunk_size=512):
+                        f.write(chunk)
+                run_cmd(f"chmod +x {foundryup_bin.resolve()}")
+                run_cmd(f"{foundryup_bin.resolve()} --branch master")
         if self.setup_fn:
             self.setup_fn(self.test_dir)
 
@@ -82,7 +103,7 @@ yul = ${yul}
         run_cmd("forge clean")
 
     @TestRunner.on_local_test_dir
-    def compiler_settings(self, solc_version: str, presets: Tuple[str] = AVAILABLE_PRESETS, evm_version: str = CURRENT_EVM_VERSION):
+    def compiler_settings(self, solc_version: str, presets: Tuple[str] = AVAILABLE_PRESETS):
         """Configure forge tests profiles"""
 
         foundry_config_file = self.config.config_file
@@ -103,11 +124,11 @@ Compiler path: {binary_path}
         profiles = []
         for preset in presets:
             name = self.profile_name(preset)
-            settings = settings_from_preset(preset, evm_version)
+            settings = settings_from_preset(preset, self.config.evm_version)
             profiles.append(self.profile_tmpl.substitute(
                 name=name,
                 solc=binary_path,
-                evm_version=evm_version,
+                evm_version=self.config.evm_version,
                 optimizer=str(settings["optimizer"]["enabled"]).lower(),
                 via_ir=str(settings["viaIR"]).lower(),
                 yul=str(settings["optimizer"]["details"]["yul"]).lower()
@@ -120,16 +141,16 @@ Compiler path: {binary_path}
         run_cmd("forge install", self.env)
 
     @TestRunner.on_local_test_dir
-    def compile(self, solc_version: str, preset: str, evm_version: str = CURRENT_EVM_VERSION):
+    def compile(self, solc_version: str, preset: str):
         """Compile project"""
 
         solc_short_version = ExternalTest.get_solc_short_version(solc_version)
-        settings = settings_from_preset(preset, evm_version)
+        settings = settings_from_preset(preset, self.config.evm_version)
         print(f"""Using Forge profile...
 -------------------------------------
 Settings preset: {preset}
 Settings: {settings}
-EVM version: {evm_version}
+EVM version: {self.config.evm_version}
 Compiler version: {solc_short_version}
 Compiler version (full): {solc_version}
 -------------------------------------

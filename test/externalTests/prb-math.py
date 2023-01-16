@@ -24,7 +24,7 @@ import json
 from pathlib import Path
 from shutil import copyfile
 
-from external_test import TestConfig, ExternalTest
+from external_test import TestConfig, ExternalTest, CURRENT_EVM_VERSION
 from foundry import FoundryRunner
 
 class PRBMath(ExternalTest):
@@ -33,15 +33,15 @@ class PRBMath(ExternalTest):
     def __init__(self, config: TestConfig):
         ExternalTest.__init__(self, config)
 
-    def setup_fn(self, test_dir):
+    def setup_fn(self, test_dir: Path):
         """ PRBMath setup steps"""
-        copyfile(Path(test_dir) / ".env.example", Path(test_dir) / ".env")
+        copyfile(test_dir / ".env.example", test_dir / ".env")
 
-    def compile_fn(self, test_dir):
+    def compile_fn(self, test_dir: Path):
         """ PRBMath compilation steps"""
         # TODO
 
-    def test_fn(self, test_dir):
+    def test_fn(self, test_dir: Path):
         """ PRBMath tests steps"""
         # TODO
 
@@ -54,11 +54,12 @@ if __name__ == '__main__':
 
     config_json = json.loads(f"""
     {{
-        "repo_url": "https://github.com/paulrberg/prb-math",
+        "repo_url": "https://github.com/PaulRBerg/prb-math.git",
         "ref_type": "branch",
         "ref": "main",
         "config_file": "foundry.toml",
         "config_var": "config",
+        "build_dependency": "rust",
         "compile_only_presets": [],
         "settings_presets": [
             "ir-optimize-evm+yul",
@@ -66,6 +67,7 @@ if __name__ == '__main__':
             "legacy-optimize-evm+yul",
             "legacy-no-optimize"
         ],
+        "evm_version": "{CURRENT_EVM_VERSION}",
         "solc": {{
             "binary_type": "{args.solc_binary_type}",
             "binary_path": "{args.solc_binary_path}",

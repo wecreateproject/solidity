@@ -24,7 +24,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 import subprocess
-from shutil import copyfile, copytree, rmtree
+from shutil import which, copyfile, copytree, rmtree
 from argparse import ArgumentParser
 
 import json
@@ -154,8 +154,10 @@ class TestConfig:
     ref: str
     config_file: Optional[str]
     config_var: Optional[str]
+    build_dependency: Optional[str] = field(default="nodejs")
     compile_only_presets: Optional[List[str]] = field(default_factory=list)
     settings_presets: Optional[List[str]] = field(default_factory=list)
+    evm_version: Optional[str] = field(default=CURRENT_EVM_VERSION)
     solc: Dict[str, SolcConfig] = field(
         default_factory=lambda: defaultdict(SolcConfig))
 
@@ -182,7 +184,7 @@ class TestRunner(metaclass=ABCMeta):
         return f
 
     @abstractmethod
-    def setup_environment(self, test_dir: str):
+    def setup_environment(self, test_dir: Path):
         pass
 
     @abstractmethod
@@ -190,11 +192,11 @@ class TestRunner(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def compiler_settings(self, solc_version: str, presets: Tuple[str] = AVAILABLE_PRESETS, evm_version: str = CURRENT_EVM_VERSION):
+    def compiler_settings(self, solc_version: str, presets: Tuple[str] = AVAILABLE_PRESETS):
         pass
 
     @abstractmethod
-    def compile(self, solc_version: str, preset: str, evm_version: str):
+    def compile(self, solc_version: str, preset: str):
         pass
 
     @abstractmethod
@@ -223,7 +225,8 @@ class ExternalTest:
                                 help="""Path to solc or soljson.js binary""")
         return arg_parser.parse_args(args)
 
-    def download_project(self, test_dir: str, repo_url: str,
+    @staticmethod
+    def download_project(test_dir: Path, repo_url: str,
                          ref_type: str = "branch", ref: str = "master"):
         if ref_type not in ('commit', 'branch', 'tag'):
             raise RuntimeError(f"Invalid reference type: {ref_type}")
@@ -237,19 +240,20 @@ class ExternalTest:
             run_cmd(f"git fetch --depth 1 origin {ref}")
             run_cmd("git reset --hard FETCH_HEAD")
         else:
-            os.chdir(Path(test_dir).parent)
-            run_cmd(f"git clone --depth 1 {repo_url} -b {ref} {test_dir}")
-            if not Path(test_dir).exists():
+            os.chdir(test_dir.parent)
+            run_cmd(f"git clone --depth 1 {repo_url} -b {ref} {test_dir.resolve()}")
+            if not test_dir.exists():
                 raise RuntimeError("Git clone failed.")
             os.chdir(test_dir)
 
-        if (Path(test_dir) / ".gitmodules").exists():
+        if (test_dir / ".gitmodules").exists():
             run_cmd("git submodule update --init")
 
         commit_hash = subprocess.getoutput("git rev-parse HEAD")
         print(f"Current commit hash: {commit_hash}")
 
-    def parse_solc_version(self, solc_version_string):
+    @staticmethod
+    def parse_solc_version(solc_version_string):
         solc_version_match = re.search(
             SOLC_FULL_VERSION_REGEX, solc_version_string)
         if solc_version_match:
@@ -270,13 +274,13 @@ class ExternalTest:
                 f"Error extracting short version string from: {solc_full_version}")
         return solc_short_version
 
-    def setup_solc(self, test_dir: str) -> (str, str):
+    def setup_solc(self, test_dir: Path) -> (str, str):
         sc_config = self.config.solc
 
         if sc_config.binary_type == "solcjs":
             # FIXME: install_dir is assumed to be relative path
-            solc_dir = Path(test_dir).parent / sc_config.install_dir
-            solc_bin = Path(solc_dir) / "dist/solc.js"
+            solc_dir = test_dir.parent / sc_config.install_dir
+            solc_bin = solc_dir / "dist/solc.js"
 
             print("Setting up solc-js...")
             if sc_config.solcjs_src_dir == "":
@@ -286,12 +290,12 @@ class ExternalTest:
                 print(
                     f"Using local solc-js from {sc_config.solcjs_src_dir}...")
                 copytree(sc_config.solcjs_src_dir, solc_dir)
-                rmtree(Path(solc_dir) / "dist")
-                rmtree(Path(solc_dir) / "node_modules")
+                rmtree(solc_dir / "dist")
+                rmtree(solc_dir / "node_modules")
             os.chdir(solc_dir)
             run_cmd("npm install")
             run_cmd("npm run build")
-            copyfile(sc_config.binary_path, Path(solc_dir) / "dist/soljson.js")
+            copyfile(sc_config.binary_path, solc_dir / "dist/soljson.js")
             solc_version_output = subprocess.getoutput(
                 f"node {solc_bin} --version")
         else:
@@ -305,9 +309,29 @@ class ExternalTest:
         # TODO
         raise NotImplementedError()
 
+    def prepare_node_env(self, test_dir: Path):
+        if which("node") is None:
+            # TODO: install nodejs
+            # TODO: setup env variables
+            raise NotImplementedError()
+        # TODO: neutralize_package_lock
+        print("Removing package lock files...")
+        rmtree(test_dir / "yarn.lock")
+        rmtree(test_dir / "package_lock.json")
+        # TODO: neutralize_package_json_hooks
+        print("Disabling package.json hooks...")
+        if not (test_dir / "package.json").exists():
+            raise RuntimeError("package.json not found")
+        # TODO: replace prepublish and prepare
+
+    def prepare_rust_env(self, test_dir: Path):
+        if which("rust"):
+            # TODO: install rustup and rust
+            # TODO: setup env variables
+            raise NotImplementedError()
+
     def run(self, name: str, runner: TestRunner):
         print(f"Testing {name}...\n===========================")
-        evm_version = CURRENT_EVM_VERSION
         with TemporaryDirectory(prefix=f"ext-test-{name}-") as tmp_dir:
             test_dir = Path(tmp_dir) / "ext"
             presets = self.config.selected_presets()
@@ -318,15 +342,17 @@ class ExternalTest:
             # Download project
             self.download_project(
                 test_dir, self.config.repo_url, self.config.ref_type, self.config.ref)
-            # Configure TestRunner instance
+            if self.config.build_dependency == "nodejs":
+                self.prepare_node_env(test_dir)
+            elif self.config.build_dependency == "rust":
+                self.prepare_rust_env(test_dir)
             runner.setup_environment(test_dir)
-            # TODO: neutralize_package_lock
-            # TODO: neutralize_package_json_hooks
+            # Configure TestRunner instance
             # TODO: replace_version_pragmas
-            runner.compiler_settings(solc_version, presets, evm_version)
+            runner.compiler_settings(solc_version, presets)
             for preset in self.config.selected_presets():
                 print("Running compile function...")
-                runner.compile(solc_version, preset, evm_version)
+                runner.compile(solc_version, preset)
                 # TODO: skip tests if compile_only_presets
                 print("Running test function...")
                 runner.run_test(preset)
