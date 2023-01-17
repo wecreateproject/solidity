@@ -34,15 +34,15 @@ class PRBMath(ExternalTest):
     def __init__(self, config: TestConfig):
         ExternalTest.__init__(self, config)
 
-    def setup_fn(self, test_dir: Path):
+    def setup_fn(self, test_dir: Path, env: dict):
         """ PRBMath setup steps"""
         copyfile(test_dir / ".env.example", test_dir / ".env")
 
-    def compile_fn(self, test_dir: Path):
+    def compile_fn(self, test_dir: Path, env: dict):
         """ PRBMath compilation steps"""
         # TODO
 
-    def test_fn(self, test_dir: Path):
+    def test_fn(self, test_dir: Path, env: dict):
         """ PRBMath tests steps"""
         # TODO
 
