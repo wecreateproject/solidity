@@ -1255,7 +1255,7 @@ jobs:
                   source "$BASH_ENV"
                   curl -O https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-gnu/rustup-init && \
                     chmod +x rustup-init && \
-                    ./rustup-init -y --no-modify-path --default-toolchain "<< parameters.rust_version >>" && \
+                    ./rustup-init -y --no-modify-path --default-toolchain "<< parameters.rust_version >>" --profile minimal && \
                     rm rustup-init && \
                     rustc --version && \
                     cargo --version
