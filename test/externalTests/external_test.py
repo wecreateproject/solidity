@@ -221,9 +221,13 @@ class ExternalTest:
     @staticmethod
     def parse_command_line(description: str, args: str):
         arg_parser = ArgumentParser(description)
-        arg_parser.add_argument('--solc-binary-type', required=True, type=str,
-                                help="""Solidity compiler binary type""",
-                                choices=['native', 'solcjs'])
+        arg_parser.add_argument(
+            '--solc-binary-type',
+            required=True,
+            type=str,
+            help="""Solidity compiler binary type""",
+            choices=['native', 'solcjs'],
+        )
         arg_parser.add_argument('--solc-binary-path', required=True, type=str,
                                 help="""Path to solc or soljson.js binary""")
         return arg_parser.parse_args(args)
