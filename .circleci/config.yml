@@ -284,6 +284,15 @@ defaults:
             name: Install build dependencies
             command: ./.circleci/osx_install_dependencies.sh
 
+  - steps_install_python_dependencies: &steps_install_python_dependencies
+      steps:
+        - run:
+            name: Install python dependencies
+            command: |
+                sudo apt update
+                sudo apt install python3-pip --assume-yes --no-install-recommends
+                python3 -m pip install requests --user
+
   # --------------------------------------------------------------------------
   # Base Image Templates
 
@@ -1224,6 +1233,7 @@ jobs:
     environment:
       TERM: xterm
       COMPILE_ONLY: <<parameters.compile_only>>
+    <<: *steps_install_python_dependencies
     steps:
       - checkout
       - attach_workspace:
@@ -1307,16 +1317,11 @@ jobs:
 
   c_ext_benchmarks:
     <<: *base_node_small
+    <<: *steps_install_python_dependencies
     steps:
       - checkout
       - attach_workspace:
           at: .
-      - run:
-          name: Install dependencies of helper scripts
-          command: |
-            sudo apt update
-            sudo apt install python3-pip --assume-yes --no-install-recommends
-            python3 -m pip install requests --user
       - run:
           name: Combine benchmark reports
           command: cat reports/externalTests/benchmark-*.json | scripts/externalTests/merge_benchmarks.sh > reports/externalTests/all-benchmarks.json
