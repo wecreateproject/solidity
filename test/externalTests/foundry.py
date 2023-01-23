@@ -61,7 +61,7 @@ yul = ${yul}
         # Note: the test_dir will be set on setup_environment
         self.test_dir: Path = None
 
-    def setup_environment(self, test_dir: Path, from_src: bool = False):
+    def setup_environment(self, test_dir: Path):
         """Configure the project build environment"""
 
         self.test_dir = test_dir
@@ -69,29 +69,7 @@ yul = ${yul}
 
         print("Configuring Foundry building environment...")
         if which("forge") is None:
-            if not which("cargo"):
-                raise RuntimeError("Cargo not found.")
-            foundry_dir = test_dir / "foundry"
-            foundry_bin_dir = foundry_dir / "bin"
-            foundry_bin_dir.mkdir(parents=True, exist_ok=True)
-            self.env.update({"FOUNDRY_DIR": foundry_dir.resolve()})
-            if from_src:
-                ExternalTest.download_project(foundry_dir, self.foundry_repo, "branch", "master")
-                os.chdir(foundry_dir)
-                run_cmd(f"cargo install --path {foundry_dir.resolve()}/cli --profile local --bins --locked --force")
-            else :
-                # Create the man directory required for the foundryup script
-                foundry_man_dir = foundry_dir / "share/man/man1"
-                foundry_man_dir.mkdir(parents=True, exist_ok=True)
-                req = requests.get(self.foundryup_url, stream=True, verify=True, timeout=10)
-                foundryup_bin = test_dir / "foundryup"
-                with open(foundryup_bin, 'wb') as f:
-                    for chunk in req.iter_content(chunk_size=512):
-                        f.write(chunk)
-                run_cmd(f"chmod +x {foundryup_bin.resolve()}")
-                run_cmd(f"{foundryup_bin.resolve()}", self.env)
-            if not any(path == foundry_bin_dir for path in self.env["PATH"].split(os.pathsep)):
-                self.env["PATH"] += os.pathsep + str(foundry_bin_dir.resolve())
+            raise RuntimeError("Forge not found.")
         if self.setup_fn:
             self.setup_fn(self.test_dir, self.env)
 

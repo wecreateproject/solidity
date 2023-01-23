@@ -293,6 +293,15 @@ defaults:
                 sudo apt install python3-pip --assume-yes --no-install-recommends
                 python3 -m pip install requests --user
 
+  - steps_install_foundry: &steps_install_foundry
+      steps:
+        - run:
+            name: Install foundry
+            command: |
+                # Note: Currently Foundry only has nightly builds and there is no release checksum
+                wget https://github.com/foundry-rs/foundry/releases/download/nightly/foundry_nightly_linux_amd64.tar.gz --output-document /tmp/foundry.tar.gz
+                sudo tar --extract --gzip --file /tmp/foundry.tar.gz --directory /usr/local/bin
+
   # --------------------------------------------------------------------------
   # Base Image Templates
 
@@ -1215,15 +1224,14 @@ jobs:
         type: boolean
         default: false
     docker:
-      - image: <<parameters.image>>
-    resource_class: <<parameters.resource_class>>
+      - image: << parameters.image >>
+    resource_class: << parameters.resource_class >>
     # NOTE: Each external test runs up to 6 independent settings presets. If parallelism is higher than
     # actual preset count, some runs will exit immediately. If it's lower, some runs will get more than one preset.
     parallelism: 6
     environment:
       TERM: xterm
-      COMPILE_ONLY: <<parameters.compile_only>>
-    <<: *steps_install_python_dependencies
+      COMPILE_ONLY: << parameters.compile_only >>
     steps:
       - checkout
       - attach_workspace:
@@ -1234,6 +1242,15 @@ jobs:
             # lsof is used by Colony in its stop-blockchain-client.sh script
             sudo apt update
             sudo apt-get --quiet --assume-yes --no-install-recommends install lsof
+      - when:
+          condition: true
+          <<: *steps_install_python_dependencies
+      - when:
+          condition:
+            matches:
+                pattern: /^.+rust.+$/
+                value: << parameters.image >>
+          <<: *steps_install_foundry
       - when:
           condition: << parameters.python2 >>
           steps:
@@ -1249,17 +1266,31 @@ jobs:
             equal: [<< parameters.binary_type >>, "solcjs"]
           steps:
             - run:
-                name: External <<parameters.project>> tests (solcjs)
+                name: External << parameters.project >> tests (solcjs)
                 command: |
-                  test/externalTests/<<parameters.project>>.py solcjs /tmp/workspace/soljson.js
+                  test/externalTests/<< parameters.project >>.sh solcjs /tmp/workspace/soljson.js
       - when:
           condition:
-            equal: [<< parameters.binary_type >>, "native"]
+            and:
+                - equal: [<< parameters.binary_type >>, "native"]
+                - equal: [<< parameters.project >>, "prb-math"]
           steps:
             - run:
-                name: External <<parameters.project>> tests (native)
+                name: External << parameters.project >> tests (native)
                 command: |
-                    test/externalTests/<<parameters.project>>.py --solc-binary-type native --solc-binary-path /tmp/workspace/solc/solc
+                    test/externalTests/<< parameters.project >>.py --solc-binary-type native --solc-binary-path /tmp/workspace/solc/solc
+      # TODO: remove after address comment: https://github.com/ethereum/solidity/pull/13873#discussion_r1081687334
+      - when:
+          condition:
+            and:
+                - equal: [<< parameters.binary_type >>, "native"]
+                - not:
+                    equal: [<< parameters.project >>, "prb-math"]
+          steps:
+            - run:
+                name: External << parameters.project >> tests (native)
+                command: |
+                    test/externalTests/<< parameters.project >>.sh native /tmp/workspace/solc/solc
       - store_artifacts:
           path: reports/externalTests/
       # persist_to_workspace fails if the directory does not exist and the test script will create
