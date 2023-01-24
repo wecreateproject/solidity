@@ -44,29 +44,47 @@ performed even if none of these functions are called.
 Note that private library functions can only be specified when ``using for`` is inside a library.
 
 If you define an operator (e.g. ``using {f as +} for T``), then the type (``T``) must be a
-:ref:`user-defined value type <user-defined-value-types>`.
-The definition of an operator must be a ``pure`` function with the types of all parameters and
-the return value matching ``T``, except for comparison operators, where the return value must
-be of type ``bool``.
-
+:ref:`user-defined value type <user-defined-value-types>` and the definition must be a ``pure`` function.
 The following operators can be defined this way:
 
-+------------+---------+----------------------------------------------+
-| Category   | Arity   | Operators                                    |
-+============+=========+==============================================+
-| Bitwise    | binary  | ``&``, ``|``, ``^``                          |
-|            +---------+----------------------------------------------+
-|            | unary   | ``~``                                        |
-+------------+---------+----------------------------------------------+
-| Arithmetic | binary  | ``+``, ``-``, ``*``, ``/``, ``%``            |
-|            +---------+----------------------------------------------+
-|            | unary   | ``-``                                        |
-+------------+---------+----------------------------------------------+
-| Comparison | binary  | ``==``, ``!=``, ``<``, ``<=``, ``>``, ``>=`` |
-+------------+---------+----------------------------------------------+
++------------+----------+---------------------------------------------+
+| Category   | Operator | Possible signatures                         |
++============+==========+=============================================+
+| Bitwise    | ``&``    | ``function (T, T) pure returns (T)``        |
+|            +----------+---------------------------------------------+
+|            | ``|``    | ``function (T, T) pure returns (T)``        |
+|            +----------+---------------------------------------------+
+|            | ``^``    | ``function (T, T) pure returns (T)``        |
+|            +----------+---------------------------------------------+
+|            | ``~``    | ``function (T) pure returns (T)``           |
++------------+----------+---------------------------------------------+
+| Arithmetic | ``+``    | ``function (T, T) pure returns (T)``        |
+|            +----------+---------------------------------------------+
+|            | ``-``    | ``function (T, T) pure returns (T)``        |
+|            +          +---------------------------------------------+
+|            |          | ``function (T) pure returns (T)``           |
+|            +----------+---------------------------------------------+
+|            | ``*``    | ``function (T, T) pure returns (T)``        |
+|            +----------+---------------------------------------------+
+|            | ``/``    | ``function (T, T) pure returns (T)``        |
+|            +----------+---------------------------------------------+
+|            | ``%``    | ``function (T, T) pure returns (T)``        |
++------------+----------+---------------------------------------------+
+| Comparison | ``==``   | ``function (T, T) pure returns (bool)``     |
+|            +----------+---------------------------------------------+
+|            | ``!=``   | ``function (T, T) pure returns (bool)``     |
+|            +----------+---------------------------------------------+
+|            | ``<``    | ``function (T, T) pure returns (bool)``     |
+|            +----------+---------------------------------------------+
+|            | ``<=``   | ``function (T, T) pure returns (bool)``     |
+|            +----------+---------------------------------------------+
+|            | ``>``    | ``function (T, T) pure returns (bool)``     |
+|            +----------+---------------------------------------------+
+|            | ``>=``   | ``function (T, T) pure returns (bool)``     |
++------------+----------+---------------------------------------------+
 
-Note that ``-`` is both binary and unary.
-Whether the definition implements one or the other depends on the number of its arguments.
+If an operator supports more than one signature, each one can have a separate definition.
+The compiler will choose the right definition based on how the operator is invoked.
 
 The ``using A for B;`` directive is active only within the current
 scope (either the contract or the current module/source unit),
