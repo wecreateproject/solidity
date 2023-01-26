@@ -32,22 +32,22 @@ contract C {
     Int constant I20 = Int.wrap(20);
     Int constant I128 = Int.wrap(128);
 
-    function test_bitwise() public pure {
+    function testBitwise() public pure {
         assert(Int.unwrap(I0 & I0 | I1) == (0 & 0 | 1));
         assert(Int.unwrap(I0 & I0 | I1) == ((0 & 0) | 1));
     }
 
-    function test_bitwise_arithmetic() public pure {
+    function testBitwise_arithmetic() public pure {
         assert(Int.unwrap(I2 + I2 & ~I1 | I6 * I6 - I4 & ~I3) == (2 + 2 & ~1 | 6 * 6 - 4 & ~3));
         assert(Int.unwrap(I2 + I2 & ~I1 | I6 * I6 - I4 & ~I3) == (((2 + 2) & (~1)) | (((6 * 6) - 4) & (~3))));
     }
 
-    function test_arithmetic() public pure {
+    function testArithmetic() public pure {
         assert(Int.unwrap(I1 + I8 / I4 - I5 % I6 * I7) == (1 + 8 / 4 - 5 % 6 * 7));
         assert(Int.unwrap(I1 + I8 / I4 - I5 % I6 * I7) == ((1 + (8 / 4)) - ((5 % 6) * 7)));
     }
 
-    function test_all() public pure {
+    function testAll() public pure {
         assert(
             Int.unwrap(I128 + I1 - I10 + I4 & ~I1 ^ ~I1 * I2 | -I15 % -I10 * I20 / I2 + I13 & ~I3) ==
             (128 + 1 - 10 + 4 & ~1 ^ ~1 * 2 | -15 % -10 * 20 / 2 + 13 & ~3)
@@ -65,7 +65,7 @@ contract C {
     }
 }
 // ----
-// test_bitwise() ->
-// test_bitwise_arithmetic() ->
-// test_arithmetic() ->
-// test_all() ->
+// testBitwise() ->
+// testBitwise_arithmetic() ->
+// testArithmetic() ->
+// testAll() ->

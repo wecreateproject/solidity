@@ -31,7 +31,7 @@ contract C {
     Int constant THREE = Int.wrap(3);
     Int constant SIX = Int.wrap(6);
 
-    function test_bitwise() public pure {
+    function testBitwise() public pure {
         assert(Int.unwrap(ONE | TWO) == 3);
         assert(Int.unwrap(ONE | ZERO) == 1);
 
@@ -46,7 +46,7 @@ contract C {
         assert(Int.unwrap(~TWO) == -3);
     }
 
-    function test_arithmetic() public pure {
+    function testArithmetic() public pure {
         assert(Int.unwrap(ONE + TWO) == 3);
         assert(Int.unwrap(ONE + ZERO) == 1);
 
@@ -66,7 +66,7 @@ contract C {
         assert(Int.unwrap(THREE % TWO) == 1);
     }
 
-    function test_comparison() public pure {
+    function testComparison() public pure {
         assert((ONE == ONE) == true);
         assert((ONE == TWO) == false);
 
@@ -87,6 +87,6 @@ contract C {
     }
 }
 // ----
-// test_bitwise() ->
-// test_arithmetic() ->
-// test_comparison() ->
+// testBitwise() ->
+// testArithmetic() ->
+// testComparison() ->
