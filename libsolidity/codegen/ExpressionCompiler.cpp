@@ -418,22 +418,17 @@ bool ExpressionCompiler::visit(UnaryOperation const& _unaryOperation)
 
 		FunctionType const* functionType = _unaryOperation.userDefinedFunctionType();
 		solAssert(functionType);
+		solAssert(functionType->parameterTypes().size() == 1);
+		solAssert(functionType->returnParameterTypes().size() == 1);
 
-		functionType = dynamic_cast<FunctionType const&>(*functionType).withBoundFirstArgument();
-		solAssert(functionType);
 		evmasm::AssemblyItem returnLabel = m_context.pushNewTag();
-		acceptAndConvert(_unaryOperation.subExpression(), *functionType->selfType());
+		acceptAndConvert(_unaryOperation.subExpression(), *functionType->parameterTypes()[0]);
 
 		m_context << m_context.functionEntryLabel(*function).pushTag();
 		m_context.appendJump(evmasm::AssemblyItem::JumpType::IntoFunction);
 		m_context << returnLabel;
 
-		solAssert(
-			functionType->parameterTypes().size() == 0,
-			"Unary operator definition is supposed to accept only the 'self' parameter."
-		);
-
-		unsigned parameterSize = functionType->selfType()->sizeOnStack();
+		unsigned parameterSize = CompilerUtils::sizeOnStack(functionType->parameterTypes());
 		unsigned returnParametersSize = CompilerUtils::sizeOnStack(functionType->returnParameterTypes());
 
 		// callee adds return parameters, but removes arguments and return label
@@ -541,26 +536,20 @@ bool ExpressionCompiler::visit(BinaryOperation const& _binaryOperation)
 
 		FunctionType const* functionType = _binaryOperation.userDefinedFunctionType();
 		solAssert(functionType);
-		functionType = dynamic_cast<FunctionType const&>(*functionType).withBoundFirstArgument();
-		solAssert(functionType);
+		solAssert(functionType->parameterTypes().size() == 2);
+		solAssert(functionType->returnParameterTypes().size() == 1);
 
-		solAssert(
-			functionType->parameterTypes().size() == 1,
-			"Binary operator definition is supposed to accept only 'self' and one extra parameter."
-		);
 		evmasm::AssemblyItem returnLabel = m_context.pushNewTag();
-		acceptAndConvert(leftExpression, *functionType->selfType());
-		acceptAndConvert(rightExpression, *functionType->parameterTypes()[0]);
+		acceptAndConvert(leftExpression, *functionType->parameterTypes()[0]);
+		acceptAndConvert(rightExpression, *functionType->parameterTypes()[1]);
 
 		m_context << m_context.functionEntryLabel(*function).pushTag();
 		m_context.appendJump(evmasm::AssemblyItem::JumpType::IntoFunction);
 		m_context << returnLabel;
 
-		unsigned parameterSize =
-			CompilerUtils::sizeOnStack(functionType->parameterTypes()) +
-			functionType->selfType()->sizeOnStack();
-
+		unsigned parameterSize = CompilerUtils::sizeOnStack(functionType->parameterTypes());
 		unsigned returnParametersSize = CompilerUtils::sizeOnStack(functionType->returnParameterTypes());
+
 		// callee adds return parameters, but removes arguments and return label
 		m_context.adjustStackOffset(static_cast<int>(returnParametersSize - parameterSize) - 1);
 		return false;
