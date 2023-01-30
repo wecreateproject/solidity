@@ -57,7 +57,6 @@ unique_ptr<FunctionFlow> ControlFlowBuilder::createFunctionFlow(
 bool ControlFlowBuilder::visit(BinaryOperation const& _operation)
 {
 	solAssert(!!m_currentNode, "");
-	visitNode(_operation);
 
 	switch (_operation.getOperator())
 	{
