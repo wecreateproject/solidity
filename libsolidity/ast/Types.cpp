@@ -383,7 +383,7 @@ vector<UsingForDirective const*> usingForDirectivesForType(Type const& _type, AS
 
 }
 
-set<FunctionDefinition const*> Type::operatorDefinitions(
+set<FunctionDefinition const*, ASTNode::CompareByID> Type::operatorDefinitions(
 	Token _token,
 	ASTNode const& _scope,
 	bool _unary
@@ -392,7 +392,7 @@ set<FunctionDefinition const*> Type::operatorDefinitions(
 	if (!typeDefinition())
 		return {};
 
-	set<FunctionDefinition const*> matchingDefinitions;
+	set<FunctionDefinition const*, ASTNode::CompareByID> matchingDefinitions;
 	for (UsingForDirective const* directive: usingForDirectivesForType(*this, _scope))
 		for (auto const& [identifierPath, operator_]: directive->functionsAndOperators())
 		{

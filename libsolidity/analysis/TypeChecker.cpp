@@ -1734,7 +1734,7 @@ bool TypeChecker::visit(UnaryOperation const& _operation)
 
 	// Check if the operator is built-in or user-defined.
 	TypeResult builtinResult = operandType->unaryOperatorResult(op);
-	set<FunctionDefinition const*> matchingDefinitions = operandType->operatorDefinitions(
+	set<FunctionDefinition const*, ASTNode::CompareByID> matchingDefinitions = operandType->operatorDefinitions(
 		op,
 		*currentDefinitionScope(),
 		true // _unary
@@ -1816,7 +1816,7 @@ void TypeChecker::endVisit(BinaryOperation const& _operation)
 
 	// Check if the operator is built-in or user-defined.
 	TypeResult builtinResult = leftType->binaryOperatorResult(_operation.getOperator(), rightType);
-	set<FunctionDefinition const*> matchingDefinitions = leftType->operatorDefinitions(
+	set<FunctionDefinition const*, ASTNode::CompareByID> matchingDefinitions = leftType->operatorDefinitions(
 		_operation.getOperator(),
 		*currentDefinitionScope(),
 		false // _unary

@@ -386,7 +386,7 @@ public:
 	///
 	/// @param _unary If true, only definitions that accept exactly one argument are included.
 	/// Otherwise only definitions that accept exactly two arguments.
-	std::set<FunctionDefinition const*> operatorDefinitions(
+	std::set<FunctionDefinition const*, ASTCompareByID<ASTNode>> operatorDefinitions(
 		Token _token,
 		ASTNode const& _scope,
 		bool _unary
