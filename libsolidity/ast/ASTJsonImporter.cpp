@@ -409,15 +409,25 @@ ASTPointer<UsingForDirective> ASTJsonImporter::createUsingForDirective(Json::Val
 	else if (_node.isMember("functionList"))
 		for (Json::Value const& function: _node["functionList"])
 		{
-			functions.emplace_back(createIdentifierPath(function["function"]));
-			if (function.isMember("operator"))
+			if (function.isMember("function"))
 			{
-				Token const token = scanSingleToken(function["operator"]);
-				astAssert(util::contains(frontend::userDefinableOperators, token));
-				operators.emplace_back(token);
+				astAssert(!function.isMember("operator"));
+				astAssert(!function.isMember("definition"));
+
+				functions.emplace_back(createIdentifierPath(function["function"]));
+				operators.emplace_back(nullopt);
 			}
 			else
-				operators.emplace_back(nullopt);
+			{
+				astAssert(function.isMember("operator"));
+				astAssert(function.isMember("definition"));
+
+				Token const operatorName = scanSingleToken(function["operator"]);
+				astAssert(util::contains(frontend::userDefinableOperators, operatorName));
+
+				functions.emplace_back(createIdentifierPath(function["definition"]));
+				operators.emplace_back(operatorName);
+			}
 		}
 
 	return createASTNode<UsingForDirective>(

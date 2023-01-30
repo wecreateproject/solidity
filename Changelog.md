@@ -17,7 +17,7 @@ Bugfixes:
 
 
 AST Changes:
- * AST: Add ``function`` field to ``UnaryOperation`` and ``BinaryOperation`` AST nodes and ``functionList.operator`` field to ``UsingForDirective`` AST nodes.
+ * AST: Add ``function`` field to ``UnaryOperation`` and ``BinaryOperation`` AST nodes. ``functionList`` in ``UsingForDirective`` AST nodes will now contain ``operator`` and ``definition`` members instead of ``function`` when the list entry defines an operator.
 
 
 ### 0.8.18 (2023-02-01)

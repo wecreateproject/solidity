@@ -47,7 +47,7 @@
       "functionList":
       [
         {
-          "function":
+          "definition":
           {
             "id": 3,
             "name": "sub",
@@ -62,7 +62,7 @@
           "operator": "-"
         },
         {
-          "function":
+          "definition":
           {
             "id": 4,
             "name": "unsub",
