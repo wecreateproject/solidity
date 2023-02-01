@@ -3966,8 +3966,8 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 				4731_error,
 				path->location(),
 				SecondarySourceLocation().append(
-						"Function defined here:",
-						functionDefinition.location()
+					"Function defined here:",
+					functionDefinition.location()
 				),
 				fmt::format(
 					"The function \"{}\" does not have any parameters, and therefore cannot be attached to the type \"{}\".",
@@ -3986,8 +3986,8 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 				6772_error,
 				path->location(),
 				SecondarySourceLocation().append(
-						"Function defined here:",
-						functionDefinition.location()
+					"Function defined here:",
+					functionDefinition.location()
 				),
 				fmt::format(
 					"Function \"{}\" is private and therefore cannot be attached"
@@ -4007,8 +4007,8 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 				3100_error,
 				path->location(),
 				SecondarySourceLocation().append(
-						"Function defined here:",
-						functionDefinition.location()
+					"Function defined here:",
+					functionDefinition.location()
 				),
 				fmt::format(
 					"The function \"{}\" cannot be attached to the type \"{}\" because the type cannot "
