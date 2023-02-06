@@ -4041,6 +4041,10 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 				m_errorReporter.typeError(
 					7775_error,
 					path->location(),
+					SecondarySourceLocation().append(
+						"Function defined as non-pure here:",
+						functionDefinition.location()
+					),
 					"Only pure free functions can be used to define operators."
 				);
 
