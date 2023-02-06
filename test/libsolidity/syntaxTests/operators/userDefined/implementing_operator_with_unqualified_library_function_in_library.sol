@@ -11,3 +11,8 @@ library L {
     function internalOperator(B32, B32) internal pure returns (B32) {}
     function privateOperator(B32, B32) private pure returns (B32) {}
 }
+// ----
+// TypeError 7775: (45-61): Only pure free functions can be used to define operators.
+// TypeError 7775: (88-102): Only pure free functions can be used to define operators.
+// TypeError 7775: (129-145): Only pure free functions can be used to define operators.
+// TypeError 7775: (172-187): Only pure free functions can be used to define operators.

@@ -21,4 +21,4 @@ contract C {
     }
 }
 // ----
-// TypeError 7775: (27-30): Only pure functions can be used to define operators.
+// TypeError 7775: (27-30): Only pure free functions can be used to define operators.

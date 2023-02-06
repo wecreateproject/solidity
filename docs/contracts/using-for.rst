@@ -18,10 +18,11 @@ at contract level.
 
 The first part, ``A``, can be one of:
 
-- A list of file-level or library functions, optionally with an operator name assigned (e.g.
-  ``using {f, g as +, h, L.t as -} for uint;``).
-  If no operator is specified, the function is attached to the type as a member function, otherwise
-  it becomes the definition of that operator on the type.
+- A list of functions, optionally with an operator name assigned (e.g.
+  ``using {f, g as +, h, L.t} for uint;``).
+  If no operator is specified, the function can be either a library function or a free function and
+  is attached to the type as a member function.
+  Otherwise it must be a free function and it becomes the definition of that operator on the type.
 - The name of a library (e.g. ``using L for uint;``) -
   all non-private functions of the library are attached to the type
   as member functions

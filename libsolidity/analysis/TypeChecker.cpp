@@ -4034,11 +4034,14 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 			}
 			solAssert(usingForType->typeDefinition());
 
-			if (functionType->stateMutability() != StateMutability::Pure)
+			if (
+				functionType->stateMutability() != StateMutability::Pure ||
+				!functionDefinition.isFree()
+			)
 				m_errorReporter.typeError(
 					7775_error,
 					path->location(),
-					"Only pure functions can be used to define operators."
+					"Only pure free functions can be used to define operators."
 				);
 
 			bool identicalFirstTwoParameters = (parameterCount < 2 || *parameterTypes.at(0) == *parameterTypes.at(1));
