@@ -1,9 +1,7 @@
 type B32 is bytes32;
 
 library L {
-    // FIXME: Not being able to use external library functions in 'using for' is a bug.
-    // https://github.com/ethereum/solidity/issues/13765
-    //using {externalOperator as +} for B32;
+    using {externalOperator as +} for B32;
     using {publicOperator as -} for B32;
     using {internalOperator as *} for B32;
     using {privateOperator as /} for B32;

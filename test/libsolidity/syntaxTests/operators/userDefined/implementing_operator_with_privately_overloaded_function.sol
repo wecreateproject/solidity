@@ -9,4 +9,4 @@ library L {
 type A is address;
 type AP is address payable;
 // ----
-// DeclarationError 7920: (7-12): Identifier not found or not unique.
+// DeclarationError 9589: (7-12): Identifier is not a function name or not unique.

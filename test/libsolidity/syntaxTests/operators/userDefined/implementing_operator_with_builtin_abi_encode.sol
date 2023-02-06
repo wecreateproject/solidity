@@ -5,4 +5,4 @@ using {abi.encode as +} for Int;
 function f(Int, Int) pure returns (Int) {}
 
 // ----
-// DeclarationError 7920: (27-37): Identifier not found or not unique.
+// DeclarationError 9589: (27-37): Identifier is not a function name or not unique.

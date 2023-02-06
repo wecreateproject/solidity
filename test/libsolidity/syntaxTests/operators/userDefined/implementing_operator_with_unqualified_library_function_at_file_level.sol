@@ -6,4 +6,4 @@ library L {
 
 using {publicOperator as +} for B32;
 // ----
-// DeclarationError 7920: (111-125): Identifier not found or not unique.
+// DeclarationError 9589: (111-125): Identifier is not a function name or not unique.
