@@ -12,3 +12,8 @@ library LX {
 contract CX {
     using {add as +, unsub as -} for L.FixedBytes;
 }
+// ----
+// TypeError 3320: (218-221): Operators can only be defined in a global 'using for' directive.
+// TypeError 3320: (228-233): Operators can only be defined in a global 'using for' directive.
+// TypeError 3320: (286-289): Operators can only be defined in a global 'using for' directive.
+// TypeError 3320: (296-301): Operators can only be defined in a global 'using for' directive.

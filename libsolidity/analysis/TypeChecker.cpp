@@ -4021,6 +4021,15 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 			);
 		else if (operator_)
 		{
+			if (!_usingFor.global())
+			{
+				m_errorReporter.typeError(
+					3320_error,
+					path->location(),
+					"Operators can only be defined in a global 'using for' directive."
+				);
+			}
+
 			TypePointers const& parameterTypes = functionType->parameterTypesIncludingSelf();
 			size_t const parameterCount = parameterTypes.size();
 			if (usingForType->category() != Type::Category::UserDefinedValueType)

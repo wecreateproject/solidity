@@ -12,7 +12,11 @@ library L {
     function privateOperator(B32, B32) private pure returns (B32) {}
 }
 // ----
+// TypeError 3320: (45-61): Operators can only be defined in a global 'using for' directive.
 // TypeError 7775: (45-61): Only pure free functions can be used to define operators.
+// TypeError 3320: (88-102): Operators can only be defined in a global 'using for' directive.
 // TypeError 7775: (88-102): Only pure free functions can be used to define operators.
+// TypeError 3320: (129-145): Operators can only be defined in a global 'using for' directive.
 // TypeError 7775: (129-145): Only pure free functions can be used to define operators.
+// TypeError 3320: (172-187): Operators can only be defined in a global 'using for' directive.
 // TypeError 7775: (172-187): Only pure free functions can be used to define operators.

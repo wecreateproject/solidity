@@ -9,3 +9,6 @@ function f() pure {
     Int.wrap(0) + Int.wrap(0);
     -Int.wrap(0);
 }
+// ----
+// TypeError 3320: (24-27): Operators can only be defined in a global 'using for' directive.
+// TypeError 3320: (50-55): Operators can only be defined in a global 'using for' directive.

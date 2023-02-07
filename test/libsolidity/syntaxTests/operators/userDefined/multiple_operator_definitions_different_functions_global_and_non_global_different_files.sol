@@ -16,4 +16,5 @@ function test() pure returns (Int) {
     return Int.wrap(0) + Int.wrap(0);
 }
 // ----
+// TypeError 3320: (test.sol:26-36): Operators can only be defined in a global 'using for' directive.
 // TypeError 5583: (test.sol:154-179): User-defined binary operator + has more than one definition matching the operand types visible in the current scope.

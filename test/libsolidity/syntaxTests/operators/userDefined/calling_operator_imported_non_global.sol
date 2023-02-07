@@ -16,5 +16,7 @@ contract C {
     }
 }
 // ----
+// TypeError 3320: (s1.sol:24-27): Operators can only be defined in a global 'using for' directive.
+// TypeError 3320: (s1.sol:50-55): Operators can only be defined in a global 'using for' directive.
 // TypeError 2271: (s2.sol:70-95): Built-in binary operator + cannot be applied to types Int and Int. No matching user-defined operator found.
 // TypeError 4907: (s2.sol:105-117): Built-in unary operator - cannot be applied to type Int. No matching user-defined operator found.

@@ -46,6 +46,7 @@ Note that private library functions can only be specified when ``using for`` is 
 
 If you define an operator (e.g. ``using {f as +} for T``), then the type (``T``) must be a
 :ref:`user-defined value type <user-defined-value-types>` and the definition must be a ``pure`` function.
+Operator definitions must be global.
 The following operators can be defined this way:
 
 +------------+----------+---------------------------------------------+

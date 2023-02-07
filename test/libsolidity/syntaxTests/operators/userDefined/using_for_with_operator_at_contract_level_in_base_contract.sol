@@ -25,4 +25,6 @@ contract D is B {
     }
 }
 // ----
+// TypeError 3320: (144-147): Operators can only be defined in a global 'using for' directive.
+// TypeError 3320: (289-300): Operators can only be defined in a global 'using for' directive.
 // TypeError 2271: (491-516): Built-in binary operator + cannot be applied to types Int and Int. No matching user-defined operator found.

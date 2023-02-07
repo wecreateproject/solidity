@@ -19,4 +19,5 @@ contract C is B {
     }
 }
 // ----
+// TypeError 3320: (175-186): Operators can only be defined in a global 'using for' directive.
 // TypeError 5583: (237-262): User-defined binary operator + has more than one definition matching the operand types visible in the current scope.

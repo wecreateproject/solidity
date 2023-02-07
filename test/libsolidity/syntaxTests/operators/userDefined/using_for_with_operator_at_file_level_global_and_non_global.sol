@@ -4,13 +4,8 @@ type Int is int;
 using {add as +} for Int global;
 using {add as +} for Int;
 
-function add(Int a, Int b) pure returns (Int) {
-    return Int.wrap(Int.unwrap(a) + Int.unwrap(b));
-}
-
-function test_add() pure returns (Int) {
-    return Int.wrap(1) + Int.wrap(2);
-}
+function add(Int a, Int b) pure returns (Int) {}
+function test_add() pure returns (Int) {}
 
 ==== Source: s2.sol ====
 import "s1.sol";
@@ -25,5 +20,4 @@ contract C2 {
     }
 }
 // ----
-// test1() -> 3
-// test2() -> 7
+// TypeError 3320: (s1.sol:58-61): Operators can only be defined in a global 'using for' directive.

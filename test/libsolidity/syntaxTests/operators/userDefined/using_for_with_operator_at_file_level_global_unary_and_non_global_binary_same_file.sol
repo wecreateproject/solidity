@@ -3,13 +3,9 @@ type Int is int16;
 using {unsub as -} for Int global;
 using {sub as -} for Int;
 
-function sub(Int a, Int b) pure returns (Int) {
-    return Int.wrap(Int.unwrap(a) - Int.unwrap(b));
-}
+function sub(Int a, Int b) pure returns (Int) {}
 
-function unsub(Int a) pure returns (Int) {
-    return Int.wrap(-Int.unwrap(a));
-}
+function unsub(Int a) pure returns (Int) {}
 
 contract C {
     function test_sub() public pure returns (Int) {
@@ -21,5 +17,4 @@ contract C {
     }
 }
 // ----
-// test_sub() -> 5
-// test_unsub() -> -4
+// TypeError 3320: (62-65): Operators can only be defined in a global 'using for' directive.

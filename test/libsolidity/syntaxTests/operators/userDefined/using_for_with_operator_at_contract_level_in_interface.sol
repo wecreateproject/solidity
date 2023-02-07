@@ -7,3 +7,4 @@ interface I {
 }
 // ----
 // SyntaxError 9088: (82-107): The "using for" directive is not allowed inside interfaces.
+// TypeError 3320: (89-92): Operators can only be defined in a global 'using for' directive.
