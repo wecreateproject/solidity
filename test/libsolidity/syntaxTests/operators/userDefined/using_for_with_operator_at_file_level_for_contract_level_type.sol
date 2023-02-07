@@ -21,3 +21,7 @@ function unsubI(I.FixedBytes) pure returns (I.FixedBytes) {}
 using {addL as +, unsubL as -} for L.FixedBytes global;
 using {addC as +, unsubC as -} for C.FixedBytes global;
 using {addI as +, unsubI as -} for I.FixedBytes global;
+// ----
+// TypeError 4117: (545-600): Can only use "global" with types defined in the same source unit at file level.
+// TypeError 4117: (601-656): Can only use "global" with types defined in the same source unit at file level.
+// TypeError 4117: (657-712): Can only use "global" with types defined in the same source unit at file level.
