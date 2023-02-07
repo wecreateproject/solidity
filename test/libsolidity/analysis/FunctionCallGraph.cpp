@@ -1706,7 +1706,7 @@ BOOST_AUTO_TEST_CASE(user_defined_binary_operator)
 {
 	unique_ptr<CompilerStack> compilerStack = parseAndAnalyzeContracts(R"(
 		type Int is int128;
-		using {add as +} for Int;
+		using {add as +} for Int global;
 
 		function add(Int, Int) pure returns (Int) {
 			return Int.wrap(0);
@@ -1739,7 +1739,7 @@ BOOST_AUTO_TEST_CASE(user_defined_unary_operator)
 {
 	unique_ptr<CompilerStack> compilerStack = parseAndAnalyzeContracts(R"(
 		type Int is int128;
-		using {sub as -} for Int;
+		using {sub as -} for Int global;
 
 		function sub(Int) pure returns (Int) {
 			return Int.wrap(0);
