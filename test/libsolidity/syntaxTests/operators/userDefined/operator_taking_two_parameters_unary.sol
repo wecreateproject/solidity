@@ -10,5 +10,5 @@ contract C {
     }
 }
 // ----
-// TypeError 1884: (66-76): Wrong parameters in operator definition. The function "bitnot" needs to have exactly one parameter of type Int to be used for the operator ~.
-// TypeError 4907: (155-167): Built-in unary operator ~ cannot be applied to type Int. No matching user-defined operator found.
+// TypeError 1884: (73-83): Wrong parameters in operator definition. The function "bitnot" needs to have exactly one parameter of type Int to be used for the operator ~.
+// TypeError 4907: (162-174): Built-in unary operator ~ cannot be applied to type Int. No matching user-defined operator found.

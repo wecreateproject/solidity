@@ -25,9 +25,9 @@ function f() pure {
     Int.wrap(0) > Int.wrap(0);
 }
 // ----
-// TypeError 7743: (167-175): Wrong return parameters in operator definition. The function "add" needs to return exactly one value of type Int to be used for the operator +.
-// TypeError 7743: (211-211): Wrong return parameters in operator definition. The function "div" needs to return exactly one value of type Int to be used for the operator /.
-// TypeError 7743: (247-257): Wrong return parameters in operator definition. The function "unsub" needs to return exactly one value of type Int to be used for the operator -.
-// TypeError 7743: (295-303): Wrong return parameters in operator definition. The function "bitnot" needs to return exactly one value of type Int to be used for the operator ~.
-// TypeError 7743: (342-347): Wrong return parameters in operator definition. The function "gt" needs to return exactly one value of type bool to be used for the operator >.
-// TypeError 7743: (386-397): Wrong return parameters in operator definition. The function "lt" needs to return exactly one value of type bool to be used for the operator <.
+// TypeError 7743: (174-182): Wrong return parameters in operator definition. The function "add" needs to return exactly one value of type Int to be used for the operator +.
+// TypeError 7743: (218-218): Wrong return parameters in operator definition. The function "div" needs to return exactly one value of type Int to be used for the operator /.
+// TypeError 7743: (254-264): Wrong return parameters in operator definition. The function "unsub" needs to return exactly one value of type Int to be used for the operator -.
+// TypeError 7743: (302-310): Wrong return parameters in operator definition. The function "bitnot" needs to return exactly one value of type Int to be used for the operator ~.
+// TypeError 7743: (349-354): Wrong return parameters in operator definition. The function "gt" needs to return exactly one value of type bool to be used for the operator >.
+// TypeError 7743: (393-404): Wrong return parameters in operator definition. The function "lt" needs to return exactly one value of type bool to be used for the operator <.
