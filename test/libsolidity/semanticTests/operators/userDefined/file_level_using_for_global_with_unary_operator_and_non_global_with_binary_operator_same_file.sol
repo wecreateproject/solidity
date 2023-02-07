@@ -12,11 +12,11 @@ function unsub(Int a) pure returns (Int) {
 }
 
 contract C {
-    function test_sub() public returns (Int) {
+    function test_sub() public pure returns (Int) {
         return Int.wrap(7) - Int.wrap(2);
     }
 
-    function test_unsub() public returns (Int) {
+    function test_unsub() public pure returns (Int) {
         return -Int.wrap(4);
     }
 }
