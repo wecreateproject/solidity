@@ -1,6 +1,6 @@
 type Int is int16;
 
-using {keccak256 as +} for Int;
+using {keccak256 as +} for Int global;
 
 function keccak256(Int a, Int b) pure returns (Int) {
     return Int.wrap(Int.unwrap(a) + Int.unwrap(b));

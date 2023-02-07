@@ -1,5 +1,5 @@
 type Fixed is int128;
-using {add as +, mul as *} for Fixed;
+using {add as +, mul as *} for Fixed global;
 
 int constant MULTIPLIER = 10**18;
 
