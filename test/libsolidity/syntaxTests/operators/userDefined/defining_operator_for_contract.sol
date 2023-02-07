@@ -1,5 +1,5 @@
-using {fc as +} for C;
-using {fa as +} for A;
+using {fc as +} for C global;
+using {fa as +} for A global;
 
 function fc(C, C) pure returns (C) {}
 function fa(A, A) pure returns (A) {}

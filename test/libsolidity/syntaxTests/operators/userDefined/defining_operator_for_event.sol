@@ -1,4 +1,4 @@
-using {add as +} for C.Event;
+using {add as +} for C.Event global;
 
 contract C {
     event Event();

@@ -1,8 +1,8 @@
 type SmallInt is int;
 type BigInt is int;
 
-using {addSmall as +} for SmallInt;
-using {addBig as +} for BigInt;
+using {addSmall as +} for SmallInt global;
+using {addBig as +} for BigInt global;
 
 function addSmall(SmallInt a, SmallInt b) pure returns (SmallInt) {
     return SmallInt.wrap(SmallInt.unwrap(a) + SmallInt.unwrap(b));

@@ -1,4 +1,4 @@
-using {add as +} for E;
+using {add as +} for E global;
 
 enum E {
     E1,

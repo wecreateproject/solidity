@@ -4,7 +4,7 @@ using {
     add as +,
     sub as -,
     div as /
-} for Int;
+} for Int global;
 
 function add(Int) pure returns (Int) {}
 function sub(Int, Int, Int) pure returns (Int) {}

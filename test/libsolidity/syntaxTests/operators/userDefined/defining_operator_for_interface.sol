@@ -1,4 +1,4 @@
-using {f as +} for I;
+using {f as +} for I global;
 
 function f(I, I) pure returns (I) {}
 

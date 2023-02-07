@@ -1,6 +1,6 @@
 type Int is int16;
 
-using {add as +} for Int;
+using {add as +} for Int global;
 
 function add(Int, Int) returns (Int) {
     B b = new B();

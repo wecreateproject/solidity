@@ -1,6 +1,6 @@
 type Int is int;
 
-using {add as +} for Int;
+using {add as +} for Int global;
 
 function add(Int, Int) pure returns (Int) {}
 function another_add(Int, Int) pure returns (Int) {}
@@ -19,4 +19,4 @@ contract C is B {
     }
 }
 // ----
-// TypeError 5583: (230-255): User-defined binary operator + has more than one definition matching the operand types visible in the current scope.
+// TypeError 5583: (237-262): User-defined binary operator + has more than one definition matching the operand types visible in the current scope.

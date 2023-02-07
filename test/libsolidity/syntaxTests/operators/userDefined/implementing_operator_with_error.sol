@@ -1,6 +1,6 @@
 type Int is int16;
 
-using {IntError as +} for Int;
+using {IntError as +} for Int global;
 
 error IntError(Int a, Int b);
 // ----

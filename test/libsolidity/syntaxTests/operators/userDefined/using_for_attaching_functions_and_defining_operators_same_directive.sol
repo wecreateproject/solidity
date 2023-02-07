@@ -7,4 +7,4 @@ function attachedPure(AP, uint, address) pure {}
 function attachedView(AP) view {}
 function attached(AP, function(AP)) {}
 
-using {sub as -, attachedPure, attachedView, unsub as -, attached} for AP;
+using {sub as -, attachedPure, attachedView, unsub as -, attached} for AP global;

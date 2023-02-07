@@ -1,5 +1,5 @@
 type Uint is uint;
-using {unaryCountdown as ~, binaryCountdown as ^, eq as ==} for Uint;
+using {unaryCountdown as ~, binaryCountdown as ^, eq as ==} for Uint global;
 
 function unaryCountdown(Uint x) pure returns (Uint) {
     if (x == Uint.wrap(0))

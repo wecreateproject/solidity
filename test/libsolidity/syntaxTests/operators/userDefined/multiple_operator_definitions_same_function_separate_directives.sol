@@ -1,7 +1,7 @@
 type Int is int32;
 
-using {add as +} for Int;
-using {add as +} for Int;
+using {add as +} for Int global;
+using {add as +} for Int global;
 
 function add(Int, Int) pure returns(Int) {}
 

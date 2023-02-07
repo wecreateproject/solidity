@@ -18,6 +18,6 @@ function unsubL(L.FixedBytes, L.FixedBytes) pure returns (L.FixedBytes) {}
 function unsubC(C.FixedBytes, C.FixedBytes) pure returns (C.FixedBytes) {}
 function unsubI(I.FixedBytes, I.FixedBytes) pure returns (I.FixedBytes) {}
 
-using {addL as +, unsubL as -} for L.FixedBytes;
-using {addC as +, unsubC as -} for C.FixedBytes;
-using {addI as +, unsubI as -} for I.FixedBytes;
+using {addL as +, unsubL as -} for L.FixedBytes global;
+using {addC as +, unsubC as -} for C.FixedBytes global;
+using {addI as +, unsubI as -} for I.FixedBytes global;

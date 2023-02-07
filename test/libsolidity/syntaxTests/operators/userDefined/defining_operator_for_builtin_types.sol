@@ -1,8 +1,8 @@
-using {f as +} for uint;
-using {f as +} for uint[2];
-using {f as +} for mapping(uint => uint);
-using {f as +} for function (uint) pure returns (uint);
-using {f as +} for string;
+using {f as +} for uint global;
+using {f as +} for uint[2] global;
+using {f as +} for mapping(uint => uint) global;
+using {f as +} for function (uint) pure returns (uint) global;
+using {f as +} for string global;
 
 function f(uint, uint) pure returns (uint) {}
 // ----

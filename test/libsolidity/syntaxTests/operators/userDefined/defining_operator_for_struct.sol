@@ -1,4 +1,4 @@
-using {add as +} for S;
+using {add as +} for S global;
 
 struct S {
     uint x;

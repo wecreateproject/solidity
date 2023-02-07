@@ -1,5 +1,5 @@
-using {L.add as +} for A;
-using {L.add as +} for AP;
+using {L.add as +} for A global;
+using {L.add as +} for AP global;
 
 library L {
     function add(A, A) private pure returns (A) {}

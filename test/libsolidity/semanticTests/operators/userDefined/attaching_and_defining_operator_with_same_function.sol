@@ -1,6 +1,6 @@
 type Int is int16;
 
-using {add as +, add} for Int;
+using {add as +, add} for Int global;
 
 function add(Int _a, Int _b) pure returns (Int) {
     return Int.wrap(Int.unwrap(_a) + Int.unwrap(_b));

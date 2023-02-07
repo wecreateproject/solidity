@@ -1,6 +1,6 @@
 type Int is int;
 
-using {C.add as +} for Int;
+using {C.add as +} for Int global;
 
 contract C {
     function add(Int, Int) public pure returns (Int) {

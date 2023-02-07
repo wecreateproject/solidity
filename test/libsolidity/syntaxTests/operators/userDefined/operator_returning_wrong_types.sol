@@ -7,7 +7,7 @@ using {
     bitnot as ~,
     gt as >,
     lt as <
-} for Int;
+} for Int global;
 
 function add(Int x, Int y) pure returns (int256) {}
 function div(Int x, Int y) pure {}

@@ -2,7 +2,7 @@ type Int is uint;
 using {f} for Int;
 
 Int constant v;
-using {v.f as +} for Int;
+using {v.f as +} for Int global;
 
 function f(Int) pure returns (Int) {}
 // ----

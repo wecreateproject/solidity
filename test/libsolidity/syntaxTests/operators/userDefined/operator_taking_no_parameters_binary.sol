@@ -2,7 +2,7 @@ type Int is int;
 
 using {
     f as +
-} for Int;
+} for Int global;
 
 function f() returns (Int) {
     return Int.wrap(0);

@@ -1,6 +1,6 @@
 type Int is int16;
 
-using {add as +} for Int;
+using {add as +} for Int global;
 
 function add(Int, Int) pure returns (Int) {}
 
@@ -9,4 +9,4 @@ function f() {
     a.+(a);
 }
 // ----
-// ParserError 2314: (125-126): Expected identifier but got '+'
+// ParserError 2314: (132-133): Expected identifier but got '+'

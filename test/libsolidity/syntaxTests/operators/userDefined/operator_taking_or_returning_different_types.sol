@@ -5,7 +5,7 @@ using {
     sub as -,
     mul as *,
     div as /
-} for Int;
+} for Int global;
 
 function add(Int, int128) pure returns (Int) {}
 function sub(int128, Int) pure returns (int128) {}

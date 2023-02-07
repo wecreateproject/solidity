@@ -4,7 +4,7 @@ using {
     f as as,
     f as 123,
     f as ()
-} for int256;
+} for int256 global;
 // ----
 // ParserError 4403: (17-18): Not a user-definable operator: x. Only the following operators can be user-defined: |, &, ^, ~, +, -, *, /, %, ==, !=, <, >, <=, >=
 // ParserError 4403: (29-37): Not a user-definable operator: operator. Only the following operators can be user-defined: |, &, ^, ~, +, -, *, /, %, ==, !=, <, >, <=, >=

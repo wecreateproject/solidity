@@ -1,4 +1,4 @@
-using {add as +} for *;
+using {add as +} for * global;
 
 function add(int, int) returns (int) {}
 // ----

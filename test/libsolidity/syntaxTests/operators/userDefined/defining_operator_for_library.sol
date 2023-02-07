@@ -1,4 +1,4 @@
-using {f as +} for L;
+using {f as +} for L global;
 
 function f() pure {}
 library L {}

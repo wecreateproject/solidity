@@ -3,7 +3,7 @@ using {
     bitor as |, bitand as &, bitxor as ^, bitnot as ~,
     add as +, sub as -, unsub as -, mul as *, div as /, mod as %,
     eq as ==, noteq as !=, lt as <, gt as >, leq as <=, geq as >=
-} for Int;
+} for Int global;
 
 function bitor(Int x, Int y) pure returns (Int) { return Int.wrap(Int.unwrap(x) | Int.unwrap(y)); }
 function bitand(Int x, Int y) pure returns (Int) { return Int.wrap(Int.unwrap(x) & Int.unwrap(y)); }

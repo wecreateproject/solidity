@@ -1,6 +1,6 @@
 type Int is int16;
 
-using {add as +} for Int;
+using {add as +} for Int global;
 
 function add(Int, Int) pure returns (Int) {
     return b.f();
@@ -16,4 +16,4 @@ contract C {
     }
 }
 // ----
-// DeclarationError 7576: (102-103): Undeclared identifier.
+// DeclarationError 7576: (109-110): Undeclared identifier.

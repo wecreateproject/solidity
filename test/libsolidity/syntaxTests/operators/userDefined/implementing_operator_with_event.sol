@@ -1,6 +1,6 @@
 type Int is int16;
 
-using {C.IntEvent as +} for Int;
+using {C.IntEvent as +} for Int global;
 
 contract C {
     event IntEvent(Int a, Int b);

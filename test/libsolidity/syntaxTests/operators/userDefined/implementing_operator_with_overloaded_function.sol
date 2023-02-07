@@ -1,5 +1,5 @@
-using {add as +} for A;
-using {add as +} for AP;
+using {add as +} for A global;
+using {add as +} for AP global;
 
 function add(A, A) pure returns (A) {}
 function add(AP, AP) pure returns (AP) {}

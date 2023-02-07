@@ -20,7 +20,7 @@ using {
     f as %=,
     f as ++,
     f as --
-} for int256;
+} for int256 global;
 // ----
 // ParserError 4403: (17-20): Not a user-definable operator: new. Only the following operators can be user-defined: |, &, ^, ~, +, -, *, /, %, ==, !=, <, >, <=, >=
 // ParserError 4403: (31-37): Not a user-definable operator: delete. Only the following operators can be user-defined: |, &, ^, ~, +, -, *, /, %, ==, !=, <, >, <=, >=

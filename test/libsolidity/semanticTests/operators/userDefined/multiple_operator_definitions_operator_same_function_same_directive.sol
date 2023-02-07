@@ -1,6 +1,6 @@
 type Int is int32;
 
-using {foo as +, foo as -} for Int;
+using {foo as +, foo as -} for Int global;
 
 function foo(Int a, Int b) pure returns(Int) {
     return Int.wrap(Int.unwrap(a) + Int.unwrap(b));

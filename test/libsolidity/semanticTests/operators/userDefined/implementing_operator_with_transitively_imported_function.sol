@@ -12,7 +12,7 @@ import "a.sol" as a;
 import "b.sol" as b;
 
 contract C {
-    using {b.a.add as +} for b.a.L.Int;
+    using {b.a.add as +} for b.a.L.Int global;
 
     function f() pure public returns (b.a.L.Int) {
         return b.a.L.Int.wrap(0) + b.a.L.Int.wrap(0);

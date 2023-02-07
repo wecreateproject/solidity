@@ -5,8 +5,8 @@ library L {
     function unaryOperator(Int) private pure returns (Int) {}
 }
 
-using {L.binaryOperator as +} for Int;
-using {L.unaryOperator as -} for Int;
+using {L.binaryOperator as +} for Int global;
+using {L.unaryOperator as -} for Int global;
 
 contract C {
     using {L.binaryOperator as *} for Int;
@@ -20,13 +20,13 @@ library X {
 // ----
 // TypeError 6772: (173-189): Function "L.binaryOperator" is private and therefore cannot be attached to a type outside of the library where it is defined.
 // TypeError 7775: (173-189): Only pure free functions can be used to define operators.
-// TypeError 6772: (212-227): Function "L.unaryOperator" is private and therefore cannot be attached to a type outside of the library where it is defined.
-// TypeError 7775: (212-227): Only pure free functions can be used to define operators.
-// TypeError 6772: (268-284): Function "L.binaryOperator" is private and therefore cannot be attached to a type outside of the library where it is defined.
-// TypeError 7775: (268-284): Only pure free functions can be used to define operators.
-// TypeError 6772: (311-326): Function "L.unaryOperator" is private and therefore cannot be attached to a type outside of the library where it is defined.
-// TypeError 7775: (311-326): Only pure free functions can be used to define operators.
-// TypeError 6772: (368-384): Function "L.binaryOperator" is private and therefore cannot be attached to a type outside of the library where it is defined.
-// TypeError 7775: (368-384): Only pure free functions can be used to define operators.
-// TypeError 6772: (411-426): Function "L.unaryOperator" is private and therefore cannot be attached to a type outside of the library where it is defined.
-// TypeError 7775: (411-426): Only pure free functions can be used to define operators.
+// TypeError 6772: (219-234): Function "L.unaryOperator" is private and therefore cannot be attached to a type outside of the library where it is defined.
+// TypeError 7775: (219-234): Only pure free functions can be used to define operators.
+// TypeError 6772: (282-298): Function "L.binaryOperator" is private and therefore cannot be attached to a type outside of the library where it is defined.
+// TypeError 7775: (282-298): Only pure free functions can be used to define operators.
+// TypeError 6772: (325-340): Function "L.unaryOperator" is private and therefore cannot be attached to a type outside of the library where it is defined.
+// TypeError 7775: (325-340): Only pure free functions can be used to define operators.
+// TypeError 6772: (382-398): Function "L.binaryOperator" is private and therefore cannot be attached to a type outside of the library where it is defined.
+// TypeError 7775: (382-398): Only pure free functions can be used to define operators.
+// TypeError 6772: (425-440): Function "L.unaryOperator" is private and therefore cannot be attached to a type outside of the library where it is defined.
+// TypeError 7775: (425-440): Only pure free functions can be used to define operators.

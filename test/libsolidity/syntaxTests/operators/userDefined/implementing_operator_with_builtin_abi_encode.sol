@@ -1,6 +1,6 @@
 type Int is int16;
 
-using {abi.encode as +} for Int;
+using {abi.encode as +} for Int global;
 
 function f(Int, Int) pure returns (Int) {}
 

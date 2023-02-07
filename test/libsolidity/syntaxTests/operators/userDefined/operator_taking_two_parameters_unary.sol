@@ -1,6 +1,6 @@
 type Int is int128;
 
-using {bitnot as ~} for Int;
+using {bitnot as ~} for Int global;
 
 function bitnot(Int, Int) pure returns (Int) {}
 
