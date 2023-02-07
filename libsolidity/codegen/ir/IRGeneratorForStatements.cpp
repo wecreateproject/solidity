@@ -688,6 +688,7 @@ bool IRGeneratorForStatements::visit(UnaryOperation const& _unaryOperation)
 		string argument = expressionAsType(_unaryOperation.subExpression(), *function->parameters()[0]->type());
 		solAssert(!argument.empty());
 
+		solAssert(_unaryOperation.userDefinedFunctionType()->kind() == FunctionType::Kind::Internal);
 		define(_unaryOperation) <<
 			m_context.enqueueFunctionForCodeGeneration(*function) <<
 			("(" + argument + ")\n");
@@ -815,6 +816,7 @@ bool IRGeneratorForStatements::visit(BinaryOperation const& _binOp)
 		string right = expressionAsType(_binOp.rightExpression(), *function->parameters()[1]->type());
 		solAssert(!left.empty() && !right.empty());
 
+		solAssert(_binOp.userDefinedFunctionType()->kind() == FunctionType::Kind::Internal);
 		define(_binOp) <<
 			m_context.enqueueFunctionForCodeGeneration(*function) <<
 			("(" + left + ", " + right + ")\n");

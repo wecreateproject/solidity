@@ -420,6 +420,7 @@ bool ExpressionCompiler::visit(UnaryOperation const& _unaryOperation)
 		solAssert(functionType);
 		solAssert(functionType->parameterTypes().size() == 1);
 		solAssert(functionType->returnParameterTypes().size() == 1);
+		solAssert(functionType->kind() == FunctionType::Kind::Internal);
 
 		evmasm::AssemblyItem returnLabel = m_context.pushNewTag();
 		acceptAndConvert(_unaryOperation.subExpression(), *functionType->parameterTypes()[0]);
@@ -538,6 +539,7 @@ bool ExpressionCompiler::visit(BinaryOperation const& _binaryOperation)
 		solAssert(functionType);
 		solAssert(functionType->parameterTypes().size() == 2);
 		solAssert(functionType->returnParameterTypes().size() == 1);
+		solAssert(functionType->kind() == FunctionType::Kind::Internal);
 
 		evmasm::AssemblyItem returnLabel = m_context.pushNewTag();
 		acceptAndConvert(leftExpression, *functionType->parameterTypes()[0]);
