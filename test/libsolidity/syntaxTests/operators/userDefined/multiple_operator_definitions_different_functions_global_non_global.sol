@@ -17,3 +17,6 @@ function testBinary() pure returns (Int) {
 function testUnary() pure returns (Int) {
     return -Int.wrap(2);
 }
+// ----
+// TypeError 5583: (374-399): User-defined binary operator + has more than one definition matching the operand types visible in the current scope.
+// TypeError 4705: (457-469): User-defined unary operator - has more than one definition matching the operand type visible in the current scope.

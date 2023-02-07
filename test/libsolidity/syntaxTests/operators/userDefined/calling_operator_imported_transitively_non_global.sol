@@ -28,3 +28,4 @@ contract C {
 }
 // ----
 // TypeError 2271: (s3.sol:81-106): Built-in binary operator + cannot be applied to types Int and Int. No matching user-defined operator found.
+// TypeError 4907: (s3.sol:116-128): Built-in unary operator - cannot be applied to type Int. No matching user-defined operator found.
