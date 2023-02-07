@@ -1,6 +1,6 @@
 type A is address;
 
-using {add as +} for A;
+using {add as +} for A global;
 
 function add(A a, A b) pure returns (A) {
     return A.wrap(address(uint160(A.unwrap(a)) + uint160(A.unwrap(b))));
