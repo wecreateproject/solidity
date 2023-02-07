@@ -70,3 +70,24 @@ library X {
     using {L.binaryOperator as *} for Int;
     using {L.unaryOperator as ~} for Int;
 }
+// ----
+// TypeError 7775: (external.sol:177-193): Only pure free functions can be used to define operators.
+// TypeError 7775: (external.sol:220-235): Only pure free functions can be used to define operators.
+// TypeError 7775: (external.sol:278-294): Only pure free functions can be used to define operators.
+// TypeError 7775: (external.sol:321-336): Only pure free functions can be used to define operators.
+// TypeError 7775: (external.sol:378-394): Only pure free functions can be used to define operators.
+// TypeError 7775: (external.sol:421-436): Only pure free functions can be used to define operators.
+// TypeError 7775: (internal.sol:177-193): Only pure free functions can be used to define operators.
+// TypeError 7775: (internal.sol:220-235): Only pure free functions can be used to define operators.
+// TypeError 7775: (internal.sol:278-294): Only pure free functions can be used to define operators.
+// TypeError 7775: (internal.sol:321-336): Only pure free functions can be used to define operators.
+// TypeError 7775: (internal.sol:378-394): Only pure free functions can be used to define operators.
+// TypeError 7775: (internal.sol:421-436): Only pure free functions can be used to define operators.
+// TypeError 7775: (private.sol:175-191): Only pure free functions can be used to define operators.
+// TypeError 7775: (private.sol:218-233): Only pure free functions can be used to define operators.
+// TypeError 7775: (public.sol:173-189): Only pure free functions can be used to define operators.
+// TypeError 7775: (public.sol:216-231): Only pure free functions can be used to define operators.
+// TypeError 7775: (public.sol:274-290): Only pure free functions can be used to define operators.
+// TypeError 7775: (public.sol:317-332): Only pure free functions can be used to define operators.
+// TypeError 7775: (public.sol:374-390): Only pure free functions can be used to define operators.
+// TypeError 7775: (public.sol:417-432): Only pure free functions can be used to define operators.
