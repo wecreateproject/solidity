@@ -1,8 +1,8 @@
 type X is uint24;
 type Y is uint16;
 
-using {addX as +} for X;
-using {addY as +} for Y;
+using {addX as +} for X global;
+using {addY as +} for Y global;
 
 function addX(X, X) pure returns (X) {}
 function addY(Y, Y) pure returns (Y) { revert(); }

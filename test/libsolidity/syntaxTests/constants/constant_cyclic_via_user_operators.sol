@@ -1,5 +1,5 @@
 type Type is uint;
-using {f as +} for Type;
+using {f as +} for Type global;
 function f(Type, Type) pure returns (Type) {}
 
 Type constant t = Type.wrap(1);
