@@ -9,4 +9,5 @@ function test() {
     Int.wrap(0) + Int.wrap(1);
 }
 // ----
-// TypeError 5583: (179-204): User-defined binary operator + has more than one definition matching the operand types visible in the current scope.
+// TypeError 4705: (29-32): User-defined binary operator + has more than one definition matching the operand type visible in the current scope.
+// TypeError 4705: (39-42): User-defined binary operator + has more than one definition matching the operand type visible in the current scope.

@@ -18,7 +18,9 @@ function testUnary() pure returns (Int) {
     return -Int.wrap(2);
 }
 // ----
+// TypeError 4705: (25-28): User-defined binary operator + has more than one definition matching the operand type visible in the current scope.
 // TypeError 3320: (58-62): Operators can only be defined in a global 'using for' directive.
+// TypeError 4705: (58-62): User-defined binary operator + has more than one definition matching the operand type visible in the current scope.
+// TypeError 4705: (85-90): User-defined unary operator - has more than one definition matching the operand type visible in the current scope.
 // TypeError 3320: (120-126): Operators can only be defined in a global 'using for' directive.
-// TypeError 5583: (374-399): User-defined binary operator + has more than one definition matching the operand types visible in the current scope.
-// TypeError 4705: (457-469): User-defined unary operator - has more than one definition matching the operand type visible in the current scope.
+// TypeError 4705: (120-126): User-defined unary operator - has more than one definition matching the operand type visible in the current scope.
