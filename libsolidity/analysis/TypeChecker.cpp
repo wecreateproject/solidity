@@ -1752,7 +1752,10 @@ bool TypeChecker::visit(UnaryOperation const& _operation)
 		resultType = builtinResult;
 	else if (!matchingDefinitions.empty())
 	{
-		solAssert(matchingDefinitions.size() == 1);
+		// This is checked along with `using for` directive but the error is not fatal.
+		if (matchingDefinitions.size() != 1)
+			solAssert(m_errorReporter.hasErrors());
+
 		operatorDefinition = *matchingDefinitions.begin();
 	}
 	else
@@ -1815,7 +1818,10 @@ void TypeChecker::endVisit(BinaryOperation const& _operation)
 		commonType = builtinResult.get();
 	else if (!matchingDefinitions.empty())
 	{
-		solAssert(matchingDefinitions.size() == 1);
+		// This is checked along with `using for` directive but the error is not fatal.
+		if (matchingDefinitions.size() != 1)
+			solAssert(m_errorReporter.hasErrors());
+
 		operatorDefinition = *matchingDefinitions.begin();
 
 		// Set common type to the type used in the `using for` directive.
