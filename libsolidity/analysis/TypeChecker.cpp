@@ -4019,7 +4019,7 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 					result.message().empty() ? "." : ": " +  result.message()
 				)
 			);
-		else if (operator_)
+		else if (operator_.has_value())
 		{
 			if (!_usingFor.global())
 			{
@@ -4058,10 +4058,10 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 				);
 
 			bool identicalFirstTwoParameters = (parameterCount < 2 || *parameterTypes.at(0) == *parameterTypes.at(1));
-			bool isUnaryOnlyOperator = (!TokenTraits::isBinaryOp(*operator_) && TokenTraits::isUnaryOp(*operator_));
+			bool isUnaryOnlyOperator = (!TokenTraits::isBinaryOp(operator_.value()) && TokenTraits::isUnaryOp(operator_.value()));
 			bool isBinaryOnlyOperator =
-				(TokenTraits::isBinaryOp(*operator_) && !TokenTraits::isUnaryOp(*operator_)) ||
-				*operator_ == Token::Add;
+				(TokenTraits::isBinaryOp(operator_.value()) && !TokenTraits::isUnaryOp(operator_.value())) ||
+				operator_.value() == Token::Add;
 			bool firstParameterMatchesUsingFor = parameterCount == 0 || *usingForType == *parameterTypes.front();
 
 			optional<string> wrongParametersMessage;
@@ -4085,7 +4085,7 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 						"The function \"{}\" needs to have {} to be used for the operator {}.",
 						joinHumanReadable(path->path(), "."),
 						wrongParametersMessage.value(),
-						TokenTraits::friendlyName(*operator_)
+						TokenTraits::friendlyName(operator_.value())
 					)
 				);
 
@@ -4096,7 +4096,7 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 			size_t const returnParameterCount = returnParameterTypes.size();
 
 			optional<string> wrongReturnParametersMessage;
-			if (!TokenTraits::isCompareOp(*operator_) && *operator_ != Token::Not)
+			if (!TokenTraits::isCompareOp(operator_.value()) && operator_.value() != Token::Not)
 			{
 				if (returnParameterCount != 1 || *usingForType != *returnParameterTypes.front())
 					wrongReturnParametersMessage = "exactly one value of type " + usingForType->canonicalName();
@@ -4120,7 +4120,7 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 						"The function \"{}\" needs to return {} to be used for the operator {}.",
 						joinHumanReadable(path->path(), "."),
 						wrongReturnParametersMessage.value(),
-						TokenTraits::friendlyName(*operator_)
+						TokenTraits::friendlyName(operator_.value())
 					)
 				);
 		}
