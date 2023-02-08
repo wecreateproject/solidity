@@ -14,4 +14,4 @@ contract C {
     }
 }
 // ----
-// Warning 5740: (273-301): Unreachable code.
+// Warning 5740: (287-315): Unreachable code.

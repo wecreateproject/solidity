@@ -16,4 +16,5 @@ function h() {
     Int.wrap(0) + Int.wrap(1);
 }
 // ----
-// Warning 2018: (178-225): Function state mutability can be restricted to pure
+// Warning 2018: (154-206): Function state mutability can be restricted to pure
+// Warning 2018: (208-255): Function state mutability can be restricted to pure
