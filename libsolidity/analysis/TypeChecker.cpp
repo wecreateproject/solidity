@@ -1752,24 +1752,8 @@ bool TypeChecker::visit(UnaryOperation const& _operation)
 		resultType = builtinResult;
 	else if (!matchingDefinitions.empty())
 	{
-		if (matchingDefinitions.size() >= 2)
-		{
-			SecondarySourceLocation secondaryLocation;
-			for (FunctionDefinition const* definition: matchingDefinitions)
-				secondaryLocation.append("Candidate definition:", definition->location());
-
-			m_errorReporter.typeError(
-				4705_error,
-				_operation.location(),
-				secondaryLocation,
-				fmt::format(
-					"User-defined unary operator {} has more than one definition matching the operand type visible in the current scope.",
-					TokenTraits::toString(op)
-				)
-			);
-		}
-		else
-			operatorDefinition = *matchingDefinitions.begin();
+		solAssert(matchingDefinitions.size() == 1);
+		operatorDefinition = *matchingDefinitions.begin();
 	}
 	else
 	{
@@ -1831,24 +1815,8 @@ void TypeChecker::endVisit(BinaryOperation const& _operation)
 		commonType = builtinResult.get();
 	else if (!matchingDefinitions.empty())
 	{
-		if (matchingDefinitions.size() >= 2)
-		{
-			SecondarySourceLocation secondaryLocation;
-			for (FunctionDefinition const* definition: matchingDefinitions)
-				secondaryLocation.append("Candidate definition:", definition->location());
-
-			m_errorReporter.typeError(
-				5583_error,
-				_operation.location(),
-				secondaryLocation,
-				fmt::format(
-					"User-defined binary operator {} has more than one definition matching the operand types visible in the current scope.",
-					TokenTraits::toString(_operation.getOperator())
-				)
-			);
-		}
-		else
-			operatorDefinition = *matchingDefinitions.begin();
+		solAssert(matchingDefinitions.size() == 1);
+		operatorDefinition = *matchingDefinitions.begin();
 
 		// Set common type to the type used in the `using for` directive.
 		commonType = leftType;
@@ -4123,6 +4091,36 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 						TokenTraits::friendlyName(operator_.value())
 					)
 				);
+
+			if (parameterCount != 1 && parameterCount != 2)
+				solAssert(m_errorReporter.hasErrors());
+			else
+			{
+				// NOTE: This would be more efficient if we could store information about available operators in the type.
+				set<FunctionDefinition const*, ASTNode::CompareByID> matchingDefinitions = usingForType->operatorDefinitions(
+					operator_.value(),
+					*currentDefinitionScope(),
+					parameterCount == 1 // _unary
+				);
+
+				if (matchingDefinitions.size() >= 2)
+				{
+					SecondarySourceLocation secondaryLocation;
+					for (FunctionDefinition const* definition: matchingDefinitions)
+						secondaryLocation.append("Candidate definition:", definition->location());
+
+					m_errorReporter.typeError(
+						4705_error,
+						path->location(),
+						secondaryLocation,
+						fmt::format(
+							"User-defined {} operator {} has more than one definition matching the operand type visible in the current scope.",
+							parameterCount == 1 ? "unary" : "binary",
+							TokenTraits::toString(operator_.value())
+						)
+					);
+				}
+			}
 		}
 	}
 }
