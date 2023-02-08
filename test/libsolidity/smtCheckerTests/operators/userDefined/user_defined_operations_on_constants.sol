@@ -60,45 +60,45 @@ contract C {
 // ====
 // SMTEngine: all
 // ----
-// Warning 6756: (2012-2021): User-defined operators are not yet supported by SMTChecker. This invocation of operator | has been ignored, which may lead to incorrect results.
-// Warning 6756: (2012-2030): User-defined operators are not yet supported by SMTChecker. This invocation of operator == has been ignored, which may lead to incorrect results.
-// Warning 6756: (2070-2081): User-defined operators are not yet supported by SMTChecker. This invocation of operator & has been ignored, which may lead to incorrect results.
-// Warning 6756: (2070-2089): User-defined operators are not yet supported by SMTChecker. This invocation of operator == has been ignored, which may lead to incorrect results.
-// Warning 6756: (2129-2138): User-defined operators are not yet supported by SMTChecker. This invocation of operator ^ has been ignored, which may lead to incorrect results.
-// Warning 6756: (2129-2146): User-defined operators are not yet supported by SMTChecker. This invocation of operator == has been ignored, which may lead to incorrect results.
-// Warning 6156: (2186-2190): User-defined operators are not yet supported by SMTChecker. This invocation of operator ~ has been ignored, which may lead to incorrect results.
-// Warning 6756: (2186-2203): User-defined operators are not yet supported by SMTChecker. This invocation of operator == has been ignored, which may lead to incorrect results.
-// Warning 6756: (2294-2303): User-defined operators are not yet supported by SMTChecker. This invocation of operator + has been ignored, which may lead to incorrect results.
-// Warning 6756: (2294-2311): User-defined operators are not yet supported by SMTChecker. This invocation of operator == has been ignored, which may lead to incorrect results.
-// Warning 6756: (2351-2360): User-defined operators are not yet supported by SMTChecker. This invocation of operator - has been ignored, which may lead to incorrect results.
-// Warning 6756: (2351-2368): User-defined operators are not yet supported by SMTChecker. This invocation of operator == has been ignored, which may lead to incorrect results.
-// Warning 6156: (2408-2412): User-defined operators are not yet supported by SMTChecker. This invocation of operator - has been ignored, which may lead to incorrect results.
-// Warning 6756: (2408-2425): User-defined operators are not yet supported by SMTChecker. This invocation of operator == has been ignored, which may lead to incorrect results.
-// Warning 6756: (2465-2474): User-defined operators are not yet supported by SMTChecker. This invocation of operator * has been ignored, which may lead to incorrect results.
-// Warning 6756: (2465-2482): User-defined operators are not yet supported by SMTChecker. This invocation of operator == has been ignored, which may lead to incorrect results.
-// Warning 6756: (2522-2531): User-defined operators are not yet supported by SMTChecker. This invocation of operator / has been ignored, which may lead to incorrect results.
-// Warning 6756: (2522-2538): User-defined operators are not yet supported by SMTChecker. This invocation of operator == has been ignored, which may lead to incorrect results.
-// Warning 6756: (2578-2587): User-defined operators are not yet supported by SMTChecker. This invocation of operator % has been ignored, which may lead to incorrect results.
-// Warning 6756: (2578-2595): User-defined operators are not yet supported by SMTChecker. This invocation of operator == has been ignored, which may lead to incorrect results.
-// Warning 6756: (2686-2696): User-defined operators are not yet supported by SMTChecker. This invocation of operator == has been ignored, which may lead to incorrect results.
-// Warning 6756: (2738-2748): User-defined operators are not yet supported by SMTChecker. This invocation of operator != has been ignored, which may lead to incorrect results.
-// Warning 6756: (2791-2800): User-defined operators are not yet supported by SMTChecker. This invocation of operator < has been ignored, which may lead to incorrect results.
-// Warning 6756: (2843-2852): User-defined operators are not yet supported by SMTChecker. This invocation of operator > has been ignored, which may lead to incorrect results.
-// Warning 6756: (2893-2903): User-defined operators are not yet supported by SMTChecker. This invocation of operator <= has been ignored, which may lead to incorrect results.
-// Warning 6756: (2943-2953): User-defined operators are not yet supported by SMTChecker. This invocation of operator >= has been ignored, which may lead to incorrect results.
-// Warning 6328: (2005-2031): CHC: Assertion violation happens here.
-// Warning 6328: (2063-2090): CHC: Assertion violation happens here.
-// Warning 6328: (2122-2147): CHC: Assertion violation happens here.
-// Warning 6328: (2179-2204): CHC: Assertion violation happens here.
-// Warning 6328: (2287-2312): CHC: Assertion violation happens here.
-// Warning 6328: (2344-2369): CHC: Assertion violation happens here.
-// Warning 6328: (2401-2426): CHC: Assertion violation happens here.
-// Warning 6328: (2458-2483): CHC: Assertion violation happens here.
-// Warning 6328: (2515-2539): CHC: Assertion violation happens here.
-// Warning 6328: (2571-2596): CHC: Assertion violation happens here.
-// Warning 6328: (2679-2697): CHC: Assertion violation happens here.
-// Warning 6328: (2729-2750): CHC: Assertion violation happens here.
-// Warning 6328: (2782-2802): CHC: Assertion violation happens here.
-// Warning 6328: (2834-2854): CHC: Assertion violation happens here.
-// Warning 6328: (2886-2904): CHC: Assertion violation happens here.
-// Warning 6328: (2936-2954): CHC: Assertion violation happens here.
+// Warning 6756: (2019-2028): User-defined operators are not yet supported by SMTChecker. This invocation of operator | has been ignored, which may lead to incorrect results.
+// Warning 6756: (2019-2037): User-defined operators are not yet supported by SMTChecker. This invocation of operator == has been ignored, which may lead to incorrect results.
+// Warning 6756: (2077-2088): User-defined operators are not yet supported by SMTChecker. This invocation of operator & has been ignored, which may lead to incorrect results.
+// Warning 6756: (2077-2096): User-defined operators are not yet supported by SMTChecker. This invocation of operator == has been ignored, which may lead to incorrect results.
+// Warning 6756: (2136-2145): User-defined operators are not yet supported by SMTChecker. This invocation of operator ^ has been ignored, which may lead to incorrect results.
+// Warning 6756: (2136-2153): User-defined operators are not yet supported by SMTChecker. This invocation of operator == has been ignored, which may lead to incorrect results.
+// Warning 6156: (2193-2197): User-defined operators are not yet supported by SMTChecker. This invocation of operator ~ has been ignored, which may lead to incorrect results.
+// Warning 6756: (2193-2210): User-defined operators are not yet supported by SMTChecker. This invocation of operator == has been ignored, which may lead to incorrect results.
+// Warning 6756: (2301-2310): User-defined operators are not yet supported by SMTChecker. This invocation of operator + has been ignored, which may lead to incorrect results.
+// Warning 6756: (2301-2318): User-defined operators are not yet supported by SMTChecker. This invocation of operator == has been ignored, which may lead to incorrect results.
+// Warning 6756: (2358-2367): User-defined operators are not yet supported by SMTChecker. This invocation of operator - has been ignored, which may lead to incorrect results.
+// Warning 6756: (2358-2375): User-defined operators are not yet supported by SMTChecker. This invocation of operator == has been ignored, which may lead to incorrect results.
+// Warning 6156: (2415-2419): User-defined operators are not yet supported by SMTChecker. This invocation of operator - has been ignored, which may lead to incorrect results.
+// Warning 6756: (2415-2432): User-defined operators are not yet supported by SMTChecker. This invocation of operator == has been ignored, which may lead to incorrect results.
+// Warning 6756: (2472-2481): User-defined operators are not yet supported by SMTChecker. This invocation of operator * has been ignored, which may lead to incorrect results.
+// Warning 6756: (2472-2489): User-defined operators are not yet supported by SMTChecker. This invocation of operator == has been ignored, which may lead to incorrect results.
+// Warning 6756: (2529-2538): User-defined operators are not yet supported by SMTChecker. This invocation of operator / has been ignored, which may lead to incorrect results.
+// Warning 6756: (2529-2545): User-defined operators are not yet supported by SMTChecker. This invocation of operator == has been ignored, which may lead to incorrect results.
+// Warning 6756: (2585-2594): User-defined operators are not yet supported by SMTChecker. This invocation of operator % has been ignored, which may lead to incorrect results.
+// Warning 6756: (2585-2602): User-defined operators are not yet supported by SMTChecker. This invocation of operator == has been ignored, which may lead to incorrect results.
+// Warning 6756: (2693-2703): User-defined operators are not yet supported by SMTChecker. This invocation of operator == has been ignored, which may lead to incorrect results.
+// Warning 6756: (2745-2755): User-defined operators are not yet supported by SMTChecker. This invocation of operator != has been ignored, which may lead to incorrect results.
+// Warning 6756: (2798-2807): User-defined operators are not yet supported by SMTChecker. This invocation of operator < has been ignored, which may lead to incorrect results.
+// Warning 6756: (2850-2859): User-defined operators are not yet supported by SMTChecker. This invocation of operator > has been ignored, which may lead to incorrect results.
+// Warning 6756: (2900-2910): User-defined operators are not yet supported by SMTChecker. This invocation of operator <= has been ignored, which may lead to incorrect results.
+// Warning 6756: (2950-2960): User-defined operators are not yet supported by SMTChecker. This invocation of operator >= has been ignored, which may lead to incorrect results.
+// Warning 6328: (2012-2038): CHC: Assertion violation happens here.
+// Warning 6328: (2070-2097): CHC: Assertion violation happens here.
+// Warning 6328: (2129-2154): CHC: Assertion violation happens here.
+// Warning 6328: (2186-2211): CHC: Assertion violation happens here.
+// Warning 6328: (2294-2319): CHC: Assertion violation happens here.
+// Warning 6328: (2351-2376): CHC: Assertion violation happens here.
+// Warning 6328: (2408-2433): CHC: Assertion violation happens here.
+// Warning 6328: (2465-2490): CHC: Assertion violation happens here.
+// Warning 6328: (2522-2546): CHC: Assertion violation happens here.
+// Warning 6328: (2578-2603): CHC: Assertion violation happens here.
+// Warning 6328: (2686-2704): CHC: Assertion violation happens here.
+// Warning 6328: (2736-2757): CHC: Assertion violation happens here.
+// Warning 6328: (2789-2809): CHC: Assertion violation happens here.
+// Warning 6328: (2841-2861): CHC: Assertion violation happens here.
+// Warning 6328: (2893-2911): CHC: Assertion violation happens here.
+// Warning 6328: (2943-2961): CHC: Assertion violation happens here.

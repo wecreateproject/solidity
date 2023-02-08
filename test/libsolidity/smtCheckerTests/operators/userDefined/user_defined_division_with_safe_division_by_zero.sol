@@ -16,4 +16,4 @@ contract C {
 // ====
 // SMTEngine: all
 // ----
-// Warning 6756: (264-269): User-defined operators are not yet supported by SMTChecker. This invocation of operator / has been ignored, which may lead to incorrect results.
+// Warning 6756: (271-276): User-defined operators are not yet supported by SMTChecker. This invocation of operator / has been ignored, which may lead to incorrect results.
