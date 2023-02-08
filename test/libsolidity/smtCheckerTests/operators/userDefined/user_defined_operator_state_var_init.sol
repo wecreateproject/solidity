@@ -1,5 +1,5 @@
 type U is uint;
-using {L.add as +} for U;
+using {L.add as +} for U global;
 
 library L {
     using {gt as >} for U;

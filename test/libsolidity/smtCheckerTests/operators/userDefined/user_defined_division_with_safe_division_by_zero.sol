@@ -1,5 +1,5 @@
 type U is uint;
-using {div as /} for U;
+using {div as /} for U global;
 
 function div(U x, U y) pure returns (U) {
     if (U.unwrap(y) == 0)

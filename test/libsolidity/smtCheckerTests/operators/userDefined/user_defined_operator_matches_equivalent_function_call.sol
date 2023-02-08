@@ -3,7 +3,7 @@ using {
     bitor as |, bitand as &, bitxor as ^, bitnot as ~,
     add as +, sub as -, unsub as -, mul as *, div as /, mod as %,
     eq as ==, noteq as !=, lt as <, gt as >, leq as <=, geq as >=
-} for I16;
+} for I16 global;
 
 function bitor(I16 x, I16 y) pure returns (I16) { return I16.wrap(I16.unwrap(x) | I16.unwrap(y)); }
 function bitand(I16 x, I16 y) pure returns (I16) { return I16.wrap(I16.unwrap(x) & I16.unwrap(y)); }
