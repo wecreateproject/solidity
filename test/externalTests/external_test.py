@@ -27,8 +27,6 @@ import subprocess
 from shutil import which, copyfile, copytree, rmtree
 from argparse import ArgumentParser
 
-import json
-from string import Template
 from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple
@@ -49,63 +47,31 @@ AVAILABLE_PRESETS: Tuple[str] = (
     "ir-optimize-evm+yul"
 )
 
-# TODO: add extra compiler settings and set default values
-compiler_input_tmpl = Template("""
-{
-    "optimizer": {
-        "enabled": ${optimizer},
-        "details": {
-            "yul": ${yul}
-        }
-    },
-    "evmVersion": \"${evm_version}\",
-    "viaIR": ${via_ir}
-}""")
-
+def compiler_settings(evm_version, via_ir = "false", optimizer = "false", yul = "false") -> Dict:
+    return {
+        "optimizer": {
+            "enabled": optimizer,
+            "details": {
+                "yul": yul
+            }
+        },
+        "evmVersion": evm_version,
+        "viaIR": via_ir
+    }
 
 def settings_from_preset(preset, evm_version) -> Dict:
     if preset not in AVAILABLE_PRESETS:
         raise RuntimeError(
             f"Preset \"{preset}\" not found. Please select one or more of the available presets:\n{' '.join(map(str, AVAILABLE_PRESETS))}")
     switch = {
-        "legacy-no-optimize": compiler_input_tmpl.substitute(
-            evm_version=evm_version,
-            via_ir="false",
-            optimizer="false",
-            yul="false"
-        ),
-        "ir-no-optimize": compiler_input_tmpl.substitute(
-            evm_version=evm_version,
-            via_ir="true",
-            optimizer="false",
-            yul="false"
-        ),
-        "legacy-optimize-evm-only": compiler_input_tmpl.substitute(
-            evm_version=evm_version,
-            via_ir="false",
-            optimizer="true",
-            yul="false"
-        ),
-        "ir-optimize-evm-only": compiler_input_tmpl.substitute(
-            evm_version=evm_version,
-            via_ir="true",
-            optimizer="true",
-            yul="false"
-        ),
-        "legacy-optimize-evm+yul": compiler_input_tmpl.substitute(
-            evm_version=evm_version,
-            via_ir="false",
-            optimizer="true",
-            yul="true"
-        ),
-        "ir-optimize-evm+yul": compiler_input_tmpl.substitute(
-            evm_version=evm_version,
-            via_ir="true",
-            optimizer="true",
-            yul="true"
-        )
+        "legacy-no-optimize": compiler_settings(evm_version),
+        "ir-no-optimize": compiler_settings(evm_version, via_ir="true"),
+        "legacy-optimize-evm-only": compiler_settings(evm_version, optimizer="true"),
+        "ir-optimize-evm-only": compiler_settings(evm_version, via_ir="true", optimizer="true"),
+        "legacy-optimize-evm+yul": compiler_settings(evm_version, optimizer="true", yul="true"),
+        "ir-optimize-evm+yul": compiler_settings(evm_version, via_ir="true", optimizer="true", yul="true"),
     }
-    return json.loads(switch.get(preset))
+    return switch.get(preset)
 
 
 def run_cmd(command: str, env: dict = None, logfile: str = None) -> int:

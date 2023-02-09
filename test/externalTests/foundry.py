@@ -25,29 +25,27 @@ from pathlib import Path
 from shutil import which
 from string import Template
 from typing import Tuple
-import requests
+from textwrap import dedent
 
 from external_test import AVAILABLE_PRESETS
 from external_test import settings_from_preset, run_cmd
 from external_test import TestConfig, TestRunner, ExternalTest
 
-# TODO: Add hardhat runner
-# TODO: Add truffle runner
-
 class FoundryRunner(TestRunner):
     """Configure and run Foundry-based projects"""
 
     profile_tmpl = Template("""
-[profile.${name}]
-gas_reports = [\"*\"]
-auto_detect_solc = false
-solc = \"${solc}\"
-evm_version = \"${evm_version}\"
-optimizer = ${optimizer}
-via_ir = ${via_ir}
-[profile.${name}.optimizer_details]
-yul = ${yul}
-""")
+        [profile.${name}]
+        gas_reports = [\"*\"]
+        auto_detect_solc = false
+        solc = \"${solc}\"
+        evm_version = \"${evm_version}\"
+        optimizer = ${optimizer}
+        via_ir = ${via_ir}
+
+        [profile.${name}.optimizer_details]
+        yul = ${yul}
+    """)
 
     foundryup_url = "https://raw.githubusercontent.com/foundry-rs/foundry/master/foundryup/foundryup"
     foundry_repo = "https://github.com/foundry-rs/foundry.git"
@@ -91,13 +89,14 @@ yul = ${yul}
         foundry_config_file = self.config.config_file
         binary_type = self.config.solc.binary_type
         binary_path = self.config.solc.binary_path
-        print(f"""Configuring Forge profiles...
--------------------------------------
-Config file: {foundry_config_file}
-Binary type: {binary_type}
-Compiler path: {binary_path}
--------------------------------------
-""")
+        print(dedent(f"""
+            Configuring Forge profiles...
+            -------------------------------------
+            Config file: {foundry_config_file}
+            Binary type: {binary_type}
+            Compiler path: {binary_path}
+            -------------------------------------
+        """))
         # FIXME: Add support to solcjs. Currently only native solc is supported.
         if binary_type == "solcjs":
             raise RuntimeError(
@@ -111,9 +110,9 @@ Compiler path: {binary_path}
                 name=name,
                 solc=binary_path,
                 evm_version=self.config.evm_version,
-                optimizer=str(settings["optimizer"]["enabled"]).lower(),
-                via_ir=str(settings["viaIR"]).lower(),
-                yul=str(settings["optimizer"]["details"]["yul"]).lower()
+                optimizer=settings["optimizer"]["enabled"],
+                via_ir=settings["viaIR"],
+                yul=settings["optimizer"]["details"]["yul"]
             ))
 
         with open(file=Path(self.test_dir) / foundry_config_file, mode="a", encoding="utf-8") as f:
@@ -128,15 +127,16 @@ Compiler path: {binary_path}
 
         solc_short_version = ExternalTest.get_solc_short_version(solc_version)
         settings = settings_from_preset(preset, self.config.evm_version)
-        print(f"""Using Forge profile...
--------------------------------------
-Settings preset: {preset}
-Settings: {settings}
-EVM version: {self.config.evm_version}
-Compiler version: {solc_short_version}
-Compiler version (full): {solc_version}
--------------------------------------
-""")
+        print(dedent(f"""
+            Using Forge profile...
+            -------------------------------------
+            Settings preset: {preset}
+            Settings: {settings}
+            EVM version: {self.config.evm_version}
+            Compiler version: {solc_short_version}
+            Compiler version (full): {solc_version}
+            -------------------------------------
+        """))
         name = self.profile_name(preset)
         # Set the profile environment variable
         self.env.update({"FOUNDRY_PROFILE": name})
