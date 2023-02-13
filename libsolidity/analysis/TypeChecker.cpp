@@ -4102,7 +4102,8 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 				solAssert(m_errorReporter.hasErrors());
 			else
 			{
-				// NOTE: This would be more efficient if we could store information about available operators in the type.
+				// TODO: This is pretty inefficient. For every operator binding we find, we're
+				// traversing all bindings in all `using for` directives in the current scope.
 				set<FunctionDefinition const*, ASTNode::CompareByID> matchingDefinitions = usingForType->operatorDefinitions(
 					operator_.value(),
 					*currentDefinitionScope(),
@@ -4111,9 +4112,12 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 
 				if (matchingDefinitions.size() >= 2)
 				{
+					// TODO: We should point at other places that bind the operator rather than at
+					// the definitions they bind.
 					SecondarySourceLocation secondaryLocation;
 					for (FunctionDefinition const* definition: matchingDefinitions)
-						secondaryLocation.append("Candidate definition:", definition->location());
+						if (functionDefinition != *definition)
+						secondaryLocation.append("Conflicting definition:", definition->location());
 
 					m_errorReporter.typeError(
 						4705_error,
