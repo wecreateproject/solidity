@@ -20,6 +20,7 @@
 # ------------------------------------------------------------------------------
 
 import os
+import sys
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
@@ -33,6 +34,14 @@ from typing import Dict, List, Optional, Tuple
 
 import re
 from abc import ABCMeta, abstractmethod
+
+# Our scripts/ is not a proper Python package so we need to modify PYTHONPATH to import from it
+# pragma pylint: disable=import-error,wrong-import-position
+SCRIPTS_DIR = Path(__file__).parents[2] / "scripts"
+sys.path.insert(0, str(SCRIPTS_DIR))
+
+from common.git_helpers import git, git_commit_hash
+from common.shell_command import run_cmd
 
 SOLC_FULL_VERSION_REGEX = re.compile(r'^[a-zA-Z: ]*(.*)$')
 SOLC_SHORT_VERSION_REGEX = re.compile(r'^([0-9.]+).*\+|\-$')
@@ -72,39 +81,6 @@ def settings_from_preset(preset, evm_version) -> Dict:
         "ir-optimize-evm+yul": compiler_settings(evm_version, via_ir="true", optimizer="true", yul="true"),
     }
     return switch.get(preset)
-
-
-def run_cmd(command: str, env: dict = None, logfile: str = None) -> int:
-    """
-    Args:
-        command: command to run
-        logfile: log file name
-        env:     dictionary holding key-value pairs for bash environment variables
-
-    Returns:
-        int: The exit status of the command. Exit status codes are:
-            0     -> Success
-            1-255 -> Failure
-    """
-    if not logfile:
-        logfile = os.devnull
-    if not env:
-        env = os.environ.copy()
-    with open(
-        file=logfile,
-        mode='w',
-        encoding='utf8'
-    ) as log:
-        ret = subprocess.run(
-            command,
-            shell=True,
-            check=True,
-            executable='/bin/bash',
-            env=env,
-            stdout=log if not logfile else None,
-            stderr=None
-        )
-        return ret.returncode
 
 
 @dataclass
@@ -208,22 +184,21 @@ class ExternalTest:
         if ref_type == "commit":
             os.mkdir(test_dir)
             os.chdir(test_dir)
-            run_cmd("git init")
-            run_cmd(f"git remote add origin {repo_url}")
-            run_cmd(f"git fetch --depth 1 origin {ref}")
-            run_cmd("git reset --hard FETCH_HEAD")
+            git("init")
+            git(f"remote add origin {repo_url}")
+            git(f"fetch --depth 1 origin {ref}")
+            git("reset --hard FETCH_HEAD")
         else:
             os.chdir(test_dir.parent)
-            run_cmd(f"git clone --depth 1 {repo_url} -b {ref} {test_dir.resolve()}")
+            git(f"clone --depth 1 {repo_url} -b {ref} {test_dir.resolve()}")
             if not test_dir.exists():
                 raise RuntimeError("Git clone failed.")
             os.chdir(test_dir)
 
         if (test_dir / ".gitmodules").exists():
-            run_cmd("git submodule update --init")
+            git("submodule update --init")
 
-        commit_hash = subprocess.getoutput("git rev-parse HEAD")
-        print(f"Current commit hash: {commit_hash}")
+        print(f"Current commit hash: {git_commit_hash()}")
 
     @staticmethod
     def parse_solc_version(solc_version_string):

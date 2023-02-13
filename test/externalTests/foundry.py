@@ -20,6 +20,7 @@
 # ------------------------------------------------------------------------------
 
 import os
+import sys
 import re
 from pathlib import Path
 from shutil import which
@@ -28,8 +29,15 @@ from typing import Tuple
 from textwrap import dedent
 
 from external_test import AVAILABLE_PRESETS
-from external_test import settings_from_preset, run_cmd
+from external_test import settings_from_preset
 from external_test import TestConfig, TestRunner, ExternalTest
+
+# Our scripts/ is not a proper Python package so we need to modify PYTHONPATH to import from it
+# pragma pylint: disable=import-error,wrong-import-position
+SCRIPTS_DIR = Path(__file__).parents[2] / "scripts"
+sys.path.insert(0, str(SCRIPTS_DIR))
+
+from common.shell_command import run_cmd
 
 class FoundryRunner(TestRunner):
     """Configure and run Foundry-based projects"""
