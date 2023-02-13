@@ -1607,7 +1607,7 @@ bool TypeChecker::visit(Assignment const& _assignment)
 				7366_error,
 				_assignment.location(),
 				"Operator " +
-				string(TokenTraits::toString(_assignment.assignmentOperator())) +
+				string(TokenTraits::friendlyName(_assignment.assignmentOperator())) +
 				" not compatible with types " +
 				t->humanReadableName() +
 				" and " +
@@ -1762,7 +1762,7 @@ bool TypeChecker::visit(UnaryOperation const& _operation)
 	{
 		string description = fmt::format(
 			"Built-in unary operator {} cannot be applied to type {}.",
-			TokenTraits::toString(op),
+			TokenTraits::friendlyName(op),
 			operandType->humanReadableName()
 		);
 		if (!builtinResult.message().empty())
@@ -1831,7 +1831,7 @@ void TypeChecker::endVisit(BinaryOperation const& _operation)
 	{
 		string description = fmt::format(
 			"Built-in binary operator {} cannot be applied to types {} and {}.",
-			TokenTraits::toString(_operation.getOperator()),
+			TokenTraits::friendlyName(_operation.getOperator()),
 			leftType->humanReadableName(),
 			rightType->humanReadableName()
 		);
@@ -1873,7 +1873,7 @@ void TypeChecker::endVisit(BinaryOperation const& _operation)
 				fmt::format(
 					"The type of the second operand of this user-defined binary operator {} "
 					"does not match the type of the first operand, which is {}.",
-					TokenTraits::toString(_operation.getOperator()),
+					TokenTraits::friendlyName(_operation.getOperator()),
 					parameterTypes[0]->humanReadableName()
 				)
 			);
@@ -4122,7 +4122,7 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 						fmt::format(
 							"User-defined {} operator {} has more than one definition matching the operand type visible in the current scope.",
 							parameterCount == 1 ? "unary" : "binary",
-							TokenTraits::toString(operator_.value())
+							TokenTraits::friendlyName(operator_.value())
 						)
 					);
 				}
