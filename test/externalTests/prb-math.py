@@ -22,30 +22,10 @@
 import sys
 import subprocess
 import json
-from pathlib import Path
 from shutil import copyfile
 
 from external_test import TestConfig, ExternalTest, CURRENT_EVM_VERSION
 from foundry import FoundryRunner
-
-class PRBMath(ExternalTest):
-    """PRBMath test setup"""
-
-    def __init__(self, config: TestConfig):
-        ExternalTest.__init__(self, config)
-
-    def setup_fn(self, test_dir: Path, env: dict):
-        """ PRBMath setup steps"""
-        copyfile(test_dir / ".env.example", test_dir / ".env")
-
-    def compile_fn(self, test_dir: Path, env: dict):
-        """ PRBMath compilation steps"""
-        # TODO
-
-    def test_fn(self, test_dir: Path, env: dict):
-        """ PRBMath tests steps"""
-        # TODO
-
 
 if __name__ == '__main__':
     try:
@@ -79,13 +59,17 @@ if __name__ == '__main__':
         }}""")
 
         config = TestConfig(**config_json)
-        prb = PRBMath(config)
-        prb.run("PRBMath", FoundryRunner(
-            config=config,
-            setup_fn=prb.setup_fn,
-            compile_fn=prb.compile_fn,
-            test_fn=None
-            ))
+        prb = ExternalTest(config)
+        prb.run(
+            "PRBMath",
+            FoundryRunner(
+                config=config,
+                setup_fn=lambda test_dir, env:
+                    copyfile(test_dir / ".env.example", test_dir / ".env"),
+                compile_fn=None,
+                test_fn=None,
+            ),
+        )
     except (OSError, SystemError, RuntimeError, subprocess.CalledProcessError) as exception:
         print(f"Error while processing test: {exception}", file=sys.stderr)
         sys.exit(1)
