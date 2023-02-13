@@ -29,8 +29,8 @@ from typing import Tuple
 from textwrap import dedent
 
 from exttest_setup import AVAILABLE_PRESETS
-from exttest_setup import settings_from_preset
-from exttest_setup import TestConfig, TestRunner, ExternalTest
+from exttest_setup import settings_from_preset, get_solc_short_version
+from exttest_setup import TestConfig, TestRunner
 
 # Our scripts/ is not a proper Python package so we need to modify PYTHONPATH to import from it
 # pragma pylint: disable=import-error,wrong-import-position
@@ -133,7 +133,7 @@ class FoundryRunner(TestRunner):
     def compile(self, solc_version: str, preset: str):
         """Compile project"""
 
-        solc_short_version = ExternalTest.get_solc_short_version(solc_version)
+        solc_short_version = get_solc_short_version(solc_version)
         settings = settings_from_preset(preset, self.config.evm_version)
         print(dedent(f"""
             Using Forge profile...

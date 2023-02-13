@@ -24,15 +24,17 @@ import subprocess
 import json
 from shutil import copyfile
 
-from exttest_setup import TestConfig, ExternalTest, CURRENT_EVM_VERSION
+from exttest_setup import CURRENT_EVM_VERSION
+from exttest_setup import parse_command_line, run_test
+from exttest_setup import TestConfig
+
 from foundry import FoundryRunner
 
 if __name__ == '__main__':
     try:
         # Note: We currently accept solc_binary_type and solc_binary_path as parameters
         # to keep compatibility with the current external tests framework.
-        args = ExternalTest.parse_command_line(
-            "PRBMath external tests", sys.argv[1:])
+        args = parse_command_line("PRBMath external tests", sys.argv[1:])
 
         config_json = json.loads(f"""
         {{
@@ -59,8 +61,8 @@ if __name__ == '__main__':
         }}""")
 
         config = TestConfig(**config_json)
-        prb = ExternalTest(config)
-        prb.run(
+        run_test(
+            config,
             "PRBMath",
             FoundryRunner(
                 config=config,

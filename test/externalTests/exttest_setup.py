@@ -56,33 +56,6 @@ AVAILABLE_PRESETS: Tuple[str] = (
     "ir-optimize-evm+yul"
 )
 
-def compiler_settings(evm_version, via_ir = "false", optimizer = "false", yul = "false") -> Dict:
-    return {
-        "optimizer": {
-            "enabled": optimizer,
-            "details": {
-                "yul": yul
-            }
-        },
-        "evmVersion": evm_version,
-        "viaIR": via_ir
-    }
-
-def settings_from_preset(preset, evm_version) -> Dict:
-    if preset not in AVAILABLE_PRESETS:
-        raise RuntimeError(
-            f"Preset \"{preset}\" not found. Please select one or more of the available presets:\n{' '.join(map(str, AVAILABLE_PRESETS))}")
-    switch = {
-        "legacy-no-optimize": compiler_settings(evm_version),
-        "ir-no-optimize": compiler_settings(evm_version, via_ir="true"),
-        "legacy-optimize-evm-only": compiler_settings(evm_version, optimizer="true"),
-        "ir-optimize-evm-only": compiler_settings(evm_version, via_ir="true", optimizer="true"),
-        "legacy-optimize-evm+yul": compiler_settings(evm_version, optimizer="true", yul="true"),
-        "ir-optimize-evm+yul": compiler_settings(evm_version, via_ir="true", optimizer="true", yul="true"),
-    }
-    return switch.get(preset)
-
-
 @dataclass
 class SolcConfig:
     binary_type: str
@@ -148,162 +121,173 @@ class TestRunner(metaclass=ABCMeta):
     def run_test(self, preset: str):
         pass
 
+# Helper functions
+def compiler_settings(evm_version, via_ir = "false", optimizer = "false", yul = "false") -> Dict:
+    return {
+        "optimizer": {
+            "enabled": optimizer,
+            "details": {
+                "yul": yul
+            }
+        },
+        "evmVersion": evm_version,
+        "viaIR": via_ir
+    }
 
-class ExternalTest:
-    def __init__(self, config: TestConfig):
-        if config.solc.binary_type not in ('native', 'solcjs'):
-            raise RuntimeError(
-                f"Invalid solidity compiler binary type: {config.solc.binary_type}")
-        if config.solc.binary_type != "solcjs" and config.solc.solcjs_src_dir != "":
-            raise RuntimeError(
-                f"""Invalid test configuration: 'native' mode cannot be used with 'solcjs_src_dir'.
-              Please use 'binary_type: solcjs' or unset: 'solcjs_src_dir: {config.solc.solcjs_src_dir}'""")
-        self.config = config
+def settings_from_preset(preset, evm_version) -> Dict:
+    if preset not in AVAILABLE_PRESETS:
+        raise RuntimeError(
+            f"Preset \"{preset}\" not found. Please select one or more of the available presets:\n{' '.join(map(str, AVAILABLE_PRESETS))}")
+    switch = {
+        "legacy-no-optimize": compiler_settings(evm_version),
+        "ir-no-optimize": compiler_settings(evm_version, via_ir="true"),
+        "legacy-optimize-evm-only": compiler_settings(evm_version, optimizer="true"),
+        "ir-optimize-evm-only": compiler_settings(evm_version, via_ir="true", optimizer="true"),
+        "legacy-optimize-evm+yul": compiler_settings(evm_version, optimizer="true", yul="true"),
+        "ir-optimize-evm+yul": compiler_settings(evm_version, via_ir="true", optimizer="true", yul="true"),
+    }
+    return switch.get(preset)
 
-    @staticmethod
-    def parse_command_line(description: str, args: str):
-        arg_parser = ArgumentParser(description)
-        arg_parser.add_argument(
-            '--solc-binary-type',
-            required=True,
-            type=str,
-            help="""Solidity compiler binary type""",
-            choices=['native', 'solcjs'],
-        )
-        arg_parser.add_argument('--solc-binary-path', required=True, type=str,
-                                help="""Path to solc or soljson.js binary""")
-        return arg_parser.parse_args(args)
+def parse_command_line(description: str, args: str):
+    arg_parser = ArgumentParser(description)
+    arg_parser.add_argument(
+        '--solc-binary-type',
+        required=True,
+        type=str,
+        help="""Solidity compiler binary type""",
+        choices=['native', 'solcjs'],
+    )
+    arg_parser.add_argument('--solc-binary-path', required=True, type=str,
+                            help="""Path to solc or soljson.js binary""")
+    return arg_parser.parse_args(args)
 
-    @staticmethod
-    def download_project(test_dir: Path, repo_url: str,
-                         ref_type: str = "branch", ref: str = "master"):
-        if ref_type not in ('commit', 'branch', 'tag'):
-            raise RuntimeError(f"Invalid reference type: {ref_type}")
+def download_project(test_dir: Path, repo_url: str, ref_type: str = "branch", ref: str = "master"):
+    if ref_type not in ('commit', 'branch', 'tag'):
+        raise RuntimeError(f"Invalid reference type: {ref_type}")
 
-        print(f"Cloning {ref_type} {ref} of {repo_url}...")
-        if ref_type == "commit":
-            os.mkdir(test_dir)
-            os.chdir(test_dir)
-            git("init")
-            git(f"remote add origin {repo_url}")
-            git(f"fetch --depth 1 origin {ref}")
-            git("reset --hard FETCH_HEAD")
+    print(f"Cloning {ref_type} {ref} of {repo_url}...")
+    if ref_type == "commit":
+        os.mkdir(test_dir)
+        os.chdir(test_dir)
+        git("init")
+        git(f"remote add origin {repo_url}")
+        git(f"fetch --depth 1 origin {ref}")
+        git("reset --hard FETCH_HEAD")
+    else:
+        os.chdir(test_dir.parent)
+        git(f"clone --depth 1 {repo_url} -b {ref} {test_dir.resolve()}")
+        if not test_dir.exists():
+            raise RuntimeError("Git clone failed.")
+        os.chdir(test_dir)
+
+    if (test_dir / ".gitmodules").exists():
+        git("submodule update --init")
+
+    print(f"Current commit hash: {git_commit_hash()}")
+
+def parse_solc_version(solc_version_string):
+    solc_version_match = re.search(
+        SOLC_FULL_VERSION_REGEX, solc_version_string)
+    if solc_version_match:
+        solc_full_version = solc_version_match.group(1)
+    else:
+        raise RuntimeError(
+            f"Solc version could not be found in: {solc_version_string}")
+    return solc_full_version
+
+def get_solc_short_version(solc_full_version):
+    solc_short_version_match = re.search(
+        SOLC_SHORT_VERSION_REGEX, solc_full_version)
+    if solc_short_version_match:
+        solc_short_version = solc_short_version_match.group(1)
+    else:
+        raise RuntimeError(
+            f"Error extracting short version string from: {solc_full_version}")
+    return solc_short_version
+
+def setup_solc(config: TestConfig, test_dir: Path) -> (str, str):
+    sc_config = config.solc
+
+    if sc_config.binary_type == "solcjs":
+        # FIXME: install_dir is assumed to be relative path
+        solc_dir = test_dir.parent / sc_config.install_dir
+        solc_bin = solc_dir / "dist/solc.js"
+
+        print("Setting up solc-js...")
+        if sc_config.solcjs_src_dir == "":
+            download_project(
+                solc_dir, "https://github.com/ethereum/solc-js.git", "branch", sc_config.branch)
         else:
-            os.chdir(test_dir.parent)
-            git(f"clone --depth 1 {repo_url} -b {ref} {test_dir.resolve()}")
-            if not test_dir.exists():
-                raise RuntimeError("Git clone failed.")
-            os.chdir(test_dir)
+            print(
+                f"Using local solc-js from {sc_config.solcjs_src_dir}...")
+            copytree(sc_config.solcjs_src_dir, solc_dir)
+            rmtree(solc_dir / "dist")
+            rmtree(solc_dir / "node_modules")
+        os.chdir(solc_dir)
+        run_cmd("npm install")
+        run_cmd("npm run build")
+        copyfile(sc_config.binary_path, solc_dir / "dist/soljson.js")
+        solc_version_output = subprocess.getoutput(
+            f"node {solc_bin} --version")
+    else:
+        print("Setting up solc...")
+        solc_version_output = subprocess.getoutput(
+            f"{sc_config.binary_path} --version | tail -n 1")
 
-        if (test_dir / ".gitmodules").exists():
-            git("submodule update --init")
+    return parse_solc_version(solc_version_output)
 
-        print(f"Current commit hash: {git_commit_hash()}")
+def store_benchmark_report(self):
+    # TODO
+    raise NotImplementedError()
 
-    @staticmethod
-    def parse_solc_version(solc_version_string):
-        solc_version_match = re.search(
-            SOLC_FULL_VERSION_REGEX, solc_version_string)
-        if solc_version_match:
-            solc_full_version = solc_version_match.group(1)
-        else:
-            raise RuntimeError(
-                f"Solc version could not be found in: {solc_version_string}")
-        return solc_full_version
+def prepare_node_env(test_dir: Path):
+    if which("node") is None:
+        raise RuntimeError("nodejs not found")
+    # Remove lock files (if they exist) to prevent them from overriding our changes in package.json
+    print("Removing package lock files...")
+    rmtree(test_dir / "yarn.lock")
+    rmtree(test_dir / "package_lock.json")
+    # TODO: neutralize_package_json_hooks
+    print("Disabling package.json hooks...")
+    if not (test_dir / "package.json").exists():
+        raise RuntimeError("package.json not found")
+    # TODO: replace prepublish and prepare
 
-    @staticmethod
-    def get_solc_short_version(solc_full_version):
-        solc_short_version_match = re.search(
-            SOLC_SHORT_VERSION_REGEX, solc_full_version)
-        if solc_short_version_match:
-            solc_short_version = solc_short_version_match.group(1)
-        else:
-            raise RuntimeError(
-                f"Error extracting short version string from: {solc_full_version}")
-        return solc_short_version
+def run_test(config, name: str, runner: TestRunner):
+    if config.solc.binary_type not in ('native', 'solcjs'):
+        raise RuntimeError(
+            f"Invalid solidity compiler binary type: {config.solc.binary_type}")
+    if config.solc.binary_type != "solcjs" and config.solc.solcjs_src_dir != "":
+        raise RuntimeError(
+            f"""Invalid test configuration: 'native' mode cannot be used with 'solcjs_src_dir'.
+            Please use 'binary_type: solcjs' or unset: 'solcjs_src_dir: {config.solc.solcjs_src_dir}'""")
+    print(f"Testing {name}...\n===========================")
+    with TemporaryDirectory(prefix=f"ext-test-{name}-") as tmp_dir:
+        test_dir = Path(tmp_dir) / "ext"
+        presets = config.selected_presets()
+        print(f"Selected settings presets: {' '.join(map(str, presets))}")
 
-    def setup_solc(self, test_dir: Path) -> (str, str):
-        sc_config = self.config.solc
+        # Configure solc compiler
+        solc_version = setup_solc(config, test_dir)
+        print(f"Using compiler version {solc_version}")
 
-        if sc_config.binary_type == "solcjs":
-            # FIXME: install_dir is assumed to be relative path
-            solc_dir = test_dir.parent / sc_config.install_dir
-            solc_bin = solc_dir / "dist/solc.js"
+        # Download project
+        download_project(test_dir, config.repo_url, config.ref_type, config.ref)
 
-            print("Setting up solc-js...")
-            if sc_config.solcjs_src_dir == "":
-                self.download_project(
-                    solc_dir, "https://github.com/ethereum/solc-js.git", "branch", sc_config.branch)
-            else:
-                print(
-                    f"Using local solc-js from {sc_config.solcjs_src_dir}...")
-                copytree(sc_config.solcjs_src_dir, solc_dir)
-                rmtree(solc_dir / "dist")
-                rmtree(solc_dir / "node_modules")
-            os.chdir(solc_dir)
-            run_cmd("npm install")
-            run_cmd("npm run build")
-            copyfile(sc_config.binary_path, solc_dir / "dist/soljson.js")
-            solc_version_output = subprocess.getoutput(
-                f"node {solc_bin} --version")
-        else:
-            print("Setting up solc...")
-            solc_version_output = subprocess.getoutput(
-                f"{sc_config.binary_path} --version | tail -n 1")
+        # Configure run environment
+        if config.build_dependency == "nodejs":
+            prepare_node_env(test_dir)
+        runner.setup_environment(test_dir)
 
-        return self.parse_solc_version(solc_version_output)
-
-    def store_benchmark_report(self):
-        # TODO
-        raise NotImplementedError()
-
-    def prepare_node_env(self, test_dir: Path):
-        if which("node") is None:
-            # TODO: install nodejs
-            # TODO: setup env variables
-            raise NotImplementedError()
-        # TODO: neutralize_package_lock
-        print("Removing package lock files...")
-        rmtree(test_dir / "yarn.lock")
-        rmtree(test_dir / "package_lock.json")
-        # TODO: neutralize_package_json_hooks
-        print("Disabling package.json hooks...")
-        if not (test_dir / "package.json").exists():
-            raise RuntimeError("package.json not found")
-        # TODO: replace prepublish and prepare
-
-    def prepare_rust_env(self, test_dir: Path):
-        if which("rust"):
-            # TODO: install rustup and rust
-            # TODO: setup env variables
-            raise NotImplementedError()
-
-    def run(self, name: str, runner: TestRunner):
-        print(f"Testing {name}...\n===========================")
-        with TemporaryDirectory(prefix=f"ext-test-{name}-") as tmp_dir:
-            test_dir = Path(tmp_dir) / "ext"
-            presets = self.config.selected_presets()
-            print(f"Selected settings presets: {' '.join(map(str, presets))}")
-            # Configure solc compiler
-            solc_version = self.setup_solc(test_dir)
-            print(f"Using compiler version {solc_version}")
-            # Download project
-            self.download_project(
-                test_dir, self.config.repo_url, self.config.ref_type, self.config.ref)
-            if self.config.build_dependency == "nodejs":
-                self.prepare_node_env(test_dir)
-            elif self.config.build_dependency == "rust":
-                self.prepare_rust_env(test_dir)
-            runner.setup_environment(test_dir)
-            # Configure TestRunner instance
-            # TODO: replace_version_pragmas
-            runner.compiler_settings(solc_version, presets)
-            for preset in self.config.selected_presets():
-                print("Running compile function...")
-                runner.compile(solc_version, preset)
-                # TODO: skip tests if compile_only_presets
-                print("Running test function...")
-                runner.run_test(preset)
-                # TODO: store_benchmark_report
-                # runner.clean()
-            print("Done.")
+        # Configure TestRunner instance
+        # TODO: replace_version_pragmas
+        runner.compiler_settings(solc_version, presets)
+        for preset in config.selected_presets():
+            print("Running compile function...")
+            runner.compile(solc_version, preset)
+            # TODO: skip tests if compile_only_presets
+            print("Running test function...")
+            runner.run_test(preset)
+            # TODO: store_benchmark_report
+            # runner.clean()
+        print("Done.")
