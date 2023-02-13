@@ -227,12 +227,10 @@ def setup_solc(config: TestConfig, test_dir: Path) -> (str, str):
         run_cmd("npm install")
         run_cmd("npm run build")
         copyfile(sc_config.binary_path, solc_dir / "dist/soljson.js")
-        solc_version_output = subprocess.getoutput(
-            f"node {solc_bin} --version")
+        solc_version_output = subprocess.getoutput(f"node {solc_bin} --version")
     else:
         print("Setting up solc...")
-        solc_version_output = subprocess.getoutput(
-            f"{sc_config.binary_path} --version | tail -n 1")
+        solc_version_output = subprocess.getoutput(f"{sc_config.binary_path} --version").split(":")[1]
 
     return parse_solc_version(solc_version_output)
 
