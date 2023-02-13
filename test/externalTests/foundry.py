@@ -28,9 +28,9 @@ from string import Template
 from typing import Tuple
 from textwrap import dedent
 
-from external_test import AVAILABLE_PRESETS
-from external_test import settings_from_preset
-from external_test import TestConfig, TestRunner, ExternalTest
+from exttest_setup import AVAILABLE_PRESETS
+from exttest_setup import settings_from_preset
+from exttest_setup import TestConfig, TestRunner, ExternalTest
 
 # Our scripts/ is not a proper Python package so we need to modify PYTHONPATH to import from it
 # pragma pylint: disable=import-error,wrong-import-position

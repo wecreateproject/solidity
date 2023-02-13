@@ -24,7 +24,7 @@ import subprocess
 import json
 from shutil import copyfile
 
-from external_test import TestConfig, ExternalTest, CURRENT_EVM_VERSION
+from exttest_setup import TestConfig, ExternalTest, CURRENT_EVM_VERSION
 from foundry import FoundryRunner
 
 if __name__ == '__main__':
