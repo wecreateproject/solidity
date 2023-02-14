@@ -1479,6 +1479,8 @@ jobs:
       # platforms so line ending conversions must absolutely be disabled.
       - run: git config --global core.autocrlf false
       - checkout
+      # Ensure windows has python3 alias required by prepare_bytecode_report
+      - run: ln -s /c/tools/miniconda3/python /c/tools/miniconda3/python3
       - attach_workspace:
           at: build
       - prepare_bytecode_report:
