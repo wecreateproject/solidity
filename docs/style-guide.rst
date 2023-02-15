@@ -1289,19 +1289,13 @@ Underscore Prefix for Non-external Functions and Variables
 
 * ``_singleLeadingUnderscore``
 
-This convention is suggested for non-external (``internal`` and ``private``)
-functions and non-external (``private`` or ``internal``) state variables. (State
-variables without a visibility specified are default ``internal``.)
+This convention is suggested for non-external (``internal`` and ``private``) functions and non-external (``private`` or ``internal``) state variables (state variables without a visibility specified are default ``internal``).
 
-There are perhaps many reasons to consider this convention. But we note just
-one here. When designing a smart contract, the external surface area (functions
-that can be called by any account) is an important consideration. Leading
-underscores allow you to immediately recognize these decisions while working.
-But more importantly if you change a function from non-external to external
-(including ``public``) and rename accordingly, this forces you to
-review every call site while renaming. This can be an important manual check
-against unintended external functions, a common source of security
-vulnerabilities. (Avoid find-replace-all tooling for this change.)
+There are many reasons to consider this convention but we note just
+one here. When designing a smart contract the external surface area (functions
+that can be called by any account) is an important consideration. 
+Leading underscores allows you to immediately recognize these decisions while working, but more importantly, if you change a function from non-external to external (including ``public``) and rename it accordingly, this forces you to review every call site while renaming. 
+This can be an important manual check against unintended external functions, a common source of security vulnerabilities (avoid find-replace-all tooling for this change).
 
 
 .. _style_guide_natspec:
