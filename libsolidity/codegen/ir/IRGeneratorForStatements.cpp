@@ -680,7 +680,7 @@ bool IRGeneratorForStatements::visit(UnaryOperation const& _unaryOperation)
 		setLocation(_unaryOperation);
 
 		solAssert(function->isImplemented());
-		solAssert(function->isFree() || function->libraryFunction());
+		solAssert(function->isFree());
 		solAssert(function->parameters().size() == 1);
 		solAssert(function->returnParameters().size() == 1);
 		solAssert(*function->returnParameters()[0]->type() == *_unaryOperation.annotation().type);
@@ -807,7 +807,7 @@ bool IRGeneratorForStatements::visit(BinaryOperation const& _binOp)
 		setLocation(_binOp);
 
 		solAssert(function->isImplemented());
-		solAssert(function->isFree() || function->libraryFunction());
+		solAssert(function->isFree());
 		solAssert(function->parameters().size() == 2);
 		solAssert(function->returnParameters().size() == 1);
 		solAssert(*function->returnParameters()[0]->type() == *_binOp.annotation().type);

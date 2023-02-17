@@ -414,7 +414,7 @@ bool ExpressionCompiler::visit(UnaryOperation const& _unaryOperation)
 	FunctionDefinition const* function = *_unaryOperation.annotation().userDefinedFunction;
 	if (function)
 	{
-		solAssert(function->isFree() || function->libraryFunction());
+		solAssert(function->isFree());
 
 		FunctionType const* functionType = _unaryOperation.userDefinedFunctionType();
 		solAssert(functionType);
@@ -533,7 +533,7 @@ bool ExpressionCompiler::visit(BinaryOperation const& _binaryOperation)
 	FunctionDefinition const* function = *_binaryOperation.annotation().userDefinedFunction;
 	if (function)
 	{
-		solAssert(function->isFree() || function->libraryFunction());
+		solAssert(function->isFree());
 
 		FunctionType const* functionType = _binaryOperation.userDefinedFunctionType();
 		solAssert(functionType);
