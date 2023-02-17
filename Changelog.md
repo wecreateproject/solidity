@@ -1,7 +1,7 @@
 ### 0.8.19 (unreleased)
 
 Language Features:
-* Allow defining custom operators for user-defined value types via ``using {f as +} for Typename;`` syntax.
+* Allow defining custom operators for user-defined value types via ``using {f as +} for T global`` syntax.
 
 
 Compiler Features:
