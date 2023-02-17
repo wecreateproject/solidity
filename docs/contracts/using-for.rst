@@ -85,7 +85,7 @@ The following operators can be defined this way:
 |            | ``>=``   | ``function (T, T) pure returns (bool)``     |
 +------------+----------+---------------------------------------------+
 
-If an operator supports more than one signature, each one can have a separate definition.
+Note that unary and binary ``-`` need separate definitions.
 The compiler will choose the right definition based on how the operator is invoked.
 
 The ``using A for B;`` directive is active only within the current
